@@ -192,7 +192,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     protected static function booted(): void
     {
         static::created(function (User $model) {
-            if ( !is_null(auth()->user()) && auth()->user()->hasRole(['company','super_company'])) {
+            if ( !is_null(auth()->user()) && !is_null(TenancyHelpers::getTenant()) && auth()->user()->hasRole(['company','super_company'])) {
                 TenancyHelpers::getTenant()->users()->attach($model->id);
             }
         });
