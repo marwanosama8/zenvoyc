@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Helpers\TenancyHelpers;
 use App\Mail\User\VerifyEmail;
 use App\Notifications\Auth\QueuedVerifyEmail;
 use App\Services\SubscriptionManager;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasDefaultTenant;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,8 +16,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\HasTenants;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail, HasTenants, HasDefaultTenant
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -93,6 +98,15 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         if ($panel->getId() == 'admin' && !$this->is_admin) {
             return false;
         }
+        // if ($panel->getId() == 'employee' && !$this->hasRole('employee')) {
+        //     return false;
+        // }
+        if ($panel->getId() == 'user' && !$this->hasRole('user')) {
+            return false;
+        }
+        if ($panel->getId() == 'company' && !$this->hasRole(['company', 'super_company'])) {
+            return false;
+        }
 
         return true;
     }
@@ -134,11 +148,53 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         $subscriptionManager = app(SubscriptionManager::class);
 
         return $subscriptionManager->getUserSubscriptionProductMetadata($this);
-
     }
 
     public function sendEmailVerificationNotification()
     {
         $this->notify(new QueuedVerifyEmail());
+    }
+ 
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'users_companies', 'user_id', 'company_id');
+    }
+ 
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->companies;
+    }
+ 
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->companies()->whereKey($tenant)->exists();
+    }
+
+    public function customers()
+    {
+        return $this->morphMany(Customer::class, 'customerable');
+    }
+
+    public function sales()
+    {
+        return $this->morphMany(Sales::class, 'salesable');
+    }
+
+    public function getDefaultTenant(Panel $panel): ?Model
+    {
+        return $this->companies()->first();
+    }
+ 
+
+        /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (User $model) {
+            if ( !is_null(auth()->user()) && auth()->user()->hasRole(['company','super_company'])) {
+                TenancyHelpers::getTenant()->users()->attach($model->id);
+            }
+        });
     }
 }

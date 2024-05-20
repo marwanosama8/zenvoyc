@@ -215,6 +215,8 @@ return [
         App\Providers\HorizonServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\Filament\DashboardPanelProvider::class,
+        App\Providers\Filament\CompanyPanelProvider::class,
+        App\Providers\Filament\EmployeePanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 

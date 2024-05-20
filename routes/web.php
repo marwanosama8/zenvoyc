@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\OAuthController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentProviders\PaddleController as PaddleController;
+use App\Livewire\CustomerInvoices;
+use App\Livewire\ViewOffer;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -156,3 +159,25 @@ Route::get('/roadmap/i/{itemSlug}', [
     App\Http\Controllers\RoadmapController::class,
     'viewItem',
 ])->name('roadmap.viewItem');
+
+
+// new routes 
+
+Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+Route::get('/invoice/data',[InvoiceController::class, 'getData'])->name('invoice.data');
+Route::get('/invoice/create',[InvoiceController::class, 'create'])->name('invoice.create');
+Route::post('/invoice/store',[InvoiceController::class, 'store'] )->name('invoice.store');
+Route::post('/invoice/{invoice}/update',[InvoiceController::class, 'update'] )->name('invoice.update');
+Route::get('/invoice/{invoice}/view',[InvoiceController::class, 'view'])->name('invoice.view');
+Route::get('/invoice/{invoice}/generate',[InvoiceController::class, 'download'])->name('invoice.download');
+Route::get('/invoice/{invoice}/send',[InvoiceController::class, 'send'])->name('invoice.send');
+Route::get('/invoice/{invoice}/payed', [InvoiceController::class, 'payed'])->name('invoice.payed');
+Route::get('/invoice/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit'); /// Delete
+Route::get('/invoice/{invoice}/reminder', [InvoiceController::class, 'reminder'])->name('invoice.reminder');
+Route::post('/invoice/{invoice}/sendreminder',[InvoiceController::class, 'sendReminder'])->name('invoice.sendreminder');
+Route::get('/invoice/{invoice}/resend',[InvoiceController::class, 'resend'])->name('invoice.resend');
+Route::get('/invoice/{invoice}/duplicate', [InvoiceController::class, 'duplicate'])->name('invoice.duplicate');
+Route::get('/invoice/month2month',[InvoiceController::class, 'month2month'])->name('invoice.month2month');
+Route::get('/invoice/pdf/{invoice}',[InvoiceController::class, 'pdf'])->name('invoice.pdf');
+Route::get('/sign-contract/{token}', ViewOffer::class)->name('sign.contract');
+Route::get('/list-invoices/{token}', CustomerInvoices::class)->name('list.invoices');

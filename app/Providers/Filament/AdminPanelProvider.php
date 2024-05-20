@@ -50,14 +50,14 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
             ])
             ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
                 StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
+                EncryptCookies::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
                 DisableBladeIconComponents::class,
+                AddQueuedCookiesToResponse::class,
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([

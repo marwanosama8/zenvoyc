@@ -26,7 +26,6 @@ class DemoDatabaseSeeder extends Seeder
     public function __construct(
         private MetricsManager $metricsManager
     ) {
-
     }
 
     private array $blogPostTitles = [
@@ -90,7 +89,7 @@ class DemoDatabaseSeeder extends Seeder
                 'is_admin' => true,
             ]);
 
-            $adminUser->assignRole('admin');
+            $adminUser->assignRole(['admin', 'super_comapny', 'user', 'employee']);
         }
 
         $this->seedDemoData();
@@ -108,25 +107,28 @@ class DemoDatabaseSeeder extends Seeder
     {
 
         $basicProduct = $this->findOrCreateProduct([
-            'name' => 'Basic',
-            'slug' => 'basic',
-            'description' => 'Basic plan',
-            'features' => [["feature"=> "Amazing Feature 1"], ["feature"=> "Amazing Feature 2"], ["feature"=> "Amazing Feature 3"], ["feature"=> "Amazing Feature 4"], ["feature"=> "Amazing Feature 5"]],
+            'name' => 'User',
+            'slug' => 'user',
+            'description' => 'User plan',
+            'metadata' => [['role' => 'user']],
+            'features' => [["feature" => "Amazing Feature 1"], ["feature" => "Amazing Feature 2"], ["feature" => "Amazing Feature 3"], ["feature" => "Amazing Feature 4"], ["feature" => "Amazing Feature 5"]],
         ]);
 
         $proProduct = $this->findOrCreateProduct([
-            'name' => 'Pro',
-            'slug' => 'pro',
+            'name' => 'Company',
+            'slug' => 'company',
             'description' => 'Pro plan',
             'is_popular' => true,
-            'features' => [["feature"=> "Amazing Feature 1"], ["feature"=> "Amazing Feature 2"], ["feature"=> "Amazing Feature 3"], ["feature"=> "Amazing Feature 4"], ["feature"=> "Amazing Feature 5"]],
+            'metadata' => [['role' => 'company']],
+            'features' => [["feature" => "Amazing Feature 1"], ["feature" => "Amazing Feature 2"], ["feature" => "Amazing Feature 3"], ["feature" => "Amazing Feature 4"], ["feature" => "Amazing Feature 5"]],
         ]);
 
         $ultimateProduct = $this->findOrCreateProduct([
-            'name' => 'Ultimate',
-            'slug' => 'ultimate',
+            'name' => 'Multi Company',
+            'slug' => 'multi_company',
             'description' => 'Ultimate plan',
-            'features' => [["feature"=> "Amazing Feature 1"], ["feature"=> "Amazing Feature 2"], ["feature"=> "Amazing Feature 3"], ["feature"=> "Amazing Feature 4"], ["feature"=> "Amazing Feature 5"]],
+            'metadata' => [['role' => 'super_company']],
+            'features' => [["feature" => "Amazing Feature 1"], ["feature" => "Amazing Feature 2"], ["feature" => "Amazing Feature 3"], ["feature" => "Amazing Feature 4"], ["feature" => "Amazing Feature 5"]],
         ]);
 
         $this->createOneTimeProduct('Lemon', 'lemon', 1000);
@@ -144,7 +146,7 @@ class DemoDatabaseSeeder extends Seeder
             'name' => $name,
             'slug' => $slug,
             'description' => 'One time product',
-            'features' => [["feature"=> "Amazing Feature 1"], ["feature"=> "Amazing Feature 2"], ["feature"=> "Amazing Feature 3"], ["feature"=> "Amazing Feature 4"], ["feature"=> "Amazing Feature 5"]],
+            'features' => [["feature" => "Amazing Feature 1"], ["feature" => "Amazing Feature 2"], ["feature" => "Amazing Feature 3"], ["feature" => "Amazing Feature 4"], ["feature" => "Amazing Feature 5"]],
             'is_active' => true,
         ]);
 
@@ -248,7 +250,6 @@ class DemoDatabaseSeeder extends Seeder
         ]);
 
         $this->addPlanSubscriptions($basicPlan);
-
     }
 
     private function findOrCreatePlan(array $data)
@@ -286,7 +287,7 @@ class DemoDatabaseSeeder extends Seeder
             $subscription = $user->subscriptions()->create([
                 'plan_id' => $plan->id,
                 'trial_ends_at' => null,
-                'ends_at' => $status == SubscriptionStatus::ACTIVE ? Carbon::now()->add(1, $plan->interval->date_identifier): (new Carbon($createdDate))->add(1, $plan->interval->date_identifier),
+                'ends_at' => $status == SubscriptionStatus::ACTIVE ? Carbon::now()->add(1, $plan->interval->date_identifier) : (new Carbon($createdDate))->add(1, $plan->interval->date_identifier),
                 'price' => $plan->prices()->first()->price,
                 'currency_id' => $plan->prices()->first()->currency_id,
                 'user_id' => $user->id,
@@ -318,7 +319,6 @@ class DemoDatabaseSeeder extends Seeder
 
                 $transactionCreatedDate = $transactionCreatedDate->add(1, $plan->interval->date_identifier);
             }
-
         }
     }
 
@@ -417,7 +417,7 @@ class DemoDatabaseSeeder extends Seeder
 
             $item->upvotes()->attach($user->id, [
                 'ip_address' =>
-                    rand(0, 255) . '.' .
+                rand(0, 255) . '.' .
                     rand(0, 255) . '.' .
                     rand(0, 255) . '.' .
                     rand(0, 255),

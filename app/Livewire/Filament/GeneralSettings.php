@@ -4,7 +4,9 @@ namespace App\Livewire\Filament;
 
 use App\Models\Currency;
 use App\Models\EmailProvider;
+use App\Models\Product;
 use App\Services\ConfigManager;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
@@ -32,6 +34,8 @@ class GeneralSettings extends Component implements HasForms
 
     public function boot(ConfigManager $configManager): void
     {
+        // $user = auth()->user();
+        // dd($user->hasPermissionTo('create multi companies'));
         $this->configManager = $configManager;
     }
 
