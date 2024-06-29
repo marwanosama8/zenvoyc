@@ -19,8 +19,27 @@ class EmployeeResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.employee');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.employees');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.employee');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.mangment');
+    }
     protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form
@@ -106,14 +125,4 @@ class EmployeeResource extends Resource
         ];
     }
 
-    public static function getModelLabel(): string
-    {
-        return __('Emplyee');
-    }
-
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Emplyees');
-    }
 }

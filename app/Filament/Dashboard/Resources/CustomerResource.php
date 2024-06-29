@@ -17,8 +17,27 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.customer');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.customers');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.customer');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.mangment');
+    }
     public static function form(Form $form): Form
     {
         return $form

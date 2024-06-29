@@ -58,17 +58,17 @@ class Invoice extends Model
 		return $this->hasMany(InvoiceItem::class);
 	}
 
-    //just for Filament 3
-    public function invoice_item()
-    {
-        return $this->hasMany(InvoiceItem::class);
-    }
+	//just for Filament 3
+	public function invoice_item()
+	{
+		return $this->hasMany(InvoiceItem::class);
+	}
 
 
-    public function invoiceable()
-    {
-        return $this->morphTo();
-    }
+	public function invoiceable()
+	{
+		return $this->morphTo();
+	}
 
 	public function addInvoiceItem($description, $amount, $type)
 	{
@@ -131,7 +131,8 @@ class Invoice extends Model
 		return Carbon::parse($value)->format('d.m.Y');
 	}
 
-	public function getTotalNetto(){
+	public function getTotalNetto()
+	{
 		return $this->invoice_item()->sum('price');
 	}
 
@@ -193,16 +194,17 @@ class Invoice extends Model
 	 */
 	public function customer()
 	{
-		return $this->belongsTo(Customer::class);
+		return $this->belongsTo(Customer::class)->withoutGlobalScopes();
 	}
 
 	protected static function booted(): void
-    {
-        static::creating(function (Invoice $model) {
+	{
+		static::creating(function (Invoice $model) {
 
-            $currentTenant = TenancyHelpers::getTenant();
-            $model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
-        });
-    }
+			$currentTenant = TenancyHelpers::getTenant();
+			$model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+			$model->invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+			$model->invoice_number = now()->format('Y') . rand(2000, 9999);
+		});
+	}
 }

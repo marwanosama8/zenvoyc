@@ -21,7 +21,27 @@ class ExpenditureResource extends Resource
 {
     protected static ?string $model = Expenditure::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-right-start-on-rectangle';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.expenditure');
+    }
+
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.expenditures');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.expenditure');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.finance');
+    }
     protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form

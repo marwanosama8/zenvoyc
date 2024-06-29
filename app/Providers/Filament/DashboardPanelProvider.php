@@ -20,11 +20,16 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
+use Spatie\Color\Rgb;
 
 class DashboardPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $myArr = explode(', ', Color::Teal[500]);
+        $hex = new Rgb(...$myArr);
+        $color = $hex->toHex()->__toString();
         return $panel
             ->id('dashboard')
             ->path('dashboard')
@@ -45,6 +50,12 @@ class DashboardPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->navigationGroups([
+                'Finance',
+                'Project',
+                'Mangment',
+                'Subscription',
+            ])
             ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets'), for: 'App\\Filament\\Dashboard\\Widgets')
             ->widgets([
@@ -60,6 +71,10 @@ class DashboardPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \App\Http\Middleware\RememberTenantMiddleware::class,
+            ])
+            ->tenantMiddleware([
+                \App\Http\Middleware\RememberTenantMiddleware::class,
             ])
             ->renderHook('panels::head.start', function () {
                 return view('components.layouts.partials.analytics');
@@ -77,6 +92,7 @@ class DashboardPanelProvider extends PanelProvider
                     ->myProfileComponents([
                         'personal_info' => MyProfilePersonalInfo::class,
                     ]),
+                    FilamentProgressbarPlugin::make()->color($color)
             ]);
     }
 }

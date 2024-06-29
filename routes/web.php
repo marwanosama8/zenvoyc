@@ -163,7 +163,8 @@ Route::get('/roadmap/i/{itemSlug}', [
 
 // new routes 
 
-Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+
+// Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
 Route::get('/invoice/data',[InvoiceController::class, 'getData'])->name('invoice.data');
 Route::get('/invoice/create',[InvoiceController::class, 'create'])->name('invoice.create');
 Route::post('/invoice/store',[InvoiceController::class, 'store'] )->name('invoice.store');

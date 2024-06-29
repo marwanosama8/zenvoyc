@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->json('subtasks')->nullable();
+            $table->json('tags')->nullable();
+            $table->string('priority')->nullable();
+            $table->boolean('done')->default(0);
             $table->timestamps();
         });
     }

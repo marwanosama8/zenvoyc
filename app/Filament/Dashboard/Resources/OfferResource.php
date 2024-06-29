@@ -25,8 +25,27 @@ class OfferResource extends Resource
 {
     protected static ?string $model = Offer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-plus';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.offer');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.offers');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.offer');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.project');
+    }
     public static function form(Form $form): Form
     {
         return $form

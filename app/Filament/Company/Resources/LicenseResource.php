@@ -17,7 +17,27 @@ class LicenseResource extends Resource
 {
     protected static ?string $model = License::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.license');
+    }
+
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.licenses');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.license');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.project');
+    }
     protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form

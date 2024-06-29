@@ -1,38 +1,34 @@
 {{-- body --}}
 
-<div class="container p-10 mx-auto bg-gray-100 border-black border-2 m-10">
-    <div class="text-sm pb-3">
+<div class="container p-10 m-10 mx-auto bg-gray-100 border-2 border-black">
+    <div class="pb-3 text-sm">
         Date: {{ $offer->created_at->format('d.m.Y') }}
     </div>
     <div class="flex justify-between ">
         <div class="float-left w-4/6 px-4 mr-4">
-            <img class="mt-5 ml-10 w-96" src="{{ asset('component/invoice/logo.png') }}" />
+            <img class="mt-5 ml-10" style="max-width: 430px" src="{{ asset('storage/' . $provider['avatar_url']) }}" />
         </div>
         <div class="relative float-left w-1/3 px-4">
             <br />
-            <strong>Solution-Work UG (haftungsbeschränkt)</strong>
+            <strong>{{$provider['legal_name']}}</strong>
             <br />
-            Landsknechtweg 22
-            <br />
-            68163 Mannheim<br />
-            Deutschland/Germany<br />
-            UST-ID: DE278618936<br />
+                {!! $provider['address'] !!}
             <br />
         </div>
 
     </div>
 
-    <div class="flex justify-center items-center">
+    <div class="flex items-center justify-center">
         <div class="h-0.5 w-1/3 mx-4 bg-gray-400"></div>
     </div>
 
     {{-- offer title --}}
     <br />
     <div class="flex flex-col items-center my-8">
-        <div class="w-full text-center text-xl font-bold">
+        <div class="w-full text-xl font-bold text-center">
             <h1>{{ $offer->title }}</h1>
         </div>
-        <div class="flex justify-center items-center">
+        <div class="flex items-center justify-center">
             <div class="h-0.5 w-1/3 mx-4 bg-gray-400 py-3"></div>
         </div>
     </div>
@@ -46,7 +42,7 @@
             <style>
                 ol {
                     list-style-type: decimal;
-                }
+                } 
 
                 ul {
                     list-style-type: disc;
@@ -56,14 +52,14 @@
 
         </div>
     </div>
-    <div class="flex justify-center items-center my-4">
+    <div class="flex items-center justify-center my-4">
         <div class="h-0.5 w-1/3 mx-4 bg-gray-400"></div>
     </div>
     {{-- end offer content --}}
 
     {{-- postions --}}
 
-    <div class="mt-8 text-center text-xl">
+    <div class="mt-8 text-xl text-center">
         <h1 class="font-bold">Postions</h1>
     </div>
 
@@ -116,12 +112,12 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-center items-center">
+    <div class="flex items-center justify-center">
         <div class="h-0.5 w-1/3 mx-4 bg-gray-400"></div>
     </div>
     {{-- end postions --}}
 
-    <div class="flex flex-col gap-5 text-center my-8">
+    <div class="flex flex-col gap-5 my-8 text-center">
 
         <h1 class="text-xl font-bold">The Signture</h1>
         @if (!$offer->signed)

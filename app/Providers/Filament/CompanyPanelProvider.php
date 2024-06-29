@@ -25,11 +25,17 @@ use Filament\Navigation\MenuItem;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use App\Livewire\Filament\MyProfilePersonalInfo;
 use App\Models\Company;
+use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
+use Spatie\Color\Rgb;
 
 class CompanyPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $myArr = explode(', ', Color::Orange[500]);
+        $hex = new Rgb(...$myArr);
+        $color = $hex->toHex()->__toString();
+
         return $panel
             ->id('company')
             ->path('company')
@@ -50,7 +56,11 @@ class CompanyPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-
+            ->navigationGroups([
+                'Finance',
+                'Project',
+                'Mangment',
+            ])
             ->discoverWidgets(in: app_path('Filament/Company/Widgets'), for: 'App\\Filament\\Company\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -66,6 +76,9 @@ class CompanyPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->tenantMiddleware([
+                \App\Http\Middleware\RememberTenantMiddleware::class,
             ])
             ->renderHook('panels::head.start', function () {
                 return view('components.layouts.partials.analytics');
@@ -84,6 +97,7 @@ class CompanyPanelProvider extends PanelProvider
                     ->myProfileComponents([
                         'personal_info' => MyProfilePersonalInfo::class,
                     ]),
+                FilamentProgressbarPlugin::make()->color($color)
             ])
             ->tenantMiddleware([
                 RememberTenantMiddleware::class,

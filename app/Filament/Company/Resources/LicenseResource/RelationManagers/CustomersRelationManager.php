@@ -23,6 +23,7 @@ class CustomersRelationManager extends RelationManager
                 Forms\Components\Select::make('customer_id')
                 ->relationship('customer', 'name')
                 ->options(TenancyHelpers::getPluckCustomers())
+                ->lazy()
                 ->live()
                 ->required()
                 // ->afterStateUpdated(function (Set $set, ?string $state) {

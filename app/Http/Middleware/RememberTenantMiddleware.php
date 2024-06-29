@@ -16,8 +16,13 @@ class RememberTenantMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $request->session()->put('tenant_id', Filament::getTenant()->getKey());
+        // dd(1);
+        if (is_null(Filament::getTenant())) {
+            $request->session()->put('tenant_id', null);
+        } else {
+            $request->session()->put('tenant_id', Filament::getTenant()->getKey());
+        }
 
-        return $next($request);    
+        return $next($request);
     }
 }

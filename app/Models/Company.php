@@ -91,4 +91,6 @@ class Company extends Model implements HasAvatar
     {
         return $this->morphMany(Sales::class, 'salesable');
     }
+
+
 }

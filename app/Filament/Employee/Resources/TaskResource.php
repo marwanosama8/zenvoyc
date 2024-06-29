@@ -1,0 +1,233 @@
+<?php
+
+namespace App\Filament\Employee\Resources;
+
+use App\Filament\Employee\Resources\TaskResource\Pages;
+use App\Filament\Employee\Resources\TaskResource\RelationManagers;
+use App\Helpers\TenancyHelpers;
+use App\Models\Task;
+use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Columns\Layout\Split as LayoutSplit;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Str;
+
+class TaskResource extends Resource
+{
+    protected static ?string $model = Task::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $navigationGroup = 'Porject';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.task');
+    }
+
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.tasks');
+    }
+    protected static bool $isScopedToTenant = false;
+
+    public static function form(Form $form): Form
+    {
+        $priority = array_map(fn ($e) => __($e), config('tasks.priority'));
+        return $form
+            ->schema([
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\Checkbox::make('done')
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set, Get $get, ?string $state) {
+                                        if ($state) {
+
+                                            $done = array_map(function ($task) {
+                                                $task['done_subtask'] = true;
+                                                return $task;
+                                            }, $get('subtasks'));
+                                            // dd($done);
+                                            $set('subtasks', $done);
+                                        }
+                                    })
+
+                                    ->label('Done')
+                                    ->extraAttributes(['class' => 'm-4'])
+                                    ->inline(false),
+                                Forms\Components\Select::make('Employee')
+                                    ->required()
+                                    ->disabled()
+                                    ->relationship('employee_tasks')
+                                    ->columnSpan([
+                                        'md' => 1,
+                                    ])
+                                    ->multiple()
+                                    ->options(TenancyHelpers::getPluckCompanyEmployees())
+                                    ->columnSpan([
+                                        'md' => 9,
+                                    ])
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(10),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->required()
+                                    ->readOnly()
+                                    ->disabled(function (Get $get) {
+                                        return $get('done');
+                                    })
+                                    ->maxLength(255),
+                                Forms\Components\Textarea::make('description')
+                                    ->readOnly()
+                                    ->disabled(function (Get $get) {
+                                        return $get('done');
+                                    })
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(1),
+
+                        Forms\Components\Section::make('Subtasks')
+                            ->headerActions([])
+                            ->schema([
+                                Repeater::make('subtasks')
+                                    ->addable(false)
+                                    ->deletable(false)
+                                    ->reorderable(false)
+                                    ->schema([
+                                        Forms\Components\Checkbox::make('done_subtask')
+                                            ->label('Done')
+                                            ->inline(0)
+                                            ->columnSpan([
+                                                'md' => 1,
+                                            ])->live(),
+                                        Forms\Components\TextInput::make('title')
+                                            ->readOnly()
+                                            ->columnSpan([
+                                                'md' => 9,
+                                            ]),
+                                    ])->grow(1)->columns([
+                                        'md' => 10,
+                                    ])
+                            ])
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\TagsInput::make('tags')
+                            ->disabled(),
+                        Forms\Components\Select::make('priority')
+                            ->disabled()
+                            ->options($priority)
+                    ])
+                    ->columnSpan(['lg' => 1])
+                // ->hidden(fn (?Task $record) => $record === null),
+            ])
+            ->columns(3);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->authEmployeeTasks())
+            ->columns([
+                LayoutSplit::make([
+                    Tables\Columns\CheckboxColumn::make('done')
+                        ->grow(false),
+                    Tables\Columns\TextColumn::make('title')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('priority')
+                        ->alignCenter()
+                        ->getStateUsing(fn ($record): ?string =>  !is_null($record->priority) ? config('tasks.priority.' . $record->priority)  : config('tasks.priority.1'))
+
+                        ->badge(),
+                    Tables\Columns\TextColumn::make('tags')
+                        ->icon('heroicon-m-tag')
+                        ->badge(),
+                    Tables\Columns\TextColumn::make('subtasks')
+                        ->alignCenter()
+                        ->weight(FontWeight::Bold)
+
+                        ->getStateUsing(function ($record): ?string {
+                            $uncompletedTasks = array_filter($record->subtasks, function ($task) {
+                                return $task['done_subtask'] === false;
+                            });
+
+                            return 'has ' .  count($uncompletedTasks) . ' Uncompleted Subtasks';
+                        }),
+
+                    Tables\Columns\TextColumn::make('created_at')
+                        ->dateTime()
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
+                ])
+            ])
+            ->filters([
+                Filter::make('tags')
+                    ->form([
+                        TagsInput::make('tags'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['tags'],
+                                fn (Builder $query, $date): Builder => $query->whereJsonContains('tags', $date)
+                            );
+                    })
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->defaultGroup('priority')
+            ->groups([
+                Group::make('priority')
+                    ->getTitleFromRecordUsing(
+                        function (Task $record) {
+                            return __(config('tasks.priority.' . $record->priority ?? '1'));
+                        }
+                    ),
+                Group::make('done')
+                    ->getTitleFromRecordUsing(
+                        function (Task $record) {
+                            return $record->done ? 'Completed' : 'Uncompleted';
+                        }
+                    ),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListTasks::route('/'),
+            'create' => Pages\CreateTask::route('/create'),
+            'edit' => Pages\EditTask::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}'),
+
+        ];
+    }
+}

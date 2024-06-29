@@ -11,6 +11,8 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use App\Models\Invoice;
+use App\Models\Scopes\CustomerScope;
+use App\Models\Scopes\InvoiceScope;
 use Carbon\Carbon;
 use Filament\Tables;
 
@@ -26,7 +28,8 @@ class CustomerInvoices extends Component implements HasForms, HasTable
 
     public function mount($token)
     {
-        $customer = Customer::where('token', $token)->first();
+        $customer = Customer::withoutGlobalScope(CustomerScope::class)->whereToken($token)->first();
+        
         abort_if(is_null($customer), 404);
         $this->customer = $customer;
         $year = Carbon::now()->year;
@@ -39,7 +42,7 @@ class CustomerInvoices extends Component implements HasForms, HasTable
 
         return $table
             ->query(
-                Invoice::query()->where('customer_id', $this->customer->id)->whereYear('date_origin', $this->selectedYear)
+                Invoice::query()->withoutGlobalScope(InvoiceScope::class)->where('customer_id', $this->customer->id)->whereYear('date_origin', $this->selectedYear)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('rgnr')
@@ -56,7 +59,7 @@ class CustomerInvoices extends Component implements HasForms, HasTable
                 Action::make('download')
                     ->label(__('invoice.link.download'))
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn (Invoice $record): string => route('invoice.download', ['invoice' => $record->id]))
+                    ->url(fn (Invoice $record): string => route('invoice.download', ['invoice' => $record->invoice_number]))
             ]);
     }
 

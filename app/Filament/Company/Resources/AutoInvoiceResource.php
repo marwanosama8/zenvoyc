@@ -23,8 +23,27 @@ class AutoInvoiceResource extends Resource
 {
     protected static ?string $model = AutoInvoice::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.auto_invoice');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.auto_invoices');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.auto_invoice');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.finance');
+    }
     protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form

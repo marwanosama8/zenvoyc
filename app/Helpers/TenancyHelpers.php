@@ -10,24 +10,30 @@ use Spatie\Permission\Models\Role;
 
 class TenancyHelpers
 {
-    public static function getTenant()
-    {
-        return Filament::getTenant();
-    }
+   public static function getTenant()
+   {
+      return Filament::getTenant();
+   }
 
 
-    public static function getPluckCustomers()
-    {
-       return is_null(Filament::getTenant()) ? auth()->user()->customers->pluck('name', 'id') : Filament::getTenant()->customers->pluck('name', 'id');
-    }
+   public static function getPluckCustomers()
+   {
+      return is_null(Filament::getTenant()) ? auth()->user()->customers->pluck('name', 'id') : Filament::getTenant()->customers->pluck('name', 'id');
+   }
 
-    public static function getPluckSales()
-    {
-       return is_null(Filament::getTenant()) ? auth()->user()->sales->pluck('name', 'id') : Filament::getTenant()->sales->pluck('name', 'id');
-    }
+   public static function getPluckSales()
+   {
+      return is_null(Filament::getTenant()) ? auth()->user()->sales->pluck('name', 'id') : Filament::getTenant()->sales->pluck('name', 'id');
+   }
+   public static function getPluckCompanyEmployees()
+   {
+      return  Filament::getTenant()->users()->whereHas('roles', function ($query) {
+         $query->where('name', 'employee');
+      })->get()->pluck('name', 'id');
+   }
 
-    public static function getEmployeeRoles()
-    {
-       return Role::findByName('employee');
-    }
+   public static function getEmployeeRoles()
+   {
+      return Role::findByName('employee');
+   }
 }

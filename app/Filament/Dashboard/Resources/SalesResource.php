@@ -19,8 +19,28 @@ class SalesResource extends Resource
 {
     protected static ?string $model = Sales::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
+    protected static ?string $navigationGroup = 'Porject';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.sale');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.sales');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.sale');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.project');
+    }
     public static function form(Form $form): Form
     {
         return $form

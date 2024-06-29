@@ -28,6 +28,8 @@
         "livewire/livewire": "^3.2",
         "mews/purifier": "^3.4",
         "mpociot/versionable": "^4.4",
+        "njxqlus/filament-progressbar": "^1.0",
+        "parallax/filament-comments": "^1.2",
         "saade/filament-autograph": "^3.1",
         "spatie/laravel-flash": "^1.9",
         "spatie/laravel-permission": "^6.0",

@@ -25,7 +25,25 @@ class SubscriptionResource extends Resource
     protected static ?string $model = Subscription::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-fire';
+    public static function getModelLabel(): string
+    {
+        return __('navigation.subscription');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.subscriptions');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.subscription');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.subscription');
+    }
     public static function form(Form $form): Form
     {
         return $form

@@ -21,7 +21,25 @@ class TransactionResource extends Resource
     protected static ?string $model = Transaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    public static function getModelLabel(): string
+    {
+        return __('navigation.payment');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.payments');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.payment');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.subscription');
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -112,10 +130,6 @@ class TransactionResource extends Resource
         return parent::getEloquentQuery()->where('user_id', auth()->user()->id)->where('amount' , '>', 0)->where('status', '!=', TransactionStatus::NOT_STARTED->value);
     }
 
-    public static function getModelLabel(): string
-    {
-        return __('Payments');
-    }
 
     public static function isDiscovered(): bool
     {

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Mapper\OfferDataMapper;
 use App\Models\Offer;
 use Livewire\Component;
 use App\Models\Post;
@@ -24,22 +25,28 @@ class ViewOffer extends Component implements HasForms
     public $offer;
     public string $token;
     public ?array $data = [];
+
+    public $provider;
     protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function mount($token)
     {
+
         $this->token = $token;
         $this->offer = Offer::withoutGlobalScopes()->where('token', $this->token)->where('general_access', 1)->first();
-      
+        $dataMapper = new OfferDataMapper();
+        $this->provider = $dataMapper->getdata($this->offer)->toArray();
+        // dd($this->provider);
         if (!$this->offer) {
             abort(404);
         }
         $this->form->fill();
     }
 
+
     public function form(Form $form)
     {
-        if($this->offer->signed === null){
+        if ($this->offer->signed === null) {
             $this->offer->signed = 0;
         }
 
@@ -91,10 +98,10 @@ class ViewOffer extends Component implements HasForms
                                 ->throttle(16)
                                 ->minDistance(5)
                                 ->velocityFilterWeight(0.7)
-                                ->backgroundColor('rgba(0,0,0,0)')  // Background color on light mode
-                                ->backgroundColorOnDark('#f0a')     // Background color on dark mode (defaults to backgroundColor)
-                                ->exportBackgroundColor('#f00')     // Background color on export (defaults to backgroundColor)
-                                ->penColor('#000')                  // Pen color on light mode
+                                ->backgroundColor('red')  // Background color on light mode
+                                ->backgroundColorOnDark('red')     // Background color on dark mode (defaults to backgroundColor)
+                                ->exportBackgroundColor('red')     // Background color on export (defaults to backgroundColor)
+                                ->penColor('red')                  // Pen color on light mode
                                 ->penColorOnDark('#fff')
                                 ->required()            // Pen color on dark mode (defaults to penColor)
                                 ->exportPenColor('#0f0')
@@ -128,6 +135,6 @@ class ViewOffer extends Component implements HasForms
 
     public function render()
     {
-        return view('livewire.offer.view-offer');
+        return view('livewire.offer.view-offer',['provider', $this->provider]);
     }
 }

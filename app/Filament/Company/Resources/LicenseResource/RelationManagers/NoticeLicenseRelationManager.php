@@ -20,6 +20,7 @@ class NoticeLicenseRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('notice')
                     ->required()
+                    ->columnSpanFull()
                     ->maxLength(255),
             ]);
     }

@@ -28,10 +28,7 @@ class EditCompanyProfile extends EditTenantProfile
                             FileUpload::make('avatar_url')
                                 ->image()
                                 ->imageEditor()
-                                ->imageCropAspectRatio('92:16')
-                                ->imageEditorAspectRatios([
-                                    '92:16'
-                                ])->label('Avatar URL')->required(),
+                                ->label('Avatar URL')->required(),
                             TextInput::make('name')->label('Company Name')->required(),
                             TextInput::make('managing_director')->label('Managing Director')->nullable(),
                             TextInput::make('legal_name')->label('Legal Name')->nullable(),

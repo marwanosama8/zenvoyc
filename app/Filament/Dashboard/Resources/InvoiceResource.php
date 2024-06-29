@@ -26,8 +26,27 @@ class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+  
+    public static function getModelLabel(): string
+    {
+        return __('navigation.invoice');
+    }
 
+  
+    public static function getPluralModelLabel(): string
+    {
+        return __('navigation.invoices');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.invoice');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.finance');
+    }
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -130,6 +149,9 @@ class InvoiceResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('invoice_number')
+                    ->label(__("invoice.field.invoice_number"))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('rgnr')
                     ->label(__("invoice.field.rgnr"))->getStateUsing(fn ($record) => $record->rgnr)
                     ->sortable()
@@ -148,7 +170,7 @@ class InvoiceResource extends Resource
                     ->label(__("invoice.field.payed")),
                 Tables\Columns\TextColumn::make('#')
                     ->getStateUsing(function ($record) {
-                        return '<a target="_blank" href="' . route('invoice.view', ['invoice' => $record->id]) . '">' . __('invoice.link.view') . '</a>';
+                        return '<a target="_blank" href="' . route('invoice.view', ['invoice' => $record->invoice_number]) . '">' . __('invoice.link.view') . '</a>';
                     })->html(),
             ])->defaultSort('created_at', 'desc')
             ->filters([

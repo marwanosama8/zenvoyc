@@ -3,24 +3,36 @@
 namespace App\Mapper;
 
 use App\Constants\OrderStatus;
+use App\Models\Company;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Auth;
 
-class OrderStatusMapper
+class InvoiceDataMapper
 {
-    public function mapForDisplay(Invoice $invoice)  
+    public function getData($invoice)
     {
-        return match ($status) {
-            OrderStatus::SUCCESS->value => __('Success'),
-            OrderStatus::NEW->value => __('New'),
-            OrderStatus::REFUNDED->value => __('Refunded'),
-            default => __('Pending'),
-        };
+        if ($this->getInvoiceType($invoice) == 'App\Models\Company') {
+            // get company data
+            $providerData = Company::find($invoice->invoiceable_id);
+
+            // get invoice data
+            $invoiceData = $invoice;
+        } else { // this in user invoice            
+            // get user data
+            $providerData = Auth::user()->userSetting;
+
+            // get invoice data
+            $invoiceData = $invoice;
+        }
+
+        return [
+            'provider' => $providerData,
+            'invoice' => $invoiceData
+        ];
     }
 
-    private function getInfo()
+    public function getInvoiceType($invoice)
     {
-        if (condition) {
-            # code...
-        }
+        return $invoice->invoiceable_type;
     }
 }
