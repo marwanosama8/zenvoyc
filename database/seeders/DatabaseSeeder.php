@@ -19,13 +19,13 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
         ]);
         
-        // $this->callOnce([
+        $this->callOnce([
         //     IntervalsSeeder::class,
         //     CurrenciesSeeder::class,
         //     OAuthLoginProviderSeeder::class,
         //     PaymentProvidersSeeder::class,
-        //     RolesAndPermissionsSeeder::class,
+            RolesAndPermissionsSeeder::class,
         //     EmailProviderSeeder::class,
-        // ]);
+        ]);
     }
 }
