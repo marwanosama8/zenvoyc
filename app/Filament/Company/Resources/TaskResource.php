@@ -34,13 +34,15 @@ class TaskResource extends Resource
     protected static ?string $model = Task::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-  
+
+    protected static bool $isScopedToTenant = false;
+
     public static function getModelLabel(): string
     {
         return __('navigation.task');
     }
 
-  
+
     public static function getPluralModelLabel(): string
     {
         return __('navigation.tasks');
@@ -54,7 +56,6 @@ class TaskResource extends Resource
     {
         return __('navigation.project');
     }
-    protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form
     {
@@ -130,7 +131,12 @@ class TaskResource extends Resource
                     ->schema([
                         Forms\Components\TagsInput::make('tags'),
                         Forms\Components\Select::make('priority')
-                            ->options($priority)
+                            ->options($priority),
+                        Forms\Components\Select::make('project_id')
+                            ->native(0)
+                            ->label('project.project_id')
+                            ->required()
+                            ->options(TenancyHelpers::getPluckProjects())
                     ])
                     ->columnSpan(['lg' => 1])
                 // ->hidden(fn (?Task $record) => $record === null),
@@ -189,7 +195,7 @@ class TaskResource extends Resource
                     })
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->defaultGroup('priority')
             ->groups([
@@ -202,7 +208,7 @@ class TaskResource extends Resource
                 Group::make('done')
                     ->getTitleFromRecordUsing(
                         function (Task $record) {
-                            return $record->done ? 'Completed' : 'Uncompleted';
+                            return $record->done ? __('task.completed') : __('task.uncompleted');
                         }
                     ),
             ])

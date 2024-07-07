@@ -5,28 +5,37 @@ namespace App\Filament\Company\Resources;
 use App\Filament\Company\Resources\EmployeeResource\Pages;
 use App\Filament\Company\Resources\EmployeeResource\RelationManagers;
 use App\Helpers\TenancyHelpers;
+use App\Models\EmployeeSetting;
 use App\Models\User;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\View\View;
+use Filament\Forms\Components\Wizard\Step;
 
 class EmployeeResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-  
+
     public static function getModelLabel(): string
     {
         return __('navigation.employee');
     }
 
-  
+
     public static function getPluralModelLabel(): string
     {
         return __('navigation.employees');
@@ -57,7 +66,6 @@ class EmployeeResource extends Resource
                         ->maxLength(255),
                     Forms\Components\TextInput::make('email')
                         ->email()
-                        ->unique()
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('password')
@@ -103,6 +111,26 @@ class EmployeeResource extends Resource
             ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('id', $tenancyUsersIds))
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('Employee Setting')
+                    ->label(__('employee.employee_settings'))
+                    ->icon('heroicon-o-adjustments-horizontal')
+                    ->action(function (User $record, array $data): void {
+                        EmployeeSetting::whereUserId($record->id)->update($data);
+                    })
+                    ->fillForm(function (User $record): array {
+                        return  EmployeeSetting::firstOrCreate([
+                            'user_id' => $record->id
+                        ])->toArray();
+                    })
+                    ->slideOver()
+                    ->form([
+                        TextInput::make('hourly_rate')
+                            ->label(__('employee.hourly_rate')),
+                        Toggle::make('manual_timesheet')
+                            ->label(__('employee.manual_timesheet'))
+
+                    ]),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -124,5 +152,4 @@ class EmployeeResource extends Resource
             'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
     }
-
 }

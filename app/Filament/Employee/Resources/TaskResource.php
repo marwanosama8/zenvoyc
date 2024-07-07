@@ -27,8 +27,11 @@ class TaskResource extends Resource
     protected static ?string $model = Task::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $navigationGroup = 'Porject';
-  
+   
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.project');
+    }  
     public static function getModelLabel(): string
     {
         return __('navigation.task');
@@ -131,8 +134,13 @@ class TaskResource extends Resource
                         Forms\Components\TagsInput::make('tags')
                             ->disabled(),
                         Forms\Components\Select::make('priority')
-                            ->disabled()
-                            ->options($priority)
+                        ->disabled()
+                        ->options($priority),
+                        Forms\Components\Select::make('project_id')
+                        ->native(0)
+                        ->label('project.project_id')
+                        ->disabled()
+                        ->options(TenancyHelpers::getPluckProjects())
                     ])
                     ->columnSpan(['lg' => 1])
                 // ->hidden(fn (?Task $record) => $record === null),

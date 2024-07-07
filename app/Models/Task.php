@@ -22,6 +22,7 @@ class Task extends Model
         'tags',
         'priority',
         'done',
+        'project_id'
     ];
 
     protected $casts = [
@@ -29,6 +30,31 @@ class Task extends Model
         'subtasks' => 'array',
         'done' => 'boolean',
     ];
+
+    public function taskable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * The timesheet_tasks that belong to the Timesheet
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function timesheet_tasks()
+    {
+        return $this->belongsToMany(Timesheet::class, 'task_timesheet');
+    }
+
+    /**
+     * Get the project that owns the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 
     /**
      * The employee_tasks that belong to the Task
@@ -45,7 +71,8 @@ class Task extends Model
         static::creating(function (Task $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->company_id = $currentTenant->id;
+            $model->taskable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            $model->taskable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
         });
     }
 

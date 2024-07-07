@@ -3,6 +3,9 @@
 namespace App\Helpers;
 
 use App\Models\Company;
+use App\Models\Project;
+use App\Models\Task;
+use Carbon\Carbon;
 use Filament\Facades\Filament;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -15,10 +18,58 @@ class TenancyHelpers
       return Filament::getTenant();
    }
 
+   public static function getCurrentPanelName()
+   {
+      return Filament::getCurrentPanel()->getId();
+   }
+
 
    public static function getPluckCustomers()
    {
       return is_null(Filament::getTenant()) ? auth()->user()->customers->pluck('name', 'id') : Filament::getTenant()->customers->pluck('name', 'id');
+   }
+   public static function getPluckEmployeeTasks()
+   {
+      return Task::authEmployeeTasks()->get()->pluck('title', 'id')->toArray();
+   }
+   public static function getCompanyEmployeeIds()
+   {
+      return self::getTenant()->users();
+   }
+   public static function getPluckCompanyEmployeeNames()
+   {
+      return self::getTenant()->users()->get()->pluck('name','id')->toArray();
+   }
+   public static function getPluckTasksByProjectKey()
+   {
+      $projects = Project::all();
+
+      $groupedOptions = [];
+      if (self::getCurrentPanelName() == 'employee') {
+         $baseQuery = Task::authEmployeeTasks();
+      } else {
+         if (is_null(Filament::getTenant())) {
+            $baseQuery = auth()->user()->tasks();
+         } else {
+            $baseQuery = Filament::getTenant()->tasks();
+         }
+      }
+      // $query = auth()->user()->tasks();
+      
+      foreach ($projects as $project) {
+         $tasks = (clone $baseQuery)
+         ->where('project_id', $project->id)
+         ->pluck('title', 'id')
+         ->toArray();
+         if (!empty($tasks)) {
+            $groupedOptions[$project->name] = $tasks;
+         }
+      }
+      return $groupedOptions;
+   }
+   public static function getPluckProjects()
+   {
+      return is_null(Filament::getTenant()) ? auth()->user()->projects->pluck('name', 'id') : Filament::getTenant()->projects->pluck('name', 'id');
    }
 
    public static function getPluckSales()
@@ -27,6 +78,9 @@ class TenancyHelpers
    }
    public static function getPluckCompanyEmployees()
    {
+      if (is_null(Filament::getTenant())) {
+         return [];
+      }
       return  Filament::getTenant()->users()->whereHas('roles', function ($query) {
          $query->where('name', 'employee');
       })->get()->pluck('name', 'id');
@@ -35,5 +89,10 @@ class TenancyHelpers
    public static function getEmployeeRoles()
    {
       return Role::findByName('employee');
+   }
+
+   public static function isEmployee()
+   {
+      return auth()->user()->hasRole('employee');
    }
 }

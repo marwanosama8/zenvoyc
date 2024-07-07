@@ -82,8 +82,6 @@ class EmployeePanelProvider extends PanelProvider
                     ]),
             ])
             ->topNavigation()
-            ->tenant(Company::class, slugAttribute: 'slug', ownershipRelationship: 'company')
-            ->tenantProfile(EditCompanyProfile::class)
-            ->tenantRegistration(RegisterCompany::class);
+            ->tenant(Company::class, slugAttribute: 'slug', ownershipRelationship: 'company');
     }
 }

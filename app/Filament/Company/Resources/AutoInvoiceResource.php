@@ -128,7 +128,7 @@ class AutoInvoiceResource extends Resource
 
                     ])
                     ->columnSpanFull(),
-                Forms\Components\Select::make('custom_interval')
+                Forms\Components\Select::make(' ')
                     ->label(__("invoice.field.custom_interval"))
                     ->options(config('auto_invoice.custom_interval'))
                     ->required(),

@@ -91,6 +91,20 @@ class Company extends Model implements HasAvatar
     {
         return $this->morphMany(Sales::class, 'salesable');
     }
+    public function projects()
+    {
+        return $this->morphMany(Project::class, 'projectable');
+    }
+
+    public function timesheets()
+    {
+        return $this->morphMany(Timesheet::class, 'timesheetable');
+    }
+
+    public function tasks()
+    {
+        return $this->morphMany(Task::class, 'taskable');
+    }
 
 
 }

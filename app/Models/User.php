@@ -175,6 +175,21 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         return $this->morphMany(Customer::class, 'customerable');
     }
 
+    public function projects()
+    {
+        return $this->morphMany(Project::class, 'projectable');
+    }
+
+    public function timesheets()
+    {
+        return $this->morphMany(Timesheet::class, 'timesheetable');
+    }
+
+    public function tasks()
+    {
+        return $this->morphMany(Task::class, 'taskable');
+    }
+    
     public function sales()
     {
         return $this->morphMany(Sales::class, 'salesable');
@@ -193,6 +208,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     public function userSetting()
     {
         return $this->hasOne(UserSetting::class);
+    }
+
+    /**
+     * Get the userSetting associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function employeeSetting()
+    {
+        return $this->hasOne(EmployeeSetting::class);
     }
  
     /**

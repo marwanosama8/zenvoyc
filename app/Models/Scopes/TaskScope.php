@@ -15,6 +15,13 @@ class TaskScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         $currentTenant = TenancyHelpers::getTenant();
-        $builder->where('company_id', $currentTenant->id);
+
+        if (is_null($currentTenant)) {
+            // retrive auth user projects
+            $builder->where('taskable_type', 'App\Models\User')->where('taskable_id', auth()->id());
+        } else {
+            // retrive auth company tasks
+            $builder->where('taskable_type', 'App\Models\Company')->where('taskable_id', $currentTenant->id);
+        }
     }
 }
