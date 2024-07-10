@@ -31,6 +31,7 @@ class MonthlyRecurringRevenueChart extends ChartWidget
         $metricsManager = resolve(MetricsManager::class);
 
         $data = $metricsManager->calculateMRRChart($period, $startDate, $endDate);
+
         return [
             'datasets' => [
                 [
@@ -47,7 +48,7 @@ class MonthlyRecurringRevenueChart extends ChartWidget
         return 'line';
     }
 
-    public function getHeading(): string | Htmlable | null
+    public function getHeading(): string|Htmlable|null
     {
         return __('Monthly recurring revenue (MRR) overview');
     }

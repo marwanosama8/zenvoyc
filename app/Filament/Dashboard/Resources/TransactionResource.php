@@ -8,7 +8,10 @@ use App\Filament\Dashboard\Resources\SubscriptionResource\Pages\ViewSubscription
 use App\Filament\Dashboard\Resources\TransactionResource\Pages;
 use App\Mapper\TransactionStatusMapper;
 use App\Models\Transaction;
+use App\Services\AddressManager;
 use App\Services\ConfigManager;
+use App\Services\InvoiceManager;
+use Filament\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -58,7 +61,7 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('owner')
                     ->label(__('Owner'))
                     ->getStateUsing(fn (Transaction $record) => $record->subscription_id !== null ? ($record->subscription->plan?->name ?? '-') : ($record->order_id !== null ? __('View Order') : '-'))
-                    ->url(fn (Transaction $record) => $record->subscription_id !== null  ? ViewSubscription::getUrl(['record' => $record->subscription ]) : ($record->order_id !== null ? ViewOrder::getUrl(['record' => $record->order]) : '-')),
+                    ->url(fn (Transaction $record) => $record->subscription_id !== null ? ViewSubscription::getUrl(['record' => $record->subscription]) : ($record->order_id !== null ? ViewOrder::getUrl(['record' => $record->order]) : '-')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date'))
                     ->dateTime(),
@@ -68,6 +71,26 @@ class TransactionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('see-invoice')
+                    ->label(__('See Invoice'))
+                    ->icon('heroicon-o-document')
+                    ->visible(fn (Transaction $record, InvoiceManager $invoiceManager): bool => $invoiceManager->canGenerateInvoices($record))
+                    ->modalDescription(function (AddressManager $addressManager) {
+                        if (!$addressManager->userHasAddressInfo(auth()->user())) {
+                            return __('Your address information is not complete. It is recommended to complete your address information before generating an invoice. Are you sure you want to proceed?');
+                        }
+
+                        return null;
+                    })
+                    ->modalCancelAction(
+                        Action::make('complete-address-information')
+                            ->label(__('Complete Address Info'))
+                        ->url(route('filament.dashboard.pages.my-profile'))
+                    )
+                    ->modalSubmitActionLabel(__('Proceed anyway'))
+                    ->action(function (Transaction $record) {
+                        return redirect()->route('invoice.generate', ['transactionUuid' => $record->uuid]);
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -127,7 +150,7 @@ class TransactionResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('user_id', auth()->user()->id)->where('amount' , '>', 0)->where('status', '!=', TransactionStatus::NOT_STARTED->value);
+        return parent::getEloquentQuery()->where('user_id', auth()->user()->id)->where('amount', '>', 0)->where('status', '!=', TransactionStatus::NOT_STARTED->value);
     }
 
 

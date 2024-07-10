@@ -19,6 +19,8 @@ class CancelSubscriptionForm extends Component implements HasForms
 
     public ?array $data = [];
 
+    public string $subscriptionUuid;
+
     private PaymentManager $paymentManager;
 
     private SubscriptionManager $subscriptionManager;
@@ -31,8 +33,9 @@ class CancelSubscriptionForm extends Component implements HasForms
         $this->subscriptionManager = $subscriptionManager;
     }
 
-    public function mount(): void
+    public function mount(string $subscriptionUuid): void
     {
+        $this->subscriptionUuid = $subscriptionUuid;
         $this->form->fill();
     }
 
@@ -67,7 +70,7 @@ class CancelSubscriptionForm extends Component implements HasForms
 
         $user = auth()->user();
 
-        $userSubscription = $this->subscriptionManager->findActiveUserSubscription($user->id);
+        $userSubscription = $this->subscriptionManager->findActiveByUserAndSubscriptionUuid($user->id, $this->subscriptionUuid);
 
         if (! $userSubscription) {
             Notification::make()

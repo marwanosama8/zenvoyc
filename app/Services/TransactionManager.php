@@ -23,8 +23,7 @@ class TransactionManager
         string $paymentProviderTransactionId,
         string $paymentProviderStatus,
         TransactionStatus $status = TransactionStatus::NOT_STARTED,
-    ): Transaction
-    {
+    ): Transaction {
         return Transaction::create([
             'uuid' => (string) Str::uuid(),
             'user_id' => $subscription->user_id,
@@ -46,10 +45,9 @@ class TransactionManager
         string $paymentProviderStatus,
         TransactionStatus $status,
         ?string $errorReason = null,
-        int $newAmount = null,
-        int $newFees = null,
-    ): Transaction
-    {
+        ?int $newAmount = null,
+        ?int $newFees = null,
+    ): Transaction {
         $transaction = Transaction::where('payment_provider_transaction_id', $paymentProviderTransactionId)->firstOrFail();
 
         return $this->updateTransaction(
@@ -67,10 +65,9 @@ class TransactionManager
         string $paymentProviderStatus,
         TransactionStatus $status,
         ?string $errorReason = null,
-        int $newAmount = null,
-        int $newFees = null,
-    )
-    {
+        ?int $newAmount = null,
+        ?int $newFees = null,
+    ) {
         $data = [
             'status' => $status->value,
             'payment_provider_status' => $paymentProviderStatus,
@@ -109,8 +106,7 @@ class TransactionManager
         string $paymentProviderTransactionId,
         string $paymentProviderStatus,
         TransactionStatus $status = TransactionStatus::NOT_STARTED,
-    ): Transaction
-    {
+    ): Transaction {
         return $order->transactions()->create([
             'uuid' => (string) Str::uuid(),
             'user_id' => $order->user_id,
@@ -125,5 +121,4 @@ class TransactionManager
             'payment_provider_transaction_id' => $paymentProviderTransactionId,
         ]);
     }
-
 }

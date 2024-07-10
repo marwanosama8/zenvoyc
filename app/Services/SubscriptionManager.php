@@ -29,6 +29,10 @@ class SubscriptionManager
 
     public function canCreateSubscription(int $userId): bool
     {
+        if (config('app.multiple_subscriptions_enabled')) {
+            return true;
+        }
+
         $notDeadSubscriptions = $this->findAllSubscriptionsThatAreNotDead($userId);
 
         return count($notDeadSubscriptions) === 0;
@@ -329,13 +333,13 @@ class SubscriptionManager
             return [];
         }
 
-        $subscription = $user->subscriptions()
+        $subscriptions = $user->subscriptions()
             ->where('status', SubscriptionStatus::ACTIVE->value)
             ->where('ends_at', '>', Carbon::now())
-            ->first();
+            ->get();
 
-        if (! $subscription) {
-            // if there is no active subscription, return metadata of default product
+        if ($subscriptions->count() === 0) {
+            // if there is no active subscriptions, return metadata of default product
             $defaultProduct = Product::where('is_default', true)->first();
 
             if (! $defaultProduct) {
@@ -345,7 +349,15 @@ class SubscriptionManager
             return $defaultProduct->metadata ?? [];
         }
 
-        return $subscription->plan->product->metadata ?? [];
+        // if there is 1 subscription, return metadata of its product
+        if ($subscriptions->count() === 1) {
+            return $subscriptions->first()->plan->product->metadata ?? [];
+        }
+
+        // if there are multiple subscriptions, return array of product-slug => metadata
+        return $subscriptions->mapWithKeys(function (Subscription $subscription) {
+            return [$subscription->plan->product->slug => $subscription->plan->product->metadata ?? []];
+        })->toArray();
     }
 
     public function canEditSubscriptionPaymentDetails(Subscription $subscription)

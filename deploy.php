@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require 'recipe/laravel.php';
@@ -40,7 +41,6 @@ host($host)
     ->set('public_path', 'public')
     ->set('php_version', $phpVersion);
 
-
 desc('Install & build npm packages');
 task('npm:build', function () {
     run('cd {{release_path}} && npm ci && npm run build');
@@ -54,18 +54,17 @@ task('provision:php-extra', function () {
         "php$version-redis",
     ];
 
-    run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get install -y '.implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 })->verbose()
     ->limit(1);
 
-
 desc('Provision supervisor');
 task('provision:supervisor', function () use ($remoteUser, $deployPath) {
-    info("Installing Supervisor");
+    info('Installing Supervisor');
 
     run('apt-get install -y supervisor', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 
-    $supervisorConfig = <<<EOF
+    $supervisorConfig = <<<'EOF'
 [program:horizon]
 process_name=%(program_name)s
 command=php {{deployPath}}/current/artisan horizon
@@ -77,7 +76,7 @@ stdout_logfile={{deployPath}}/log/horizon.log
 stopwaitsecs=60
 EOF;
 
-    $deployPathRelativeToDeployerUser = str_replace('~', '/home/' . $remoteUser, $deployPath);
+    $deployPathRelativeToDeployerUser = str_replace('~', '/home/'.$remoteUser, $deployPath);
 
     $supervisorConfig = str_replace('{{deployPath}}', $deployPathRelativeToDeployerUser, $supervisorConfig);
     $supervisorConfig = str_replace('{{user}}', $remoteUser, $supervisorConfig);
@@ -106,7 +105,6 @@ task('provision:fix-aws-ssh', function () {
 })->verbose()
     ->limit(1);
 
-
 desc('Generate sitemap');
 task('deploy:sitemap', artisan('app:generate-sitemap', ['skipIfNoEnv']));
 
@@ -130,4 +128,3 @@ after('deploy:failed', 'deploy:unlock');
 add('crontab:jobs', [
     '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
 ]);
-

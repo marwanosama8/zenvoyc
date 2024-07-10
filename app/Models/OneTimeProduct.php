@@ -44,15 +44,31 @@ class OneTimeProduct extends Model
         });
 
         static::deleting(function (OneTimeProduct $oneTimeProduct) {
+            if (!$oneTimeProduct->isDeletable()) {
+                throw new \Exception('Cannot delete a one-time product that has been ordered.');
+            }
+
             $oneTimeProduct->paymentProviderData()->delete();
             foreach ($oneTimeProduct->prices as $price) {
                 $price->pricePaymentProviderData()->delete();
             }
+
+            $oneTimeProduct->prices()->delete();
         });
+    }
+
+    public function isDeletable()
+    {
+        return !$this->orderItems()->exists();
     }
 
     public function paymentProviderData()
     {
         return $this->hasMany(OneTimeProductPaymentProviderData::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

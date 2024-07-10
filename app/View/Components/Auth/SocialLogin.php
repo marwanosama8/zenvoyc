@@ -20,7 +20,7 @@ class SocialLogin extends Component
     public function render(): View|string
     {
         return view('components.auth.social-login', [
-            'oauthProviders' => OauthLoginProvider::where('enabled', true)->get()
+            'oauthProviders' => OauthLoginProvider::where('enabled', true)->get(),
         ]);
     }
 }

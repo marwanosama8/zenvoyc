@@ -45,22 +45,22 @@ class StripeSettings extends Component implements HasForms
         return $form
             ->schema([
                 Section::make()
-                        ->schema([
-                            TextInput::make('publishable_key')
-                                ->label(__('Publishable Key'))
-                                ->helperText(new HtmlString(__('The Stripe publishable key is used to authenticate requests from the Stripe JavaScript library. Check out the <strong><a href="https://stripe.com/docs/keys" target="_blank">Stripe documentation</a></strong> for more information.'))),
-                            TextInput::make('secret_key')
-                                ->label(__('Secret Key'))
-                                ->password()
-                                ->helperText(new HtmlString(__('The Stripe secret key is used to authenticate requests to the Stripe API. Check out the <strong><a href="https://stripe.com/docs/keys" target="_blank">Stripe documentation</a></strong> for more information.'))),
-                            TextInput::make('webhook_signing_secret')
-                                ->label(__('Webhook Signing Secret'))
-                                ->helperText(new HtmlString(__('The Stripe webhook signing secret is used to verify that incoming webhooks are from Stripe. Check out the <strong><a href="https://stripe.com/docs/webhooks/signatures" target="_blank">Stripe documentation</a></strong> for more information.'))),
-                        ])->columnSpan([
-                            'sm' => 6,
-                            'xl' => 8,
-                            '2xl' => 8,
-                        ]),
+                    ->schema([
+                        TextInput::make('publishable_key')
+                            ->label(__('Publishable Key'))
+                            ->helperText(new HtmlString(__('The Stripe publishable key is used to authenticate requests from the Stripe JavaScript library. Check out the <strong><a href="https://stripe.com/docs/keys" target="_blank">Stripe documentation</a></strong> for more information.'))),
+                        TextInput::make('secret_key')
+                            ->label(__('Secret Key'))
+                            ->password()
+                            ->helperText(new HtmlString(__('The Stripe secret key is used to authenticate requests to the Stripe API. Check out the <strong><a href="https://stripe.com/docs/keys" target="_blank">Stripe documentation</a></strong> for more information.'))),
+                        TextInput::make('webhook_signing_secret')
+                            ->label(__('Webhook Signing Secret'))
+                            ->helperText(new HtmlString(__('The Stripe webhook signing secret is used to verify that incoming webhooks are from Stripe. Check out the <strong><a href="https://stripe.com/docs/webhooks/signatures" target="_blank">Stripe documentation</a></strong> for more information.'))),
+                    ])->columnSpan([
+                        'sm' => 6,
+                        'xl' => 8,
+                        '2xl' => 8,
+                    ]),
                 Section::make()->schema([
                     ViewField::make('how-to')
                         ->label(__('Stripe Settings'))

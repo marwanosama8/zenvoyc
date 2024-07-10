@@ -57,7 +57,7 @@ class SubscriptionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('plan.name')->label(__('Plan')),
                 Tables\Columns\TextColumn::make('price')->formatStateUsing(function (string $state, $record) {
-                    return money($state, $record->currency->code) . ' / ' . $record->interval->name;
+                    return money($state, $record->currency->code).' / '.$record->interval->name;
                 }),
                 Tables\Columns\TextColumn::make('ends_at')->dateTime(config('app.datetime_format'))->label(__('Next Renewal')),
                 Tables\Columns\TextColumn::make('status')
@@ -67,7 +67,7 @@ class SubscriptionResource extends Resource
                     ->icon(fn (string $state): string => match ($state) {
                         '0' => 'heroicon-o-check-circle',
                         '1' => 'heroicon-o-x-circle',
-                    })
+                    }),
             ])
             ->filters([
                 //
@@ -84,7 +84,7 @@ class SubscriptionResource extends Resource
                     Tables\Actions\Action::make('cancel')
                         ->label(__('Cancel Subscription'))
                         ->icon('heroicon-m-x-circle')
-                        ->visible(fn (Subscription $record): bool => !$record->is_canceled_at_end_of_cycle && $record->status === SubscriptionStatus::ACTIVE->value)
+                        ->visible(fn (Subscription $record): bool => ! $record->is_canceled_at_end_of_cycle && $record->status === SubscriptionStatus::ACTIVE->value)
                         ->url(fn (Subscription $record): string => SubscriptionResource::getUrl('cancel', ['record' => $record->uuid])),
                     Tables\Actions\Action::make('discard-cancellation')
                         ->label(__('Discard Cancellation'))
@@ -172,9 +172,9 @@ class SubscriptionResource extends Resource
                             ]),
                         TextEntry::make('plan.name'),
                         TextEntry::make('price')->formatStateUsing(function (string $state, $record) {
-                            return money($state, $record->currency->code) . ' / ' . $record->interval->name;
+                            return money($state, $record->currency->code).' / '.$record->interval->name;
                         }),
-                        TextEntry::make('ends_at')->dateTime(config('app.datetime_format'))->label(__('Next Renewal'))->visible(fn (Subscription $record): bool => !$record->is_canceled_at_end_of_cycle ),
+                        TextEntry::make('ends_at')->dateTime(config('app.datetime_format'))->label(__('Next Renewal'))->visible(fn (Subscription $record): bool => ! $record->is_canceled_at_end_of_cycle),
                         TextEntry::make('status')
                             ->formatStateUsing(fn (string $state, SubscriptionStatusMapper $mapper): string => $mapper->mapForDisplay($state)),
                         TextEntry::make('is_canceled_at_end_of_cycle')
@@ -195,7 +195,7 @@ class SubscriptionResource extends Resource
                     ->schema([
                         TextEntry::make('discounts.amount')->formatStateUsing(function (string $state, $record) {
                             if ($record->discounts[0]->type === DiscountConstants::TYPE_PERCENTAGE) {
-                                return $state . '%';
+                                return $state.'%';
                             }
 
                             return money($state, $record->discounts[0]->code);

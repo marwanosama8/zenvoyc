@@ -14,6 +14,7 @@ class ChurnChart extends ChartWidget
     use InteractsWithPageFilters;
 
     protected static ?int $sort = 2;
+
     protected static ?string $pollingInterval = null;
 
     protected function getData(): array
@@ -29,6 +30,7 @@ class ChurnChart extends ChartWidget
         $metricsManager = resolve(MetricsManager::class);
 
         $data = $metricsManager->calculateSubscriptionChurnRateChart($period, $startDate, $endDate);
+
         return [
             'datasets' => [
                 [
@@ -45,7 +47,7 @@ class ChurnChart extends ChartWidget
         return 'line';
     }
 
-    public function getHeading(): string | Htmlable | null
+    public function getHeading(): string|Htmlable|null
     {
         return __('Churn rate overview');
     }
@@ -57,7 +59,7 @@ class ChurnChart extends ChartWidget
 
     protected function getOptions(): RawJs
     {
-        return RawJs::make(<<<JS
+        return RawJs::make(<<<'JS'
         {
             scales: {
                 y: {

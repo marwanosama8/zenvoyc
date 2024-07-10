@@ -15,6 +15,7 @@ class AverageRevenuePerUserChart extends ChartWidget
     use InteractsWithPageFilters;
 
     protected static ?int $sort = 3;
+
     protected static ?string $pollingInterval = null;
 
     protected function getData(): array
@@ -51,7 +52,7 @@ class AverageRevenuePerUserChart extends ChartWidget
         return 'line';
     }
 
-    public function getHeading(): string | Htmlable | null
+    public function getHeading(): string|Htmlable|null
     {
         return __('Average revenue per user (ARPU) overview');
     }

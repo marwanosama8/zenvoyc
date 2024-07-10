@@ -19,11 +19,11 @@ class SubscriptionController extends Controller
 
     }
 
-    public function changePlan(string $newPlanSlug, Request $request)
+    public function changePlan(string $subscriptionUuid, string $newPlanSlug, Request $request)
     {
         $user = auth()->user();
 
-        $userSubscription = $this->subscriptionManager->findActiveUserSubscription($user->id);
+        $userSubscription = $this->subscriptionManager->findActiveByUserAndSubscriptionUuid($user->id, $subscriptionUuid);
 
         if (! $userSubscription) {
             return redirect()->back()->with('error', __('You do not have an active subscription.'));

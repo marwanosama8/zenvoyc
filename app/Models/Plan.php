@@ -62,7 +62,7 @@ class Plan extends Model
                 'interval_count',
                 'trial_interval_id',
                 'trial_interval_count',
-                ]) || boolval($plan->getOriginal('has_trial')) !== boolval($plan->has_trial)) {
+            ]) || boolval($plan->getOriginal('has_trial')) !== boolval($plan->has_trial)) {
                 $plan->paymentProviderData()->delete();
                 foreach ($plan->prices as $planPrice) {
                     $planPrice->planPricePaymentProviderData()->delete();

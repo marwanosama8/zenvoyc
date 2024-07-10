@@ -23,7 +23,7 @@ class DiscardSubscriptionCancellationActionHandler
 
         $userSubscription = $this->subscriptionManager->findActiveByUserAndSubscriptionUuid($user->id, $record->uuid);
 
-        if (!$userSubscription) {
+        if (! $userSubscription) {
             Notification::make()
                 ->title(__('Error canceling subscription'))
                 ->danger()

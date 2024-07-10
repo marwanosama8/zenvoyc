@@ -14,6 +14,7 @@ use Livewire\Component;
 class PostmarkSettings extends Component implements HasForms
 {
     private ConfigManager $configManager;
+
     protected string $slug = 'postmark';
 
     use InteractsWithForms;
@@ -33,7 +34,7 @@ class PostmarkSettings extends Component implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'token' => $this->configManager->get('services.' . $this->slug .  '.token'),
+            'token' => $this->configManager->get('services.'.$this->slug.'.token'),
         ]);
     }
 
@@ -46,7 +47,7 @@ class PostmarkSettings extends Component implements HasForms
                         TextInput::make('token')
                             ->label(__('Token'))
                             ->required(),
-                    ])
+                    ]),
             ])
             ->statePath('data');
     }
@@ -55,7 +56,7 @@ class PostmarkSettings extends Component implements HasForms
     {
         $data = $this->form->getState();
 
-        $this->configManager->set('services.' . $this->slug .  '.token', $data['token']);
+        $this->configManager->set('services.'.$this->slug.'.token', $data['token']);
 
         Notification::make()
             ->title(__('Settings Saved'))

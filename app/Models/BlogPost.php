@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\SitemapChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,6 +29,18 @@ class BlogPost extends Model implements HasMedia
     {
         static::creating(function ($blogPost) {
             $blogPost->user_id = auth()->user()->id;
+        });
+
+        static::created(function (BlogPost $blogPost) {
+            if ($blogPost->is_published && $blogPost->published_at !== null) {
+                SitemapChanged::dispatch();
+            }
+        });
+
+        static::updated(function (BlogPost $blogPost) {
+            if ($blogPost->is_published && $blogPost->published_at !== null) {
+                SitemapChanged::dispatch();
+            }
         });
     }
 

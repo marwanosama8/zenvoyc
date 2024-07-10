@@ -6,8 +6,8 @@
         </div>
 
         <div role="tablist" class="tabs tabs-bordered tabs-lg max-w-fit text-center mx-auto">
-            <a href="{{route('roadmap')}}" role="tab" class="tab {{ request()->get('done', false) ? '' : 'tab-active' }}">{{ __('Active') }}</a>
-            <a role="tab" class="tab {{ request()->get('done', false) ? 'tab-active' : '' }}" href="{{route('roadmap', ['done' => true])}}">{{ __('Done') }}</a>
+            <a href="{{route('roadmap')}}" role="tab" class="tab {{ request()->get('done', false) ? '' : 'tab-active' }}" aria-selected="{{ request()->get('done', false) ? 'false' : 'true' }}">{{ __('Active') }}</a>
+            <a href="{{route('roadmap', ['done' => true])}}" role="tab" class="tab {{ request()->get('done', false) ? 'tab-active' : '' }}" aria-selected="{{ request()->get('done', false) ? 'true' : 'false' }}">{{ __('Done') }}</a>
         </div>
 
 

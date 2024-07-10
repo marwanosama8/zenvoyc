@@ -9,7 +9,6 @@ use Tests\Feature\FeatureTest;
 
 class RoadmapManagerTest extends FeatureTest
 {
-
     public function test_create(): void
     {
         $user = $this->createUser();
@@ -50,7 +49,6 @@ class RoadmapManagerTest extends FeatureTest
         $type = 'feature';
 
         $roadmapItem = $roadmapManager->createItem($title, $description, $type);
-
 
         $this->assertTrue($roadmapManager->isUpvotable($roadmapItem));
 
@@ -114,7 +112,7 @@ class RoadmapManagerTest extends FeatureTest
 
         $roadmapItem = RoadmapItem::create([
             'title' => $title,
-            'slug' => Str::slug($title) . '-' . Str::random(6),
+            'slug' => Str::slug($title).'-'.Str::random(6),
             'description' => $description,
             'type' => $type,
             'user_id' => $user1->id,
@@ -143,7 +141,7 @@ class RoadmapManagerTest extends FeatureTest
 
         $roadmapItem = RoadmapItem::create([
             'title' => $title,
-            'slug' => Str::slug($title) . '-' . Str::random(6),
+            'slug' => Str::slug($title).'-'.Str::random(6),
             'description' => $description,
             'type' => $type,
             'user_id' => $user1->id,
@@ -232,5 +230,4 @@ class RoadmapManagerTest extends FeatureTest
         $this->assertFalse($roadmapManager->hasUserUpvoted($roadmapItem));
 
     }
-
 }

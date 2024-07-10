@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Constants\TransactionStatus;
+use App\Services\InvoiceManager;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Mpociot\Versionable\VersionableTrait;
 
 class Transaction extends Model
@@ -26,7 +29,38 @@ class Transaction extends Model
         'payment_provider_transaction_id',
         'subscription_id',
         'error_reason',
+        'order_id',
     ];
+
+    protected static function booted(): void
+    {
+        // for tax compliance purposes, making sure that the invoice is generated when the transaction is successful
+        // in a chronological order with invoice serial number is important, so we make sure a placeholder is created
+        // even if the invoice is not rendered yet
+        static::created(function (Transaction $transaction) {
+            /** @var InvoiceManager $invoiceManager */
+            $invoiceManager = app(InvoiceManager::class);
+            if ($transaction->status == TransactionStatus::SUCCESS->value) {
+                try {
+                    $invoiceManager->addInvoicePlaceholderForTransaction($transaction);
+                } catch (\Exception $e) {
+                    Log::error($e->getMessage());
+                }
+            }
+        });
+
+        static::updated(function (Transaction $transaction) {
+            /** @var InvoiceManager $invoiceManager */
+            $invoiceManager = app(InvoiceManager::class);
+            if ($transaction->status == TransactionStatus::SUCCESS->value) {
+                try {
+                    $invoiceManager->addInvoicePlaceholderForTransaction($transaction);
+                } catch (\Exception $e) {
+                    Log::error($e->getMessage());
+                }
+            }
+        });
+    }
 
     public function user()
     {

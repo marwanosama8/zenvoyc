@@ -14,8 +14,6 @@ class OauthLoginProviderResource extends Resource
 {
     protected static ?string $model = OauthLoginProvider::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-arrow-left-on-rectangle';
-
     protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
@@ -23,18 +21,18 @@ class OauthLoginProviderResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()
-                ->schema([
-                    Forms\Components\TextInput::make('name')
-                        ->disabled()
-                        ->required()
-                        ->maxLength(255),
-                    Forms\Components\TextInput::make('provider_name')
-                        ->required()
-                        ->disabled()
-                        ->maxLength(255),
-                    Forms\Components\Toggle::make('enabled')
-                        ->required(),
-                ]),
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->disabled()
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('provider_name')
+                            ->required()
+                            ->disabled()
+                            ->maxLength(255),
+                        Forms\Components\Toggle::make('enabled')
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -46,9 +44,9 @@ class OauthLoginProviderResource extends Resource
                     ->getStateUsing(function (OauthLoginProvider $record) {
                         return new HtmlString(
                             '<div class="flex gap-2">'.
-                            ' <img src="' .asset('images/oauth-providers/' . $record->provider_name . '.svg') . '"  class="h-6"> '
-                            . $record->name
-                            . '</div>'
+                            ' <img src="'.asset('images/oauth-providers/'.$record->provider_name.'.svg').'"  class="h-6"> '
+                            .$record->name
+                            .'</div>'
                         );
                     }),
                 Tables\Columns\TextColumn::make('provider_name'),

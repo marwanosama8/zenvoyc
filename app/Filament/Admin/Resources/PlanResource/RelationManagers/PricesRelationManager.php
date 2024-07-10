@@ -33,7 +33,7 @@ class PricesRelationManager extends RelationManager
                         ->options(
                             \App\Models\Currency::all()->sortBy('name')
                                 ->mapWithKeys(function ($currency) {
-                                    return [$currency->id => $currency->name . ' (' . $currency->symbol . ')'];
+                                    return [$currency->id => $currency->name.' ('.$currency->symbol.')'];
                                 })
                                 ->toArray()
                         )
@@ -74,5 +74,4 @@ class PricesRelationManager extends RelationManager
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
 }

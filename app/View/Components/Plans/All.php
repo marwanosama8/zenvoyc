@@ -18,6 +18,7 @@ class All extends Component
         public bool $isGrouped = true,
         public string $preselectedInterval = '',
         public bool $calculateSavingRates = false,
+        public ?string $currentSubscriptionUuid = null,
     ) {
 
     }
@@ -43,8 +44,8 @@ class All extends Component
         ];
 
         $subscription = null;
-        if ($user !== null) {
-            $subscription = $this->subscriptionManager->findActiveUserSubscription(auth()->id());
+        if ($user !== null && $this->currentSubscriptionUuid !== null) {
+            $subscription = $this->subscriptionManager->findActiveByUserAndSubscriptionUuid(auth()->id(), $this->currentSubscriptionUuid);
         }
 
         $viewData['subscription'] = $subscription;
@@ -61,7 +62,7 @@ class All extends Component
 
         $viewData['groupedPlans'] = $groupedPlans;
 
-        if (!empty($this->preselectedInterval) && !array_key_exists($this->preselectedInterval, $groupedPlans)) {
+        if (! empty($this->preselectedInterval) && ! array_key_exists($this->preselectedInterval, $groupedPlans)) {
             $this->preselectedInterval = '';
         }
 
@@ -134,6 +135,6 @@ class All extends Component
         $currentIntervalInWeeks = $intervalConversion[$currentInterval];
         $imaginaryIntervalInWeeks = $intervalConversion[$imaginaryInterval];
 
-        return ceil($currentPrice * $imaginaryIntervalInWeeks / $currentIntervalInWeeks );
+        return ceil($currentPrice * $imaginaryIntervalInWeeks / $currentIntervalInWeeks);
     }
 }

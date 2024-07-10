@@ -27,7 +27,7 @@ class ConfigManager
         config([$key => $value]);
     }
 
-    public function get(string $key, ?string $default = null): ?string
+    public function get(string $key, ?string $default = null): string|array|null
     {
         try {
             return Config::get($key) ?? config($key) ?? $default;

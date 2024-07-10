@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +20,7 @@ class IntervalsSeeder extends Seeder
                 'date_identifier' => 'day',
                 'adverb' => 'daily',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'week',
@@ -29,7 +28,7 @@ class IntervalsSeeder extends Seeder
                 'date_identifier' => 'week',
                 'adverb' => 'weekly',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'month',
@@ -37,7 +36,7 @@ class IntervalsSeeder extends Seeder
                 'date_identifier' => 'month',
                 'adverb' => 'monthly',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'year',
@@ -45,7 +44,7 @@ class IntervalsSeeder extends Seeder
                 'date_identifier' => 'year',
                 'adverb' => 'yearly',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
         ], ['slug'], ['name', 'date_identifier']);
     }

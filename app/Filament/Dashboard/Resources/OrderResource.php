@@ -55,6 +55,12 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('total_amount_after_discount')->formatStateUsing(function (string $state, $record) {
+                    if ($record->transactions()->count() > 0) {
+                        $transaction = $record->transactions()->first();
+
+                        return money($transaction->amount, $transaction->currency->code);
+                    }
+
                     return money($state, $record->currency->code);
                 })->label(__('Total Amount')),
                 Tables\Columns\TextColumn::make('status')
@@ -79,7 +85,7 @@ class OrderResource extends Resource
             ])
             ->bulkActions([
 
-            ]);
+            ])->defaultSort('updated_at', 'desc');
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -96,14 +102,32 @@ class OrderResource extends Resource
                                     ->schema([
                                         TextEntry::make('uuid')->copyable(),
                                         TextEntry::make('total_amount')->formatStateUsing(function (string $state, $record) {
-                                            return money($state, $record->currency->code);
-                                        }),
-                                        TextEntry::make('total_amount_after_discount')->formatStateUsing(function (string $state, $record) {
+                                            if ($record->transactions()->count() > 0) {
+                                                $transaction = $record->transactions()->first();
+
+                                                return money($transaction->amount, $transaction->currency->code);
+                                            }
+
                                             return money($state, $record->currency->code);
                                         }),
                                         TextEntry::make('total_discount_amount')->formatStateUsing(function (string $state, $record) {
+                                            if ($record->transactions()->count() > 0) {
+                                                $transaction = $record->transactions()->first();
+
+                                                return money($transaction->total_discount, $transaction->currency->code);
+                                            }
+
                                             return money($state, $record->currency->code);
                                         })->visible(fn (Order $record): bool => $record->discounts()->count() > 0),
+                                        TextEntry::make('total_tax_amount')->getStateUsing(function ($record) {
+                                            if ($record->transactions()->count() > 0) {
+                                                $transaction = $record->transactions()->first();
+
+                                                return money($transaction->total_tax, $transaction->currency->code);
+                                            }
+
+                                            return money(0, $record->currency->code);
+                                        }),
                                         TextEntry::make('status')
                                             ->formatStateUsing(fn (string $state, OrderStatusMapper $mapper): string => $mapper->mapForDisplay($state))
                                             ->badge(),
@@ -116,7 +140,6 @@ class OrderResource extends Resource
 
                                                 return money($state, $record->discounts[0]->code);
                                             })->label(__('Discount Amount')),
-                                        TextEntry::make('created_at')->dateTime(config('app.datetime_format')),
                                         TextEntry::make('updated_at')->dateTime(config('app.datetime_format')),
                                     ])->columns(3),
                                 Section::make(__('Order Items'))

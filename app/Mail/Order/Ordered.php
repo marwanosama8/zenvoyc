@@ -19,8 +19,7 @@ class Ordered extends Mailable implements ShouldQueue
      */
     public function __construct(
         public Order $order,
-    )
-    {
+    ) {
         //
     }
 
@@ -30,7 +29,7 @@ class Ordered extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject:__('Thanks for your order at :app_name!', ['app_name' => config('app.name')]),
+            subject: __('Thanks for your order at :app_name!', ['app_name' => config('app.name')]),
         );
     }
 

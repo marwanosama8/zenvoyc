@@ -13,9 +13,8 @@ use Filament\Tables\Table;
 class DiscountResource extends Resource
 {
     protected static ?string $model = Discount::class;
-    protected static ?string $navigationGroup = 'Product Management';
 
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Product Management';
 
     protected static ?int $navigationSort = 3;
 
@@ -24,20 +23,20 @@ class DiscountResource extends Resource
         return $form
             ->schema([
                 // card
-                    Forms\Components\Section::make([
+                Forms\Components\Section::make([
                     Forms\Components\TextInput::make('name')
                         ->required()
                         ->maxLength(255),
                     Forms\Components\Textarea::make('description')
                         ->maxLength(255),
 
-                        Forms\Components\Radio::make('type')
-                            ->required()
-                            ->options([
-                                DiscountConstants::TYPE_FIXED => __('Fixed amount'),
-                                DiscountConstants::TYPE_PERCENTAGE => __('Percentage (of the total price)'),
-                            ])
-                            ->default('fixed'),
+                    Forms\Components\Radio::make('type')
+                        ->required()
+                        ->options([
+                            DiscountConstants::TYPE_FIXED => __('Fixed amount'),
+                            DiscountConstants::TYPE_PERCENTAGE => __('Percentage (of the total price)'),
+                        ])
+                        ->default('fixed'),
 
                     Forms\Components\Grid::make()->schema([
                         Forms\Components\TextInput::make('amount')
@@ -51,16 +50,16 @@ class DiscountResource extends Resource
                         ->relationship('plans', 'name')
                         ->preload()
                         ->helperText(__('Select the plans that this discount will be applied to. If you leave empty, discount will be applied to all plans.')),
-                        Forms\Components\Select::make('oneTimeProducts')
-                            ->label(__('One-time purchase products'))
-                            ->multiple()
-                            ->relationship('oneTimeProducts', 'name')
-                            ->preload()
-                            ->helperText(__('Select the one-time products that this discount will be applied to. If you leave empty, discount will be applied to all one-time products.')),
-//                    Forms\Components\Select::make('action_type')  // TODO: implement this in the future
-//                        ->options(DiscountConstants::ACTION_TYPES)
-//                        // change the default value to null
-//                        ->default(null),
+                    Forms\Components\Select::make('oneTimeProducts')
+                        ->label(__('One-time purchase products'))
+                        ->multiple()
+                        ->relationship('oneTimeProducts', 'name')
+                        ->preload()
+                        ->helperText(__('Select the one-time products that this discount will be applied to. If you leave empty, discount will be applied to all one-time products.')),
+                    //                    Forms\Components\Select::make('action_type')  // TODO: implement this in the future
+                    //                        ->options(DiscountConstants::ACTION_TYPES)
+                    //                        // change the default value to null
+                    //                        ->default(null),
                     Forms\Components\TextInput::make('max_redemptions')
                         ->integer()
                         ->default(-1)
@@ -82,7 +81,7 @@ class DiscountResource extends Resource
                     Forms\Components\TextInput::make('maximum_recurring_intervals')
                         ->integer()
                         ->helperText(__('Amount of subscription billing periods that this discount recurs for. Only works with payment providers that support this feature. (like Paddle)'))
-                        ->default(null)
+                        ->default(null),
 
                 ]),
             ]);
@@ -98,10 +97,10 @@ class DiscountResource extends Resource
                 Tables\Columns\TextColumn::make('type'),
                 Tables\Columns\TextColumn::make('amount')->formatStateUsing(function (string $state, $record) {
                     if ($record->type === DiscountConstants::TYPE_PERCENTAGE) {
-                        return $state . '%';
+                        return $state.'%';
                     }
 
-                    return ($state / 100);
+                    return $state / 100;
                 }),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),

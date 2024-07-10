@@ -18,8 +18,8 @@ class SubscriptionDiscountManager
 
     public function applyDiscount(Subscription $subscription, string $discountCode, User $user): bool
     {
-        if (!$this->subscriptionManager->canAddDiscount($subscription) ||
-            !$this->discountManager->isCodeRedeemableForPlan($discountCode, $user, $subscription->plan)) {
+        if (! $this->subscriptionManager->canAddDiscount($subscription) ||
+            ! $this->discountManager->isCodeRedeemableForPlan($discountCode, $user, $subscription->plan)) {
             return false;
         }
 

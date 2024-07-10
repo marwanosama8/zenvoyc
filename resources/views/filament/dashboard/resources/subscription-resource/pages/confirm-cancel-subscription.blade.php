@@ -5,7 +5,7 @@
             {{ __('It seems you are insisting. We are very sorry for that. Please tell us why you are leaving.') }}
         </p>
 
-        @livewire('cancel-subscription-form')
+        <livewire:cancel-subscription-form subscription-uuid="{{$subscriptionUuid}}" />
 
     </x-filament::card>
 

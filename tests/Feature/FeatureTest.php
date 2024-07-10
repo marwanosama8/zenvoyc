@@ -9,11 +9,12 @@ use Tests\TestCase;
 class FeatureTest extends TestCase
 {
     protected static bool $setUpHasRunOnce = false;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        if (!static::$setUpHasRunOnce) {
+        if (! static::$setUpHasRunOnce) {
             $this->artisan('migrate:fresh');
             $this->seed(TestingDatabaseSeeder::class);
 

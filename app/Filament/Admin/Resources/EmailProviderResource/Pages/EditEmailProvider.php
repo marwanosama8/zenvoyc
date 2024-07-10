@@ -26,7 +26,7 @@ class EditEmailProvider extends EditRecord
                 ->color('primary')
                 ->icon('heroicon-o-rocket-launch')
                 ->url(fn (EmailProvider $record): string => \App\Filament\Admin\Resources\EmailProviderResource::getUrl(
-                    $record->slug . '-settings'
+                    $record->slug.'-settings'
                 )),
             \Filament\Actions\Action::make('send-test-email')
                 ->color('gray')
@@ -53,7 +53,6 @@ class EditEmailProvider extends EditRecord
 
                         return;
                     }
-
 
                     Notification::make()
                         ->title(__('Test Email Queued For Sending, check /horizon to see if it was sent.'))

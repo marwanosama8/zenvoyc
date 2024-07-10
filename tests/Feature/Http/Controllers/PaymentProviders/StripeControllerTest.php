@@ -39,7 +39,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -72,7 +72,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -105,7 +105,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -138,7 +138,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -171,7 +171,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -205,7 +205,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -263,7 +263,7 @@ class StripeControllerTest extends FeatureTest
         $this->app->instance(StripeWebhookHandler::class, $mock);
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -321,7 +321,7 @@ class StripeControllerTest extends FeatureTest
         $this->app->instance(StripeWebhookHandler::class, $mock);
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -375,7 +375,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -429,7 +429,7 @@ class StripeControllerTest extends FeatureTest
         $signature = \hash_hmac('sha256', "{$timestamp}.{$payloadString}", config('services.stripe.webhook_signing_secret'));
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -468,7 +468,7 @@ class StripeControllerTest extends FeatureTest
         $this->app->instance(StripeWebhookHandler::class, $mock);
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -524,7 +524,7 @@ class StripeControllerTest extends FeatureTest
         $this->app->instance(StripeWebhookHandler::class, $mock);
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -570,7 +570,7 @@ class StripeControllerTest extends FeatureTest
         $this->app->instance(StripeWebhookHandler::class, $mock);
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -624,7 +624,7 @@ class StripeControllerTest extends FeatureTest
         $this->app->instance(StripeWebhookHandler::class, $mock);
 
         $response = $this->postJson(route('payments-providers.stripe.webhook'), $payload, [
-            'Stripe-Signature' => 't=' . $timestamp . ',v1=' . $signature,
+            'Stripe-Signature' => 't='.$timestamp.',v1='.$signature,
             'Content-Type' => 'application/json',
         ]);
 
@@ -872,7 +872,8 @@ JSON;
         return json_decode($json, true);
     }
 
-    private function getStripePaymentIntentSucceeded(string $paymentIntentId, string $orderUUID) {
+    private function getStripePaymentIntentSucceeded(string $paymentIntentId, string $orderUUID)
+    {
         $json = <<<JSON
         {
           "type": "payment_intent.succeeded",
@@ -944,7 +945,8 @@ JSON;
         return json_decode($json, true);
     }
 
-    private function getStripePaymentIntentPaymentFailed(string $paymentIntentId, string $orderUUID) {
+    private function getStripePaymentIntentPaymentFailed(string $paymentIntentId, string $orderUUID)
+    {
         $json = <<<JSON
         {
           "type": "payment_intent.payment_failed",

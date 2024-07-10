@@ -16,6 +16,7 @@ use Illuminate\Support\HtmlString;
 class PaymentProviderDataRelationManager extends RelationManager
 {
     protected static string $relationship = 'paymentProviderData';
+
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function getModelLabel(): ?string
@@ -79,14 +80,13 @@ class PaymentProviderDataRelationManager extends RelationManager
                                 return;
                             }
 
-
                             Notification::make()
                                 ->success()
                                 ->title(__('Product found'))
                                 ->body(__('The product with the variant ID :variantId was found and is matching your plan product details.', ['variantId' => $variantId]))
                                 ->persistent()
                                 ->send();
-                        })
+                        }),
                 ]),
             ]);
     }

@@ -20,7 +20,7 @@ class EditPaymentProvider extends EditRecord
                 ->color('primary')
                 ->icon('heroicon-o-rocket-launch')
                 ->url(fn (PaymentProvider $record): string => \App\Filament\Admin\Resources\PaymentProviderResource::getUrl(
-                    $record->slug . '-settings'
+                    $record->slug.'-settings'
                 )),
         ];
     }

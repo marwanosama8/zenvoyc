@@ -35,6 +35,7 @@ class SubscriptionControllerTest extends FeatureTest
 
         $response = $this->get(route('subscription.change-plan', [
             'planSlug' => $newPlan->slug,
+            'subscriptionUuid' => $subscription->uuid,
         ]));
 
         $response->assertStatus(200);

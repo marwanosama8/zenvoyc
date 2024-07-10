@@ -19,21 +19,21 @@ class PaymentProvidersSeeder extends Seeder
                 'slug' => PaymentProviderConstants::STRIPE_SLUG,
                 'type' => 'multi',
                 'created_at' => now()->format('Y-m-d H:i:s'),
-                'updated_at' => now()->format('Y-m-d H:i:s')
+                'updated_at' => now()->format('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'Paddle',
                 'slug' => PaymentProviderConstants::PADDLE_SLUG,
                 'type' => 'multi',
                 'created_at' => now()->format('Y-m-d H:i:s'),
-                'updated_at' => now()->format('Y-m-d H:i:s')
+                'updated_at' => now()->format('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'Lemon Squeezy',
                 'slug' => PaymentProviderConstants::LEMON_SQUEEZY_SLUG,
                 'type' => 'multi',
                 'created_at' => now()->format('Y-m-d H:i:s'),
-                'updated_at' => now()->format('Y-m-d H:i:s')
+                'updated_at' => now()->format('Y-m-d H:i:s'),
             ],
         ], ['slug']);
 

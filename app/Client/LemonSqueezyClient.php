@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Client;
+
 use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -15,7 +16,7 @@ class LemonSqueezyClient
         }
 
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.lemon-squeezy.api_key'),
+            'Authorization' => 'Bearer '.config('services.lemon-squeezy.api_key'),
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
         ])->post($this->getApiUrl('/v1/checkouts'), [
@@ -39,9 +40,7 @@ class LemonSqueezyClient
             ],
         ]);
 
-
     }
-
 
     public function updateSubscription(string $subscriptionId, string $newVariantId, bool $withProration): Response
     {
@@ -49,14 +48,15 @@ class LemonSqueezyClient
             'variant_id' => $newVariantId,
         ];
 
-        if (!$withProration) {
+        if (! $withProration) {
             $attributes['disable_prorations'] = true;
         }
+
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.lemon-squeezy.api_key'),
+            'Authorization' => 'Bearer '.config('services.lemon-squeezy.api_key'),
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
-        ])->patch($this->getApiUrl('/v1/subscriptions/' . $subscriptionId), [
+        ])->patch($this->getApiUrl('/v1/subscriptions/'.$subscriptionId), [
             'data' => [
                 'type' => 'subscriptions',
                 'id' => $subscriptionId,
@@ -68,10 +68,10 @@ class LemonSqueezyClient
     public function getVariant(string $variantId): Response
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.lemon-squeezy.api_key'),
+            'Authorization' => 'Bearer '.config('services.lemon-squeezy.api_key'),
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
-        ])->get($this->getApiUrl('/v1/variants/' . $variantId));
+        ])->get($this->getApiUrl('/v1/variants/'.$variantId));
     }
 
     public function createDiscount(
@@ -79,10 +79,10 @@ class LemonSqueezyClient
         string $couponCode,
         int $amount,
         string $amountType,
-        int $maxRedemptions = null,
+        ?int $maxRedemptions = null,
         string $duration = 'forever',
-        string $durationInMonths = null,
-        Carbon $expiresAt = null,
+        ?string $durationInMonths = null,
+        ?Carbon $expiresAt = null,
     ) {
         $attributes = [
             'name' => $name,
@@ -111,7 +111,7 @@ class LemonSqueezyClient
         }
 
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.lemon-squeezy.api_key'),
+            'Authorization' => 'Bearer '.config('services.lemon-squeezy.api_key'),
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
         ])->post($this->getApiUrl('/v1/discounts'), [
@@ -133,28 +133,28 @@ class LemonSqueezyClient
     public function getSubscription(string $subscriptionId): Response
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.lemon-squeezy.api_key'),
+            'Authorization' => 'Bearer '.config('services.lemon-squeezy.api_key'),
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
-        ])->get($this->getApiUrl('/v1/subscriptions/' . $subscriptionId));
+        ])->get($this->getApiUrl('/v1/subscriptions/'.$subscriptionId));
     }
 
     public function cancelSubscription(string $subscriptionId): Response
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.lemon-squeezy.api_key'),
+            'Authorization' => 'Bearer '.config('services.lemon-squeezy.api_key'),
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
-        ])->delete($this->getApiUrl('/v1/subscriptions/' . $subscriptionId));
+        ])->delete($this->getApiUrl('/v1/subscriptions/'.$subscriptionId));
     }
 
     public function discardSubscriptionCancellation(string $subscriptionId): Response
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.lemon-squeezy.api_key'),
+            'Authorization' => 'Bearer '.config('services.lemon-squeezy.api_key'),
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json',
-        ])->patch($this->getApiUrl('/v1/subscriptions/' . $subscriptionId), [
+        ])->patch($this->getApiUrl('/v1/subscriptions/'.$subscriptionId), [
             'data' => [
                 'type' => 'subscriptions',
                 'id' => $subscriptionId,
@@ -167,7 +167,6 @@ class LemonSqueezyClient
 
     private function getApiUrl(string $endpoint): string
     {
-        return 'https://api.lemonsqueezy.com' . $endpoint;
+        return 'https://api.lemonsqueezy.com'.$endpoint;
     }
-
 }

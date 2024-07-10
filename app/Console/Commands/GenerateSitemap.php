@@ -31,26 +31,26 @@ class GenerateSitemap extends Command implements Isolatable
     public function handle(BlogManager $blogManager)
     {
 
-         $routes = collect(Route::getRoutes()->getRoutes())->filter(function (\Illuminate\Routing\Route $route) {
+        $routes = collect(Route::getRoutes()->getRoutes())->filter(function (\Illuminate\Routing\Route $route) {
 
-             if (!in_array('GET', $route->methods)) {
-                    return false;
-             }
+            if (! in_array('GET', $route->methods)) {
+                return false;
+            }
 
-             if (!isset($route->action['middleware']) || !is_array($route->action['middleware'])) {
-                 return false;
-             }
+            if (! isset($route->action['middleware']) || ! is_array($route->action['middleware'])) {
+                return false;
+            }
 
-             if (in_array('sitemapped', $route->action['middleware'])) {
-                 return true;
-             }
+            if (in_array('sitemapped', $route->action['middleware'])) {
+                return true;
+            }
 
-             return false;
-         })->map(function ($route) {
-             return route($route->getName());
-         })->values()->toArray();
+            return false;
+        })->map(function ($route) {
+            return route($route->getName());
+        })->values()->toArray();
 
-         // go through all blog posts and add them to the sitemap (chunked to avoid memory issues)
+        // go through all blog posts and add them to the sitemap (chunked to avoid memory issues)
 
         $blogManager->getAllPostsQuery()->chunk(100, function ($posts) use (&$routes) {
             foreach ($posts as $post) {
@@ -78,8 +78,8 @@ class GenerateSitemap extends Command implements Isolatable
         // add the sitemap to robots.txt
         $robots = file_get_contents(public_path('robots.txt'));
 
-        if (!str_contains($robots, 'Sitemap:')) {
-            $robots .= "\n\nSitemap: " . url('sitemap.xml');
+        if (! str_contains($robots, 'Sitemap:')) {
+            $robots .= "\n\nSitemap: ".url('sitemap.xml');
             file_put_contents(public_path('robots.txt'), $robots);
         }
     }

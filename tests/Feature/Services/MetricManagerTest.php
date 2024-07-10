@@ -17,7 +17,8 @@ use Tests\Feature\FeatureTest;
 
 class MetricManagerTest extends FeatureTest
 {
-    public function test_calculate_daily_revenue() {
+    public function test_calculate_daily_revenue()
+    {
         Transaction::query()->update(['status' => TransactionStatus::FAILED->value]);
 
         $user = $this->createUser();
@@ -44,13 +45,25 @@ class MetricManagerTest extends FeatureTest
             'payment_provider_transaction_id' => '234',
         ]);
 
+        Transaction::create([
+            'user_id' => $user->id,
+            'uuid' => Str::uuid(),
+            'amount' => 1000,
+            'currency_id' => Currency::where('code', 'USD')->firstOrFail()->id,
+            'status' => TransactionStatus::REFUNDED,
+            'payment_provider_id' => PaymentProvider::firstOrFail()->id,
+            'payment_provider_status' => 'success',
+            'payment_provider_transaction_id' => '234',
+        ]);
+
         $metricManager = new MetricsManager();
         $result = $metricManager->calculateDailyRevenue(now());
 
-        $this->assertEquals($result, 20.00);
+        $this->assertEquals($result, 10.00);
     }
 
-    public function test_average_revenue_per_user() {
+    public function test_average_revenue_per_user()
+    {
         Transaction::query()->update(['status' => TransactionStatus::FAILED->value]);
 
         $weekAgo = now()->subWeek()->endOfDay();
@@ -97,7 +110,8 @@ class MetricManagerTest extends FeatureTest
         $this->assertEquals($result, 10.00);
     }
 
-    public function test_mrr() {
+    public function test_mrr()
+    {
         Transaction::query()->update(['status' => TransactionStatus::FAILED->value]);
         Subscription::query()->update(['status' => SubscriptionStatus::NEW->value]);
 
@@ -117,7 +131,6 @@ class MetricManagerTest extends FeatureTest
             'interval_id' => Interval::where('slug', 'month')->firstOrFail()->id,
         ])->save();
 
-
         $metricManager = new MetricsManager();
         $result = $metricManager->calculateMRR(now());
 
@@ -136,5 +149,4 @@ class MetricManagerTest extends FeatureTest
         $this->assertEquals($result, 60.00);
 
     }
-
 }

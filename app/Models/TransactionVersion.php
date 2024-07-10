@@ -6,5 +6,5 @@ use Mpociot\Versionable\Version;
 
 class TransactionVersion extends Version
 {
-    public $table = "transaction_versions";
+    public $table = 'transaction_versions';
 }

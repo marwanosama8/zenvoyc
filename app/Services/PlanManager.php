@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\Currency;
 use App\Models\PaymentProvider;
 use App\Models\Plan;
@@ -89,7 +90,7 @@ class PlanManager
 
         $defaultCurrencyObject = Currency::where('code', $defaultCurrency)->first();
 
-        if (!$defaultCurrencyObject) {
+        if (! $defaultCurrencyObject) {
             return new Collection();
         }
 
@@ -121,5 +122,4 @@ class PlanManager
             }])
             ->get();
     }
-
 }

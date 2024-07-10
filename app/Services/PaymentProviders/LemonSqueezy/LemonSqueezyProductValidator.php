@@ -20,7 +20,7 @@ class LemonSqueezyProductValidator
     {
         $response = $this->client->getVariant($variantId);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             throw new \Exception('Failed to validate product with Lemon Squeezy.');
         }
 
@@ -50,7 +50,7 @@ class LemonSqueezyProductValidator
             throw new \Exception(sprintf('Trial interval count mismatch. Plan trial interval count: %s, Lemon Squeezy trial interval count: %s', $plan->trial_interval_count, $response['data']['attributes']['trial_interval_count']));
         }
 
-        if (!$response['data']['attributes']['is_subscription']) {
+        if (! $response['data']['attributes']['is_subscription']) {
             throw new \Exception('Lemon Squeezy product is not a subscription.');
         }
 
@@ -63,7 +63,7 @@ class LemonSqueezyProductValidator
 
         $price = $this->calculationManager->getOneTimeProductPrice($oneTimeProduct);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             throw new \Exception('Failed to validate product with Lemon Squeezy.');
         }
 
@@ -77,5 +77,4 @@ class LemonSqueezyProductValidator
 
         return true;
     }
-
 }

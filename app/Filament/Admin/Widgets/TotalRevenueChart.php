@@ -50,7 +50,7 @@ class TotalRevenueChart extends ChartWidget
         return 'line';
     }
 
-    public function getHeading(): string | Htmlable | null
+    public function getHeading(): string|Htmlable|null
     {
         return __('Total Revenue overview');
     }

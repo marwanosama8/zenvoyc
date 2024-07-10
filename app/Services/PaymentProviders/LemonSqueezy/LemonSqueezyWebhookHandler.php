@@ -2,14 +2,12 @@
 
 namespace App\Services\PaymentProviders\LemonSqueezy;
 
-use _PHPStan_7c8075089\Nette\Neon\Exception;
 use App\Constants\OrderStatus;
 use App\Constants\PaymentProviderConstants;
 use App\Constants\SubscriptionStatus;
 use App\Constants\TransactionStatus;
 use App\Exceptions\SubscriptionCreationNotAllowedException;
 use App\Models\Currency;
-use App\Models\OrderItem;
 use App\Models\PaymentProvider;
 use App\Models\User;
 use App\Services\OneTimeProductManager;
@@ -52,7 +50,6 @@ class LemonSqueezyWebhookHandler
         if (! isset($payload['meta']['event_name'])) {
             return response()->json(['error' => 'Invalid event name'], 400);
         }
-
 
         $eventName = $payload['meta']['event_name'];
         $customData = $payload['meta']['custom_data'] ?? [];
@@ -136,7 +133,7 @@ class LemonSqueezyWebhookHandler
         $variantId = $attributes['first_order_item']['variant_id'] ?? null;
         $orderProduct = $this->oneTimeProductManager->findByPaymentProviderProductId($paymentProvider, $variantId);
 
-        if (!$orderProduct) {
+        if (! $orderProduct) {
             // can be a subscription order (because order_created event is also fired for subscriptions)
 
             return null;
@@ -145,7 +142,7 @@ class LemonSqueezyWebhookHandler
         $userEmail = $attributes['user_email'];
         $user = User::where('email', $userEmail)->first();
 
-        if (!$user) {
+        if (! $user) {
             // create a new user
             $user = User::create([
                 'email' => $userEmail,
@@ -177,7 +174,6 @@ class LemonSqueezyWebhookHandler
 
         return $order;
     }
-
 
     private function handleSubscriptionEvent(?string $subscriptionUuid, string $eventName, array $attributes, array $data, PaymentProvider $paymentProvider)
     {
@@ -283,7 +279,7 @@ class LemonSqueezyWebhookHandler
         $userEmail = $attributes['user_email'];
         $user = User::where('email', $userEmail)->first();
 
-        if (!$user) {
+        if (! $user) {
             // create a new user
             $user = User::create([
                 'email' => $userEmail,
@@ -294,7 +290,7 @@ class LemonSqueezyWebhookHandler
 
         $plan = $this->planManager->findByPaymentProviderProductId($paymentProvider, $attributes['variant_id']);
 
-        if (!$plan) {
+        if (! $plan) {
             Log::error('Plan not found for subscription', [
                 'payment_provider_id' => $paymentProvider->id,
                 'payment_provider_product_id' => $attributes['variant_id'],
@@ -349,7 +345,8 @@ class LemonSqueezyWebhookHandler
 
     }
 
-    private function isValidSignature(string $payload, ?string $signature) {
+    private function isValidSignature(string $payload, ?string $signature)
+    {
 
         if ($signature === null) {
             return false;
@@ -359,5 +356,4 @@ class LemonSqueezyWebhookHandler
 
         return ! hash_equals($hash, $signature);
     }
-
 }

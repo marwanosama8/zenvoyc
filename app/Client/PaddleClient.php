@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Client;
-use App\Models\Discount;
+
 use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -11,7 +11,7 @@ class PaddleClient
     public function createProduct(string $name, ?string $description, string $taxCategory = 'standard'): Response
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
         ])->post($this->getApiUrl('/products'), [
             'name' => $name,
             'description' => $description ?? $name,
@@ -25,13 +25,13 @@ class PaddleClient
         int $frequency,
         int $amount,
         string $currencyCode,
-        string $trialInterval = null,
-        int $trialFrequency = null,
+        ?string $trialInterval = null,
+        ?int $trialFrequency = null,
     ): Response {
 
         $priceObject = [
             'product_id' => $productId,
-            'description' => 'Subscription ' . $interval . ' ' . $frequency,
+            'description' => 'Subscription '.$interval.' '.$frequency,
             'billing_cycle' => [
                 'interval' => $interval,
                 'frequency' => $frequency,
@@ -40,9 +40,9 @@ class PaddleClient
                 'amount' => (string) $amount,
                 'currency_code' => $currencyCode,
             ],
-            "quantity" => [
-                "minimum" => 1,
-                "maximum" => 1,
+            'quantity' => [
+                'minimum' => 1,
+                'maximum' => 1,
             ],
         ];
 
@@ -54,7 +54,7 @@ class PaddleClient
         }
 
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
         ])->post($this->getApiUrl('/prices'), $priceObject);
     }
 
@@ -73,14 +73,14 @@ class PaddleClient
                 'amount' => (string) $amount,
                 'currency_code' => $currencyCode,
             ],
-            "quantity" => [
-                "minimum" => 1,
-                "maximum" => $maxQuantity,
+            'quantity' => [
+                'minimum' => 1,
+                'maximum' => $maxQuantity,
             ],
         ];
 
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
         ])->post($this->getApiUrl('/prices'), $priceObject);
     }
 
@@ -98,8 +98,8 @@ class PaddleClient
         ];
 
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
-        ])->patch($this->getApiUrl('/subscriptions/' . $paddleSubscriptionId), $subscriptionObject);
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
+        ])->patch($this->getApiUrl('/subscriptions/'.$paddleSubscriptionId), $subscriptionObject);
     }
 
     public function addDiscountToSubscription(string $paddleSubscriptionId, string $paddleDiscountId, string $effectiveFrom = 'next_billing_period')
@@ -112,24 +112,24 @@ class PaddleClient
         ];
 
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
-        ])->patch($this->getApiUrl('/subscriptions/' . $paddleSubscriptionId), $subscriptionObject);
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
+        ])->patch($this->getApiUrl('/subscriptions/'.$paddleSubscriptionId), $subscriptionObject);
 
     }
 
     public function cancelSubscription(string $paddleSubscriptionId)
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
-        ])->post($this->getApiUrl('/subscriptions/' . $paddleSubscriptionId . '/cancel'), ['cancel_at_end' => true]);
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
+        ])->post($this->getApiUrl('/subscriptions/'.$paddleSubscriptionId.'/cancel'), ['cancel_at_end' => true]);
     }
 
     public function discardSubscriptionCancellation(string $paddleSubscriptionId)
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
-        ])->patch($this->getApiUrl('/subscriptions/' . $paddleSubscriptionId), [
-            "scheduled_change" => null,
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
+        ])->patch($this->getApiUrl('/subscriptions/'.$paddleSubscriptionId), [
+            'scheduled_change' => null,
         ]);
     }
 
@@ -139,8 +139,8 @@ class PaddleClient
         string $discountType,
         string $currencyCode,
         bool $isRecurring = false,
-        int $maximumRecurringIntervals = null,
-        Carbon $expiresAt = null,
+        ?int $maximumRecurringIntervals = null,
+        ?Carbon $expiresAt = null,
     ) {
         $discountObject = [
             'amount' => $amount,
@@ -153,7 +153,7 @@ class PaddleClient
         ];
 
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
         ])->post($this->getApiUrl('/discounts'), $discountObject);
     }
 
@@ -161,16 +161,16 @@ class PaddleClient
         string $paddleSubscriptionId,
     ) {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.paddle.vendor_auth_code'),
-        ])->get($this->getApiUrl('/subscriptions/' . $paddleSubscriptionId . '/update-payment-method-transaction'));
+            'Authorization' => 'Bearer '.config('services.paddle.vendor_auth_code'),
+        ])->get($this->getApiUrl('/subscriptions/'.$paddleSubscriptionId.'/update-payment-method-transaction'));
     }
 
     private function getApiUrl(string $endpoint): string
     {
         if (config('services.paddle.is_sandbox')) {
-            return 'https://sandbox-api.paddle.com' . $endpoint;
+            return 'https://sandbox-api.paddle.com'.$endpoint;
         }
 
-        return 'https://api.paddle.com' . $endpoint;
+        return 'https://api.paddle.com'.$endpoint;
     }
 }

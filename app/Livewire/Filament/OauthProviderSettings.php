@@ -15,6 +15,7 @@ use Livewire\Component;
 abstract class OauthProviderSettings extends Component implements HasForms
 {
     private ConfigManager $configManager;
+
     protected string $slug = '';
 
     use InteractsWithForms;
@@ -28,14 +29,14 @@ abstract class OauthProviderSettings extends Component implements HasForms
 
     public function render()
     {
-        return view('livewire.filament.' . $this->slug .  '-settings');
+        return view('livewire.filament.'.$this->slug.'-settings');
     }
 
     public function mount(): void
     {
         $this->form->fill([
-            'client_id' => $this->configManager->get('services.' . $this->slug .  '.client_id'),
-            'client_secret' => $this->configManager->get('services.' . $this->slug .  '.client_secret'),
+            'client_id' => $this->configManager->get('services.'.$this->slug.'.client_id'),
+            'client_secret' => $this->configManager->get('services.'.$this->slug.'.client_secret'),
         ]);
     }
 
@@ -60,7 +61,7 @@ abstract class OauthProviderSettings extends Component implements HasForms
                 Section::make()->schema([
                     ViewField::make('how-to')
                         ->label(__('Stripe Settings'))
-                        ->view('filament.admin.resources.oauth-login-provider-resource.pages.partials.' . $this->slug .  '-how-to'),
+                        ->view('filament.admin.resources.oauth-login-provider-resource.pages.partials.'.$this->slug.'-how-to'),
                 ])->columnSpan([
                     'sm' => 6,
                     'xl' => 4,
@@ -74,8 +75,8 @@ abstract class OauthProviderSettings extends Component implements HasForms
     {
         $data = $this->form->getState();
 
-        $this->configManager->set('services.' . $this->slug .  '.client_id', $data['client_id']);
-        $this->configManager->set('services.' . $this->slug .  '.client_secret', $data['client_secret']);
+        $this->configManager->set('services.'.$this->slug.'.client_id', $data['client_id']);
+        $this->configManager->set('services.'.$this->slug.'.client_secret', $data['client_secret']);
 
         Notification::make()
             ->title(__('Settings Saved'))

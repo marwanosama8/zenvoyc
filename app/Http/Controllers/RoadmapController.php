@@ -30,7 +30,7 @@ class RoadmapController extends Controller
 
     private function assertRoadmapEnabled()
     {
-        if (!config('app.roadmap_enabled')) {
+        if (! config('app.roadmap_enabled')) {
             abort(404);
         }
     }

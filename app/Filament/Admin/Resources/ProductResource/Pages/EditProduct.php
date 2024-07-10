@@ -6,7 +6,6 @@ use App\Filament\Admin\Resources\ProductResource;
 use App\Filament\CrudDefaults;
 use Filament\Actions\DeleteAction;
 use Filament\Notifications\Notification;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditProduct extends EditRecord
@@ -30,7 +29,7 @@ class EditProduct extends EditRecord
 
                         $action->cancel();
                     }
-                })
+                }),
         ];
     }
 }

@@ -37,14 +37,15 @@ class CreateAdminUser extends Command
         $password = Str::random();
 
         try {
-        $user = User::create([
-            'name' => $email,
-            'email' => $email,
-            'password' => bcrypt($password),
-            'is_admin' => true,
-        ]);
+            $user = User::create([
+                'name' => $email,
+                'email' => $email,
+                'password' => bcrypt($password),
+                'is_admin' => true,
+            ]);
         } catch (\Throwable $e) {
-            $this->error('Error creating admin user: ' . $e->getMessage());
+            $this->error('Error creating admin user: '.$e->getMessage());
+
             return;
         }
 
@@ -52,7 +53,7 @@ class CreateAdminUser extends Command
         $user->assignRole('admin');
 
         $this->info('Admin user created successfully.');
-        $this->info('Email: ' . $email);
-        $this->info('Password: ' . $password);
+        $this->info('Email: '.$email);
+        $this->info('Password: '.$password);
     }
 }

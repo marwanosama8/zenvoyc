@@ -14,6 +14,7 @@ use Livewire\Component;
 class MailgunSettings extends Component implements HasForms
 {
     private ConfigManager $configManager;
+
     protected string $slug = 'mailgun';
 
     use InteractsWithForms;
@@ -33,9 +34,9 @@ class MailgunSettings extends Component implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'domain' => $this->configManager->get('services.' . $this->slug .  '.domain'),
-            'secret' => $this->configManager->get('services.' . $this->slug .  '.secret'),
-            'endpoint' => $this->configManager->get('services.' . $this->slug .  '.endpoint'),
+            'domain' => $this->configManager->get('services.'.$this->slug.'.domain'),
+            'secret' => $this->configManager->get('services.'.$this->slug.'.secret'),
+            'endpoint' => $this->configManager->get('services.'.$this->slug.'.endpoint'),
         ]);
     }
 
@@ -55,7 +56,7 @@ class MailgunSettings extends Component implements HasForms
                         TextInput::make('endpoint')
                             ->label(__('Endpoint'))
                             ->required(),
-                    ])
+                    ]),
             ])
             ->statePath('data');
     }
@@ -64,9 +65,9 @@ class MailgunSettings extends Component implements HasForms
     {
         $data = $this->form->getState();
 
-        $this->configManager->set('services.' . $this->slug .  '.domain', $data['domain']);
-        $this->configManager->set('services.' . $this->slug .  '.secret', $data['secret']);
-        $this->configManager->set('services.' . $this->slug .  '.endpoint', $data['endpoint']);
+        $this->configManager->set('services.'.$this->slug.'.domain', $data['domain']);
+        $this->configManager->set('services.'.$this->slug.'.secret', $data['secret']);
+        $this->configManager->set('services.'.$this->slug.'.endpoint', $data['endpoint']);
 
         Notification::make()
             ->title(__('Settings Saved'))

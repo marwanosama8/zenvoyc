@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Livewire\Filament\MyProfilePersonalInfo;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -90,9 +89,10 @@ class DashboardPanelProvider extends PanelProvider
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
                     ->myProfileComponents([
-                        'personal_info' => MyProfilePersonalInfo::class,
+                        \App\Livewire\AddressForm::class,
+
                     ]),
-                    FilamentProgressbarPlugin::make()->color($color)
+                FilamentProgressbarPlugin::make()->color($color)
             ]);
     }
 }

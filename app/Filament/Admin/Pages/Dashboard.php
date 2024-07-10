@@ -19,7 +19,7 @@ class Dashboard extends \Filament\Pages\Dashboard
                 DatePicker::make('start_date')
                     ->default(now()->subYear()->toDateString())
                     ->afterStateHydrated(function (DatePicker $component, ?string $state) {
-                        if (!$state) {
+                        if (! $state) {
                             $component->state(now()->subYear()->toDateString());
                         }
                     })
@@ -27,7 +27,7 @@ class Dashboard extends \Filament\Pages\Dashboard
                 DatePicker::make('end_date')
                     ->default(date(now()->toDateString()))
                     ->afterStateHydrated(function (DatePicker $component, ?string $state) {
-                        if (!$state) {
+                        if (! $state) {
                             $component->state(now()->toDateString());
                         }
                     })
@@ -39,7 +39,7 @@ class Dashboard extends \Filament\Pages\Dashboard
                     'year' => __('Year'),
                 ])->default('month'),
 
-            ])->columns(3)
+            ])->columns(3),
         ]);
     }
 }

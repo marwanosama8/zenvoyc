@@ -5,12 +5,12 @@ namespace App\Filament\Admin\Resources\OauthLoginProviderResource\Pages;
 use App\Filament\Admin\Resources\OauthLoginProviderResource;
 use App\Filament\CrudDefaults;
 use App\Models\OauthLoginProvider;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditOauthLoginProvider extends EditRecord
 {
     use CrudDefaults;
+
     protected static string $resource = OauthLoginProviderResource::class;
 
     protected function getHeaderActions(): array
@@ -22,7 +22,7 @@ class EditOauthLoginProvider extends EditRecord
                 ->color('primary')
                 ->icon('heroicon-o-rocket-launch')
                 ->url(fn (OauthLoginProvider $record): string => \App\Filament\Admin\Resources\OauthLoginProviderResource::getUrl(
-                    $record->provider_name . '-settings'
+                    $record->provider_name.'-settings'
                 )),
         ];
     }

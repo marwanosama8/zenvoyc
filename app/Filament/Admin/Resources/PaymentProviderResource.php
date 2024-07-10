@@ -3,7 +3,6 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\PaymentProviderResource\Pages;
-use App\Filament\Admin\Resources\PaymentProviderResource\RelationManagers;
 use App\Models\PaymentProvider;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,7 +16,6 @@ class PaymentProviderResource extends Resource
 {
     protected static ?string $model = PaymentProvider::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
@@ -44,8 +42,8 @@ class PaymentProviderResource extends Resource
                     ->getStateUsing(function (PaymentProvider $record) {
                         return new HtmlString(
                             '<div class="flex gap-2">'.
-                            ' <img src="' .asset('images/payment-providers/' . $record->slug . '.png') . '" alt="{{ $paymentProvider->getName() }}" class="h-6"> '
-                            . '</div>'
+                            ' <img src="'.asset('images/payment-providers/'.$record->slug.'.png').'" alt="{{ $paymentProvider->getName() }}" class="h-6"> '
+                            .'</div>'
                         );
                     }),
                 Tables\Columns\TextColumn::make('name'),

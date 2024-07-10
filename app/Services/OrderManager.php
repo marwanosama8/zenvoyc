@@ -184,4 +184,26 @@ class OrderManager
             ->where('orders.status', OrderStatus::SUCCESS)
             ->exists();
     }
+
+    public function hasUserOrdered(?User $user, ?string $productSlug): bool
+    {
+        if (! $user) {
+            return false;
+        }
+
+        if (! $productSlug) {
+            return $user->orders()
+                ->where('status', OrderStatus::SUCCESS)
+                ->exists();
+        }
+
+        return $user->orders()
+            ->where('status', OrderStatus::SUCCESS)
+            ->whereHas('items', function ($query) use ($productSlug) {
+                $query->whereHas('oneTimeProduct', function ($query) use ($productSlug) {
+                    $query->where('slug', $productSlug);
+                });
+            })
+            ->exists();
+    }
 }

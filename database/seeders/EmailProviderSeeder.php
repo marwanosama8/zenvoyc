@@ -33,6 +33,12 @@ class EmailProviderSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
+                'name' => 'Resend',
+                'slug' => 'resend',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'name' => 'SMTP',
                 'slug' => 'smtp',
                 'created_at' => now(),

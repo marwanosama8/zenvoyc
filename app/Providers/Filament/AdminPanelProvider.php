@@ -35,10 +35,10 @@ class AdminPanelProvider extends PanelProvider
                 MenuItem::make()
                     ->label(__('User Dashboard'))
                     ->visible(
-                        fn() => true
+                        fn () => true
                     )
-                    ->url(fn() => route('filament.dashboard.pages.dashboard'))
-                    ->icon('heroicon-s-face-smile')
+                    ->url(fn () => route('filament.dashboard.pages.dashboard'))
+                    ->icon('heroicon-s-face-smile'),
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
@@ -96,7 +96,7 @@ class AdminPanelProvider extends PanelProvider
                         shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
-                    )
+                    ),
             ])
             ->sidebarCollapsibleOnDesktop();
     }

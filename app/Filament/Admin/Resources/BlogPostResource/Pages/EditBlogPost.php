@@ -10,7 +10,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditBlogPost extends EditRecord
 {
-//    use CrudDefaults;
+    //    use CrudDefaults;
     protected static string $resource = BlogPostResource::class;
 
     protected function getHeaderActions(): array
@@ -27,7 +27,7 @@ class EditBlogPost extends EditRecord
                 ->icon('heroicon-o-eye'),
             Actions\ActionGroup::make([
                 Actions\DeleteAction::make(),
-            ])
+            ]),
         ];
     }
 }

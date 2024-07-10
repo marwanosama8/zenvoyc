@@ -28,13 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
     planSwitchers.forEach((planSwitcher) => {
         planSwitcher.addEventListener('click', (event) => {
 
-            // remove the active class from all .plan-switcher a elements
+            // set all .plan-switcher a elements as inactive
             document.querySelectorAll('.plan-switcher a').forEach((planSwitcher) => {
                 planSwitcher.classList.remove('tab-active');
+                planSwitcher.removeAttribute('aria-selected');
             });
 
-            // add the active class to the clicked element
+            // set the clicked element as active
             planSwitcher.classList.add('tab-active');
+            planSwitcher.addAttribute('aria-selected');
 
             // hide all .plans-container elements
             document.querySelectorAll('.plans-container').forEach((plansContainer) => {

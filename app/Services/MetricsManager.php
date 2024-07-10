@@ -80,7 +80,7 @@ class MetricsManager
 
         foreach ($data as $key => $item) {
             $month = Carbon::parse($key)->format($dateGroupFormat);
-            if (!isset($chunks[$month])) {
+            if (! isset($chunks[$month])) {
                 $chunks[$month] = [];
             }
 
@@ -111,9 +111,9 @@ class MetricsManager
     {
         if ($aggregate === 'sum') {
             return array_sum($data);
-        } else if ($aggregate === 'last_value') {
+        } elseif ($aggregate === 'last_value') {
             return end($data);
-        } else if ($aggregate === 'max') {
+        } elseif ($aggregate === 'max') {
             return max($data);
         }
 
@@ -129,6 +129,12 @@ class MetricsManager
         $yesterdaysTotalRevenue = Transaction::where('status', TransactionStatus::SUCCESS->value)
             ->whereDate('created_at', $date)
             ->sum('amount');
+
+        $yesterdaysTotalRefunds = Transaction::where('status', TransactionStatus::REFUNDED->value)
+            ->whereDate('created_at', $date)
+            ->sum('amount');
+
+        $yesterdaysTotalRevenue -= $yesterdaysTotalRefunds;
 
         return money(intval($yesterdaysTotalRevenue), $currency->code)->formatByDecimal();
     }
@@ -172,7 +178,7 @@ class MetricsManager
         $totalTransactionAmounts = money(intval($totalTransactionAmounts), $currency->code)->formatByDecimal();
         $this->storeMetricData(MetricConstants::TOTAL_REVENUE_AMOUNT, $totalTransactionAmounts);
 
-        $result =  $userCount > 0 ? $totalTransactionAmounts / $userCount : 0;
+        $result = $userCount > 0 ? $totalTransactionAmounts / $userCount : 0;
 
         return number_format($result, 2);
     }
@@ -186,7 +192,7 @@ class MetricsManager
         // get number of active subscriptions 1 month ago
         $metric = Metrics::where('name', MetricConstants::ACTIVE_SUBSCRIPTION_COUNT)->first();
 
-        if (!$metric) {
+        if (! $metric) {
             return 0;
         }
 
@@ -195,7 +201,7 @@ class MetricsManager
             ->orderBy('created_at', 'desc')
             ->first();
 
-        if (!$activeSubscriptionsResult) {
+        if (! $activeSubscriptionsResult) {
             return 0;
         }
 
@@ -292,7 +298,7 @@ class MetricsManager
         $now = Carbon::now();
         $mrrNow = $this->calculateMRR($now);
 
-        $results =  $this->getMetricChartData(MetricConstants::MRR, $startDate, $endDate);
+        $results = $this->getMetricChartData(MetricConstants::MRR, $startDate, $endDate);
 
         $results[$now->toString()] = $mrrNow;
 
@@ -320,20 +326,20 @@ class MetricsManager
         $cases = [];
         foreach ($intervals as $interval) {
             $calculationDays = $intervalsInDays[$interval->name];
-            $cases[] = "WHEN interval_id = $interval->id THEN subscriptions.price * subscriptions.interval_count / " . $calculationDays . " * 30";
+            $cases[] = "WHEN interval_id = $interval->id THEN subscriptions.price * subscriptions.interval_count / ".$calculationDays.' * 30';
         }
 
         $results = DB::table('subscriptions')
             ->select([
                 DB::raw('
                 SUM(CASE
-                    ' . implode("\n", $cases) . '
+                    '.implode("\n", $cases).'
                     ELSE 0
                 END) as monthly_revenue
-            ')
+            '),
             ])
             ->where('status', SubscriptionStatus::ACTIVE->value)
-            ->where('ends_at' , '>=', $date)
+            ->where('ends_at', '>=', $date)
             ->where('created_at', '<=', $date)
             ->where(function ($query) use ($date) {
                 $query->whereNull('trial_ends_at')
@@ -347,11 +353,10 @@ class MetricsManager
             return 0;
         }
 
-        $mrr =  $results->first()->monthly_revenue;
+        $mrr = $results->first()->monthly_revenue;
 
         return money(intval(round($mrr)), $currency->code)->formatByDecimal();
     }
-
 
     public function getTotalUsers(?Carbon $date = null)
     {
@@ -388,6 +393,6 @@ class MetricsManager
         $totalSubscriptions = $this->getActiveSubscriptions();
         $totalUsers = User::all()->count();
 
-        return number_format(($totalUsers > 0 ? $totalSubscriptions / $totalUsers * 100 : 0), 2) . '%';
+        return number_format(($totalUsers > 0 ? $totalSubscriptions / $totalUsers * 100 : 0), 2).'%';
     }
 }

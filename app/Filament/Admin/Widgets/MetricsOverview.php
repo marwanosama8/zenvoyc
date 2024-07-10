@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 class MetricsOverview extends BaseWidget
 {
     protected static ?int $sort = 0;
+
     protected static ?string $pollingInterval = null;
 
     protected function getStats(): array
@@ -26,7 +27,7 @@ class MetricsOverview extends BaseWidget
             $mrrDescription = $previewMrr == $currentMrr ? '' : ($previewMrr > $currentMrr ? __('decrease') : __('increase'));
 
             if (strlen($mrrDescription) > 0) {
-                $mrrDescription = money(abs($currentMrr - $previewMrr), config('app.default_currency')) . ' ' . $mrrDescription;
+                $mrrDescription = money(abs($currentMrr - $previewMrr), config('app.default_currency')).' '.$mrrDescription;
                 $mrrIcon = $previewMrr > $currentMrr ? 'heroicon-m-arrow-down' : 'heroicon-m-arrow-up';
                 $color = $previewMrr > $currentMrr ? 'danger' : 'success';
             }

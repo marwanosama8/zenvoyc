@@ -29,31 +29,30 @@ class DemoDatabaseSeeder extends Seeder
     }
 
     private array $blogPostTitles = [
-        "The Art of Responsive Web Design: A Comprehensive Guide",
-        "Exploring the Power of Machine Learning in Everyday Life",
+        'The Art of Responsive Web Design: A Comprehensive Guide',
+        'Exploring the Power of Machine Learning in Everyday Life',
         "Mastering the Basics: A Beginner's Guide to Python Programming",
-        "The Future of Virtual Reality: Trends and Innovations",
-        "Sustainable Living: Eco-Friendly Practices for a Greener Planet",
-        "Unraveling the Mysteries of Quantum Computing",
-        "Crafting Engaging User Experiences: A UX Design Tutorial",
-        "Demystifying Blockchain Technology: Beyond Cryptocurrencies",
-        "Navigating the World of Cybersecurity: Tips for Online Safety",
-        "The Impact of Artificial Intelligence on Healthcare",
-        "DIY Home Improvement Projects for a Budget-Friendly Upgrade",
-        "Culinary Adventures: Exploring Global Cuisines at Home",
-        "Mindfulness in the Digital Age: Finding Balance in a Busy World",
-        "Capturing the Perfect Shot: Photography Tips for Beginners",
-        "Fitness for All: Tailoring Workouts to Your Lifestyle",
-        "Building a Personal Brand: Strategies for Professional Success",
-        "The Evolution of Social Media: Trends and Influencer Culture",
-        "Unlocking Creativity: A Guide to Overcoming Creative Blocks",
-        "The Power of Storytelling: Crafting Compelling Narratives",
-        "Remote Work Revolution: Maximizing Productivity in a Virtual World"
+        'The Future of Virtual Reality: Trends and Innovations',
+        'Sustainable Living: Eco-Friendly Practices for a Greener Planet',
+        'Unraveling the Mysteries of Quantum Computing',
+        'Crafting Engaging User Experiences: A UX Design Tutorial',
+        'Demystifying Blockchain Technology: Beyond Cryptocurrencies',
+        'Navigating the World of Cybersecurity: Tips for Online Safety',
+        'The Impact of Artificial Intelligence on Healthcare',
+        'DIY Home Improvement Projects for a Budget-Friendly Upgrade',
+        'Culinary Adventures: Exploring Global Cuisines at Home',
+        'Mindfulness in the Digital Age: Finding Balance in a Busy World',
+        'Capturing the Perfect Shot: Photography Tips for Beginners',
+        'Fitness for All: Tailoring Workouts to Your Lifestyle',
+        'Building a Personal Brand: Strategies for Professional Success',
+        'The Evolution of Social Media: Trends and Influencer Culture',
+        'Unlocking Creativity: A Guide to Overcoming Creative Blocks',
+        'The Power of Storytelling: Crafting Compelling Narratives',
+        'Remote Work Revolution: Maximizing Productivity in a Virtual World',
     ];
 
     private array $images = [
         'https://unsplash.com/photos/F1MaILUxscM/download?ixid=M3wxMjA3fDB8MXx0b3BpY3x8d0pMTzN0U0s1QU18fHx8fDJ8fDE3MDY2MTk4NTF8&force=true&w=1920',
-        'https://unsplash.com/photos/yGMw4KpX4CE/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzA2NjI2MDI1fA&force=true&w=1920',
         'https://unsplash.com/photos/DvopK4gNs8A/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzA2NjI2MDI5fA&force=true&w=1920',
         'https://unsplash.com/photos/c6miNI_WdZ4/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzA2NjI2MDMxfA&force=true&w=1920',
         'https://unsplash.com/photos/kF5nFbHBG5E/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzA2NjI2MDMyfA&force=true&w=1920',
@@ -79,7 +78,7 @@ class DemoDatabaseSeeder extends Seeder
 
         // add admin user
         $adminUser = User::where('email', 'admin@admin.com')->first();
-        if (!$adminUser) {
+        if (! $adminUser) {
 
             $adminUser = User::factory()->create([
                 'email' => 'admin@admin.com',
@@ -212,8 +211,8 @@ class DemoDatabaseSeeder extends Seeder
     private function createPlans(Product $product, $priceMonthly, $priceYearly): void
     {
         $basicPlan = $this->findOrCreatePlan([
-            'name' => $product->name . ' Monthly',
-            'slug' => $product->slug . '-monthly',
+            'name' => $product->name.' Monthly',
+            'slug' => $product->slug.'-monthly',
             'interval_id' => Interval::where('slug', 'month')->first()->id,
             'interval_count' => 1,
             'trial_interval_id' => Interval::where('slug', 'week')->first()->id,
@@ -233,8 +232,8 @@ class DemoDatabaseSeeder extends Seeder
         // add yearly plan
 
         $basicPlan = $this->findOrCreatePlan([
-            'name' => $product->name . ' Yearly',
-            'slug' => $product->slug . '-yearly',
+            'name' => $product->name.' Yearly',
+            'slug' => $product->slug.'-yearly',
             'interval_id' => Interval::where('slug', 'year')->first()->id,
             'interval_count' => 1,
             'trial_interval_id' => Interval::where('slug', 'week')->first()->id,
@@ -328,7 +327,7 @@ class DemoDatabaseSeeder extends Seeder
 
         for ($i = 1; $i <= $discountsToAdd; $i++) {
             $discount = Discount::create([
-                'name' => 'Discount ' . $i,
+                'name' => 'Discount '.$i,
                 'amount' => rand(10, 70),
                 'type' => 'percentage',
                 'valid_until' => null,
@@ -354,7 +353,7 @@ class DemoDatabaseSeeder extends Seeder
             $blog = BlogPost::create([
                 'title' => $title,
                 'slug' => Str::slug($title),
-                'body' => str_repeat('<p>' . $this->loremIpsum . '</p>', rand(10, 15)),
+                'body' => str_repeat('<p>'.$this->loremIpsum.'</p>', rand(10, 15)),
                 'is_published' => true,
                 'published_at' => now()->sub(rand(1, 10), 'days'),
                 'user_id' => $user->id,
@@ -363,8 +362,12 @@ class DemoDatabaseSeeder extends Seeder
 
             // assign an image to the blog post using spatie media library
 
-            $blog->addMediaFromUrl($this->images[rand(0, count($this->images) - 1)])
-                ->toMediaCollection('blog-images');
+            try {
+                $blog->addMediaFromUrl($this->images[rand(0, count($this->images) - 1)])
+                    ->toMediaCollection('blog-images');
+            } catch (\Exception $e) {
+                // do nothing
+            }
         }
     }
 
@@ -406,8 +409,8 @@ class DemoDatabaseSeeder extends Seeder
             $user = User::inRandomOrder()->first();
 
             $item = $user->roadmapItems()->create([
-                'title' => 'Roadmap Item ' . $i,
-                'slug' => 'roadmap-item-' . $i,
+                'title' => 'Roadmap Item '.$i,
+                'slug' => 'roadmap-item-'.$i,
                 'type' => RoadmapItemType::FEATURE->value,
                 'description' => $this->loremIpsum,
                 'upvotes' => rand(1, 10),

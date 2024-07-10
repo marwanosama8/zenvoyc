@@ -19,8 +19,7 @@ class InvoicePaymentFailed extends Mailable implements ShouldQueue
      */
     public function __construct(
         public Subscription $subscription,
-    )
-    {
+    ) {
         //
     }
 

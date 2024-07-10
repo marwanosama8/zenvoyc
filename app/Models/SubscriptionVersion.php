@@ -6,5 +6,5 @@ use Mpociot\Versionable\Version;
 
 class SubscriptionVersion extends Version
 {
-    public $table = "subscription_versions";
+    public $table = 'subscription_versions';
 }

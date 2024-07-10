@@ -20,7 +20,7 @@ class PlanPriceFactory extends Factory
         return [
             'plan_id' => null,
             'price' => 0,
-            'currency_id' => Currency::factory()
+            'currency_id' => Currency::factory(),
         ];
     }
 }

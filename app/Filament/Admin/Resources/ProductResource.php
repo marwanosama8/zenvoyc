@@ -10,13 +10,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
-use const _PHPStan_7c8075089\__;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Product Management';
 
@@ -36,7 +33,7 @@ class ProductResource extends Resource
                                 // add a random string if there is a product with the same slug
                                 $state = Str::slug($get('name'));
                                 if (Product::where('slug', $state)->exists()) {
-                                    $state .= '-' . Str::random(5);
+                                    $state .= '-'.Str::random(5);
                                 }
 
                                 return Str::slug($state);
@@ -55,13 +52,13 @@ class ProductResource extends Resource
                         ->label(__('Popular product'))
                         ->helperText(__('Mark this product as popular. This will be used to highlight this product in the pricing page.')),
                     Forms\Components\Toggle::make('is_default')
-                            ->label(__('Is default product'))
-                            ->validationAttribute(__('default product'))
-                            ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule) {
-                                return $rule->where('is_default', true);
-                            })
-                            ->default(false)
-                            ->helperText(__('A default product is a kind of a hidden product that allows you to set the features (and metadata) for users that have no active plan. Add a default product if you want to offer a free tier to your users. You can only have 1 default product and it cannot have any plans.')),
+                        ->label(__('Is default product'))
+                        ->validationAttribute(__('default product'))
+                        ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule) {
+                            return $rule->where('is_default', true);
+                        })
+                        ->default(false)
+                        ->helperText(__('A default product is a kind of a hidden product that allows you to set the features (and metadata) for users that have no active plan. Add a default product if you want to offer a free tier to your users. You can only have 1 default product and it cannot have any plans.')),
                     Forms\Components\KeyValue::make('metadata')
                         ->helperText(__('Add any additional data to this product. You can use this to store product features that could later be retrieved to serve your users.'))
                         ->keyLabel(__('Property name'))
@@ -70,9 +67,9 @@ class ProductResource extends Resource
                         ->helperText(__('Add features that this plan offers. These will be displayed on the pricing page and on the checkout page.'))
                         ->schema([
                             Forms\Components\TextInput::make('feature')->required(),
-                        ])
+                        ]),
                 ]),
-        ]);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -115,6 +112,6 @@ class ProductResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return  __('Subscription Product');
+        return __('Subscription Product');
     }
 }

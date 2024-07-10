@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 class StripeWebhookHandler
 {
-
     public function __construct(
         private SubscriptionManager $subscriptionManager,
         private TransactionManager $transactionManager,
@@ -32,9 +31,9 @@ class StripeWebhookHandler
     {
         try {
             $event = $this->buildStripeEvent($request);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Invalid payload'
+                'message' => 'Invalid payload',
             ], 400);
         }
 
@@ -66,10 +65,10 @@ class StripeWebhookHandler
                 'trial_ends_at' => $trialEndsAt,
                 'cancelled_at' => $cancelledAt,
             ]);
-        } else if ($event->type == 'customer.subscription.trial_will_end') {
+        } elseif ($event->type == 'customer.subscription.trial_will_end') {
             // TODO send email to user
 
-        } else if ($event->type == 'invoice.created') {
+        } elseif ($event->type == 'invoice.created') {
             $subscriptionUuid = $event->data->object->subscription_details->metadata->subscription_uuid;
             $subscription = $this->subscriptionManager->findByUuidOrFail($subscriptionUuid);
             $currency = Currency::where('code', strtoupper($event->data->object->currency))->firstOrFail();
@@ -92,7 +91,7 @@ class StripeWebhookHandler
                 $invoiceStatus,
                 $this->mapInvoiceStatusToTransactionStatus($invoiceStatus),
             );
-        } else if ($event->type == 'invoice.finalized' ||
+        } elseif ($event->type == 'invoice.finalized' ||
                     $event->type == 'invoice.paid' ||
                     $event->type == 'invoice.updated'
         ) {
@@ -109,7 +108,7 @@ class StripeWebhookHandler
                 null,
                 $fees,
             );
-        } else if ($event->type == 'invoice.finalization_failed' ||
+        } elseif ($event->type == 'invoice.finalization_failed' ||
             $event->type == 'invoice.payment_failed' ||
             $event->type == 'invoice.payment_action_required'
         ) {
@@ -130,8 +129,7 @@ class StripeWebhookHandler
 
             $this->subscriptionManager->handleInvoicePaymentFailed($subscription);
 
-        }
-        else if ($event->type == 'customer.updated') {
+        } elseif ($event->type == 'customer.updated') {
             $defaultPaymentMethodId = $event->data->object->invoice_settings->default_payment_method;
             $stripeCustomerId = $event->data->object->id;
 
@@ -139,12 +137,11 @@ class StripeWebhookHandler
                 'stripe_payment_method_id' => $defaultPaymentMethodId,
             ]);
 
-        }
-        else if ($event->type == 'payment_intent.succeeded' || $event->type == 'payment_intent.payment_failed') { // order event
+        } elseif ($event->type == 'payment_intent.succeeded' || $event->type == 'payment_intent.payment_failed') { // order event
             $paymentIntentId = $event->data->object->id;
             $orderUuid = $event->data->object->metadata?->order_uuid;
 
-            if (!empty($orderUuid)) {
+            if (! empty($orderUuid)) {
                 $order = $this->orderManager->findByUuidOrFail($orderUuid);
                 $fees = $this->calculateFees($paymentIntentId);
                 $currency = Currency::where('code', strtoupper($event->data->object->currency))->firstOrFail();
@@ -187,13 +184,12 @@ class StripeWebhookHandler
                     ]);
                 });
             }
-        }
-        elseif ($event->type == 'charge.refunded') { // order event
+        } elseif ($event->type == 'charge.refunded') { // order event
             $paymentIntentId = $event->data->object->payment_intent;
 
             $orderUuid = $event->data->object->metadata?->order_uuid;
 
-            if (!empty($orderUuid)) {
+            if (! empty($orderUuid)) {
 
                 $transaction = $this->transactionManager->getTransactionByPaymentProviderTxId($paymentIntentId);
 
@@ -211,8 +207,7 @@ class StripeWebhookHandler
                     }
                 }
             }
-        }
-        else if (str_starts_with($event->type, 'charge.dispute.')) { // order event
+        } elseif (str_starts_with($event->type, 'charge.dispute.')) { // order event
             $paymentIntentId = $event->data->object->payment_intent;
 
             $transaction = $this->transactionManager->getTransactionByPaymentProviderTxId($paymentIntentId);
@@ -319,7 +314,7 @@ class StripeWebhookHandler
 
     protected function calculateFees($paymentIntentId)
     {
-        if (!$paymentIntentId) {
+        if (! $paymentIntentId) {
             return null;
         }
 
@@ -330,5 +325,4 @@ class StripeWebhookHandler
 
         return $paymentIntent?->latest_charge?->balance_transaction?->fee ?? 0;
     }
-
 }

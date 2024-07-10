@@ -22,5 +22,6 @@
 
         @include('components.layouts.partials.tail')
     </div>
+    <x-impersonate::banner/>
 </body>
 </html>

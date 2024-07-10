@@ -19,8 +19,7 @@ class TestEmail extends Mailable implements ShouldQueue
     public function __construct(
         private string $emailSubject,
         private string $emailBody,
-    )
-    {
+    ) {
         //
     }
 

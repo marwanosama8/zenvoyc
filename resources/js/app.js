@@ -24,13 +24,15 @@ function assignTabSliderEvents() {
         tabs.forEach(tab => {
             tab.addEventListener("click", ()=>{
                 let tabTarget = tab.getAttribute("aria-controls")
-                // set all tabs to data-active-tab = false
+                // set all tabs as not active
                 tabs.forEach(tab =>{
                     tab.setAttribute("data-active-tab", "false")
+                    tab.setAttribute("aria-selected", "false")
                 })
 
-                // set the clicked tab to data-active-tab = true
+                // set the clicked tab as active
                 tab.setAttribute("data-active-tab", "true")
+                tab.setAttribute("aria-selected", "true")
 
                 panels.forEach(panel =>{
                     let panelId = panel.getAttribute("id")

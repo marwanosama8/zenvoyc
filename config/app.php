@@ -188,6 +188,8 @@ return [
 
     'recaptcha_enabled' => false,
 
+    'multiple_subscriptions_enabled' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -204,6 +206,7 @@ return [
          * Package Service Providers...
          */
         App\Providers\ConfigProvider::class,
+        App\Providers\BladeProvider::class,
 
         /*
          * Application Service Providers...

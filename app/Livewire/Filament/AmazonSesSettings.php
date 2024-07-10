@@ -14,6 +14,7 @@ use Livewire\Component;
 class AmazonSesSettings extends Component implements HasForms
 {
     private ConfigManager $configManager;
+
     protected string $slug = 'ses';
 
     use InteractsWithForms;
@@ -33,9 +34,9 @@ class AmazonSesSettings extends Component implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'key' => $this->configManager->get('services.' . $this->slug .  '.key'),
-            'secret' => $this->configManager->get('services.' . $this->slug .  '.secret'),
-            'region' => $this->configManager->get('services.' . $this->slug .  '.region'),
+            'key' => $this->configManager->get('services.'.$this->slug.'.key'),
+            'secret' => $this->configManager->get('services.'.$this->slug.'.secret'),
+            'region' => $this->configManager->get('services.'.$this->slug.'.region'),
         ]);
     }
 
@@ -55,7 +56,7 @@ class AmazonSesSettings extends Component implements HasForms
                         TextInput::make('region')
                             ->label(__('Region'))
                             ->required(),
-                    ])
+                    ]),
             ])
             ->statePath('data');
     }
@@ -64,9 +65,9 @@ class AmazonSesSettings extends Component implements HasForms
     {
         $data = $this->form->getState();
 
-        $this->configManager->set('services.' . $this->slug .  '.key', $data['key']);
-        $this->configManager->set('services.' . $this->slug .  '.secret', $data['secret']);
-        $this->configManager->set('services.' . $this->slug .  '.region', $data['region']);
+        $this->configManager->set('services.'.$this->slug.'.key', $data['key']);
+        $this->configManager->set('services.'.$this->slug.'.secret', $data['secret']);
+        $this->configManager->set('services.'.$this->slug.'.region', $data['region']);
 
         Notification::make()
             ->title(__('Settings Saved'))

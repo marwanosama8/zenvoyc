@@ -24,19 +24,21 @@ class ViewSubscription extends ViewRecord
                     ->label(__('Change Plan'))
                     ->color('primary')
                     ->icon('heroicon-o-rocket-launch')
-                    ->visible(function (Subscription $record): bool { return $record->status === SubscriptionStatus::ACTIVE->value; })
+                    ->visible(function (Subscription $record): bool {
+                        return $record->status === SubscriptionStatus::ACTIVE->value;
+                    })
                     ->form([
-                    \Filament\Forms\Components\Select::make('plan_id')
-                        ->label(__('Plan'))
-                        ->default($this->getRecord()->plan_id)
-                        ->options(function (PlanManager $planManager) {
-                            return $planManager->getAllActivePlans()->mapWithKeys(function ($plan) {
-                                return [$plan->id => $plan->name];
-                            });
-                        })
-                        ->required()
-                        ->helperText(__('Important: Plan change will happen immediately and depending on proration setting you set, user might be billed immediately full plan price or a proration is applied.')),
-                ])->action(function (array $data, SubscriptionManager $subscriptionManager, PlanManager $planManager, PaymentManager $paymentManager) {
+                        \Filament\Forms\Components\Select::make('plan_id')
+                            ->label(__('Plan'))
+                            ->default($this->getRecord()->plan_id)
+                            ->options(function (PlanManager $planManager) {
+                                return $planManager->getAllActivePlans()->mapWithKeys(function ($plan) {
+                                    return [$plan->id => $plan->name];
+                                });
+                            })
+                            ->required()
+                            ->helperText(__('Important: Plan change will happen immediately and depending on proration setting you set, user might be billed immediately full plan price or a proration is applied.')),
+                    ])->action(function (array $data, SubscriptionManager $subscriptionManager, PlanManager $planManager, PaymentManager $paymentManager) {
                         $userSubscription = $this->getRecord();
 
                         $paymentProvider = $userSubscription->paymentProvider()->first();
@@ -46,6 +48,7 @@ class ViewSubscription extends ViewRecord
                                 ->title(__('You need to select a different plan to change to.'))
                                 ->danger()
                                 ->send();
+
                             return;
                         }
 
@@ -70,7 +73,7 @@ class ViewSubscription extends ViewRecord
                                 ->danger()
                                 ->send();
                         }
-                }),
+                    }),
                 \Filament\Actions\Action::make('add-discount')
                     ->label(__('Add Discount'))
                     ->color('gray')
@@ -81,7 +84,7 @@ class ViewSubscription extends ViewRecord
                     ->form([
                         \Filament\Forms\Components\TextInput::make('code')
                             ->label(__('Discount code'))
-                            ->required()
+                            ->required(),
                     ])
                     ->action(function (array $data, Subscription $subscription, SubscriptionDiscountManager $subscriptionDiscountManager) {
                         $code = $data['code'];
@@ -89,7 +92,7 @@ class ViewSubscription extends ViewRecord
 
                         $result = $subscriptionDiscountManager->applyDiscount($subscription, $code, $user);
 
-                        if (!$result) {
+                        if (! $result) {
 
                             Notification::make()
                                 ->title(__('Could not apply discount code.'))

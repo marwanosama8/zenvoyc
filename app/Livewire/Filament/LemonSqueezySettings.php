@@ -11,7 +11,6 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Illuminate\Support\HtmlString;
 use Livewire\Component;
 
 class LemonSqueezySettings extends Component implements HasForms
@@ -47,22 +46,22 @@ class LemonSqueezySettings extends Component implements HasForms
         return $form
             ->schema([
                 Section::make()
-                        ->schema([
-                            TextInput::make('api_key')
-                                ->label(__('API Key')),
-                            TextInput::make('store_id')
-                                ->label(__('Store ID')),
-                            TextInput::make('signing_secret')
-                                ->label(__('Signing Secret')),
-                            Toggle::make('is_test_mode')
-                                ->label(__('Is Test Mode'))
-                                ->default(false)
-                                ->helperText(__('Check this box if you are using Lemon Squeezy in test mode.')),
-                        ])->columnSpan([
-                            'sm' => 6,
-                            'xl' => 8,
-                            '2xl' => 8,
-                        ]),
+                    ->schema([
+                        TextInput::make('api_key')
+                            ->label(__('API Key')),
+                        TextInput::make('store_id')
+                            ->label(__('Store ID')),
+                        TextInput::make('signing_secret')
+                            ->label(__('Signing Secret')),
+                        Toggle::make('is_test_mode')
+                            ->label(__('Is Test Mode'))
+                            ->default(false)
+                            ->helperText(__('Check this box if you are using Lemon Squeezy in test mode.')),
+                    ])->columnSpan([
+                        'sm' => 6,
+                        'xl' => 8,
+                        '2xl' => 8,
+                    ]),
                 Section::make()->schema([
                     ViewField::make('how-to')
                         ->label(__('Lemon Squeezy Settings'))

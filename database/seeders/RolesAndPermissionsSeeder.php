@@ -44,6 +44,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'create roadmap items', 'update roadmap items', 'delete roadmap items', 'view roadmap items',
             'view transactions',
             'update settings',
+            'impersonate users',
             'view stats',
             // new permissions
             'create invoice', 'update invoice', 'delete invoice', 'view invoice',

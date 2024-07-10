@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\TenancyHelpers;
 use App\Mail\User\VerifyEmail;
 use App\Notifications\Auth\QueuedVerifyEmail;
+use App\Services\OrderManager;
 use App\Services\SubscriptionManager;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasDefaultTenant;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail, HasTenants, HasDefaultTenant
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -126,7 +127,12 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         return $this->is_admin;
     }
 
-    public function isSubscribed(string $productSlug = null): bool
+    public function canImpersonate()
+    {
+        return $this->hasPermissionTo('impersonate users') && $this->isAdmin();
+    }
+
+    public function isSubscribed(?string $productSlug = null): bool
     {
         /** @var SubscriptionManager $subscriptionManager */
         $subscriptionManager = app(SubscriptionManager::class);
@@ -134,7 +140,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         return $subscriptionManager->isUserSubscribed($this, $productSlug);
     }
 
-    public function isTrialing(string $productSlug = null): bool
+    public function isTrialing(?string $productSlug = null): bool
     {
         /** @var SubscriptionManager $subscriptionManager */
         $subscriptionManager = app(SubscriptionManager::class);
@@ -142,7 +148,15 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         return $subscriptionManager->isUserTrialing($this, $productSlug);
     }
 
-    public function productMetadata()
+    public function hasPurchased(?string $productSlug = null): bool
+    {
+        /** @var OrderManager $orderManager */
+        $orderManager = app(OrderManager::class);
+
+        return $orderManager->hasUserOrdered($this, $productSlug);
+    }
+
+    public function subscriptionProductMetadata()
     {
         /** @var SubscriptionManager $subscriptionManager */
         $subscriptionManager = app(SubscriptionManager::class);
@@ -154,17 +168,17 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     {
         $this->notify(new QueuedVerifyEmail());
     }
- 
+
     public function companies()
     {
         return $this->belongsToMany(Company::class, 'users_companies', 'user_id', 'company_id');
     }
- 
+
     public function getTenants(Panel $panel): Collection
     {
         return $this->companies;
     }
- 
+
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->companies()->whereKey($tenant)->exists();
@@ -189,7 +203,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     {
         return $this->morphMany(Task::class, 'taskable');
     }
-    
+
     public function sales()
     {
         return $this->morphMany(Sales::class, 'salesable');
@@ -219,7 +233,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     {
         return $this->hasOne(EmployeeSetting::class);
     }
- 
+
     /**
      * The employee_tasks that belong to the Task
      *
@@ -229,17 +243,21 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     {
         return $this->belongsToMany(Task::class, 'employee_tasks', 'user_id', 'task_id');
     }
-        /**
+    /**
      * The "booted" method of the model.
      */
     protected static function booted(): void
     {
         static::created(function (User $model) {
-            if ( !is_null(auth()->user()) && !is_null(TenancyHelpers::getTenant()) && auth()->user()->hasRole(['company','super_company'])) {
+            if (!is_null(auth()->user()) && !is_null(TenancyHelpers::getTenant()) && auth()->user()->hasRole(['company', 'super_company'])) {
                 TenancyHelpers::getTenant()->users()->attach($model->id);
             } else {
-              $model->userSetting()->create();
+                $model->userSetting()->create();
             }
         });
+    }
+    public function address()
+    {
+        return $this->hasOne(Address::class);
     }
 }

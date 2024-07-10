@@ -28,4 +28,9 @@ class OrderItem extends Model
     {
         return $this->belongsTo(OneTimeProduct::class);
     }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }

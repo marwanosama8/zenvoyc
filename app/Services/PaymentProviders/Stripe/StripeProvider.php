@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\PaymentProviders\Stripe;
+
 use App\Constants\DiscountConstants;
 use App\Constants\PaymentProviderConstants;
 use App\Filament\Dashboard\Resources\SubscriptionResource;
@@ -26,7 +27,6 @@ use Stripe\StripeClient;
 
 class StripeProvider implements PaymentProviderInterface
 {
-
     public function __construct(
         private SubscriptionManager $subscriptionManager,
         private CalculationManager $calculationManager,
@@ -37,7 +37,7 @@ class StripeProvider implements PaymentProviderInterface
 
     }
 
-    public function createSubscriptionCheckoutRedirectLink(Plan $plan, Subscription $subscription, Discount $discount = null): string
+    public function createSubscriptionCheckoutRedirectLink(Plan $plan, Subscription $subscription, ?Discount $discount = null): string
     {
         $paymentProvider = $this->assertProviderIsActive();
 
@@ -100,14 +100,14 @@ class StripeProvider implements PaymentProviderInterface
         return $session->url;
     }
 
-    public function initProductCheckout(Order $order, Discount $discount = null): array
+    public function initProductCheckout(Order $order, ?Discount $discount = null): array
     {
         // stripe does not need any initialization
 
         return [];
     }
 
-    public function createProductCheckoutRedirectLink(Order $order, Discount $discount = null): string
+    public function createProductCheckoutRedirectLink(Order $order, ?Discount $discount = null): string
     {
         $paymentProvider = $this->assertProviderIsActive();
 
@@ -199,7 +199,7 @@ class StripeProvider implements PaymentProviderInterface
                 ]),
             ];
 
-            if (!$withProration) {
+            if (! $withProration) {
                 $subscriptionUpdateObject['proration_behavior'] = 'none';
             }
 
@@ -321,7 +321,7 @@ class StripeProvider implements PaymentProviderInterface
         return PaymentProviderConstants::STRIPE_SLUG;
     }
 
-    public function initSubscriptionCheckout(Plan $plan, Subscription $subscription, Discount $discount = null): array
+    public function initSubscriptionCheckout(Plan $plan, Subscription $subscription, ?Discount $discount = null): array
     {
         // stripe does not need any initialization
 
@@ -354,9 +354,9 @@ class StripeProvider implements PaymentProviderInterface
         $stripe = $this->getClient();
 
         $stripeProductId = $stripe->products->create([
-            'id' => $plan->slug . '-' . Str::random(),
+            'id' => $plan->slug.'-'.Str::random(),
             'name' => $plan->name,
-            'description' => !empty($plan->description) ? strip_tags($plan->description) : $plan->name,
+            'description' => ! empty($plan->description) ? strip_tags($plan->description) : $plan->name,
         ])->id;
 
         $this->planManager->addPaymentProviderProductId($plan, $paymentProvider, $stripeProductId);
@@ -375,9 +375,9 @@ class StripeProvider implements PaymentProviderInterface
         $stripe = $this->getClient();
 
         $stripeProductId = $stripe->products->create([
-            'id' => $product->slug . '-' . Str::random(),
+            'id' => $product->slug.'-'.Str::random(),
             'name' => $product->name,
-            'description' => !empty($product->description) ? strip_tags($product->description) : $product->name,
+            'description' => ! empty($product->description) ? strip_tags($product->description) : $product->name,
         ])->id;
 
         $this->oneTimeProductManager->addPaymentProviderProductId($product, $paymentProvider, $stripeProductId);
@@ -526,7 +526,7 @@ class StripeProvider implements PaymentProviderInterface
         $paymentProvider = PaymentProvider::where('slug', $this->getSlug())->firstOrFail();
 
         if ($paymentProvider->is_active === false) {
-            throw new \Exception('Payment provider is not active: ' . $this->getSlug());
+            throw new \Exception('Payment provider is not active: '.$this->getSlug());
         }
 
         return $paymentProvider;

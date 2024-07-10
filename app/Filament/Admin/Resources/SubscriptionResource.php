@@ -22,8 +22,6 @@ class SubscriptionResource extends Resource
 {
     protected static ?string $model = Subscription::class;
 
-    //    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = 'Revenue';
 
     protected static array $cachedSubscriptionHistoryComponents = [];
@@ -226,6 +224,8 @@ class SubscriptionResource extends Resource
                                                 return $record->paymentProvider->name;
                                             })
                                             ->label(__('Payment Provider')),
+                                        TextEntry::make('payment_provider_subscription_id')
+                                            ->label(__('Payment Provider Subscription ID')),
                                         TextEntry::make('ends_at')->dateTime(config('app.datetime_format'))->label(__('Next Renewal'))->visible(fn (Subscription $record): bool => ! $record->is_canceled_at_end_of_cycle),
                                         TextEntry::make('trial_ends_at')->dateTime(config('app.datetime_format'))->label(__('Trial Ends At'))->visible(fn (Subscription $record): bool => $record->trial_ends_at !== null),
                                         TextEntry::make('status')

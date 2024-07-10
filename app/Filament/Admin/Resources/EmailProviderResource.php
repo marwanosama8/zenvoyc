@@ -3,25 +3,19 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\EmailProviderResource\Pages;
-use App\Filament\Admin\Resources\EmailProviderResource\RelationManagers;
 use App\Models\EmailProvider;
-use App\Models\OauthLoginProvider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 
 class EmailProviderResource extends Resource
 {
     protected static ?string $model = EmailProvider::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
@@ -48,9 +42,9 @@ class EmailProviderResource extends Resource
                     ->getStateUsing(function (EmailProvider $record) {
                         return new HtmlString(
                             '<div class="flex gap-2">'.
-                            ' <img src="' .asset('images/email-providers/' . $record->slug . '.svg') . '"  class="h-6"> '
-                            . $record->name
-                            . '</div>'
+                            ' <img src="'.asset('images/email-providers/'.$record->slug.'.svg').'"  class="h-6"> '
+                            .$record->name
+                            .'</div>'
                         );
                     }),
                 Tables\Columns\TextColumn::make('slug')
@@ -84,6 +78,7 @@ class EmailProviderResource extends Resource
             'mailgun-settings' => Pages\MailgunSettings::route('/mailgun-settings'),
             'postmark-settings' => Pages\PostmarkSettings::route('/postmark-settings'),
             'ses-settings' => Pages\AmazonSesSettings::route('/ses-settings'),
+            'resend-settings' => Pages\ResendSettings::route('/resend-settings'),
             'smtp-settings' => Pages\SmtpSettings::route('/smtp-settings'),
         ];
     }

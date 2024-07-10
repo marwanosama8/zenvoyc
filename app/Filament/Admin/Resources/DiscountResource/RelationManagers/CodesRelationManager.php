@@ -65,7 +65,7 @@ class CodesRelationManager extends RelationManager
                         $count = $data['count'] ?? 1;
 
                         $codes = collect(range(1, $count))
-                            ->map(fn () => $prefix . '-' . strtoupper(Str::random(8)))
+                            ->map(fn () => $prefix.'-'.strtoupper(Str::random(8)))
                             ->map(fn ($code) => ['code' => $code]);
 
                         $record->codes()->createMany($codes);

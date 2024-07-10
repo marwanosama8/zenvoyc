@@ -4,7 +4,6 @@ namespace App\Livewire\Filament;
 
 use App\Services\ConfigManager;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ViewField;
@@ -12,7 +11,6 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Illuminate\Support\HtmlString;
 use Livewire\Component;
 
 class PaddleSettings extends Component implements HasForms
@@ -62,11 +60,11 @@ class PaddleSettings extends Component implements HasForms
                         Toggle::make('is_sandbox')
                             ->label(__('Is Sandbox'))
                             ->required(),
-                ])->columnSpan([
-                    'sm' => 6,
-                    'xl' => 8,
-                    '2xl' => 8,
-                ]),
+                    ])->columnSpan([
+                        'sm' => 6,
+                        'xl' => 8,
+                        '2xl' => 8,
+                    ]),
                 Section::make()->schema([
                     ViewField::make('how-to')
                         ->label(__('Paddle Settings'))
@@ -75,7 +73,7 @@ class PaddleSettings extends Component implements HasForms
                     'sm' => 6,
                     'xl' => 4,
                     '2xl' => 4,
-                ])
+                ]),
             ])->columns(12)
             ->statePath('data');
     }

@@ -4,16 +4,16 @@ namespace App\Filament\Dashboard\Resources\SubscriptionResource\Pages;
 
 use App\Constants\SubscriptionStatus;
 use App\Filament\Dashboard\Resources\SubscriptionResource;
+use App\Filament\Dashboard\Resources\SubscriptionResource\ActionHandlers\DiscardSubscriptionCancellationActionHandler;
 use App\Models\Subscription;
 use App\Services\PaymentProviders\PaymentManager;
 use App\Services\SubscriptionManager;
-use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
-use App\Filament\Dashboard\Resources\SubscriptionResource\ActionHandlers\DiscardSubscriptionCancellationActionHandler;
 
 class ViewSubscription extends ViewRecord
 {
     protected static string $resource = SubscriptionResource::class;
+
     protected function getHeaderActions(): array
     {
         return [
@@ -22,7 +22,9 @@ class ViewSubscription extends ViewRecord
                     ->label(__('Change Plan'))
                     ->color('primary')
                     ->icon('heroicon-o-rocket-launch')
-                    ->visible(function (Subscription $record): bool { return $record->status === SubscriptionStatus::ACTIVE->value; })
+                    ->visible(function (Subscription $record): bool {
+                        return $record->status === SubscriptionStatus::ACTIVE->value;
+                    })
                     ->url(fn (Subscription $record): string => SubscriptionResource::getUrl('change-plan', ['record' => $record->uuid])),
                 \Filament\Actions\Action::make('update-payment-details')
                     ->label(__('Update Payment Details'))

@@ -14,6 +14,7 @@ use Livewire\Component;
 class SmtpSettings extends Component implements HasForms
 {
     private ConfigManager $configManager;
+
     protected string $slug = 'smtp';
 
     use InteractsWithForms;
@@ -54,8 +55,8 @@ class SmtpSettings extends Component implements HasForms
                             ->label(__('Username')),
                         TextInput::make('password')
                             ->label(__('Password'))
-                            ->password()
-                    ])
+                            ->password(),
+                    ]),
             ])
             ->statePath('data');
     }

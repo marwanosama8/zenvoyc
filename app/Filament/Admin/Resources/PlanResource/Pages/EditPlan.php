@@ -11,6 +11,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditPlan extends EditRecord
 {
     use CrudDefaults;
+
     protected static string $resource = PlanResource::class;
 
     protected function getHeaderActions(): array
@@ -27,7 +28,7 @@ class EditPlan extends EditRecord
 
                     $action->cancel();
                 }
-            })
+            }),
         ];
     }
 }
