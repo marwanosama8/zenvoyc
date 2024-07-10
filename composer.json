@@ -51,8 +51,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^8.1",
         "phpunit/phpunit": "^10.0",
-        "spatie/laravel-ignition": "^2.0",
-        "marwanosama8/filament-timesheets": "*"
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -99,12 +98,6 @@
             "php-http/discovery": true
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/marwanosama8/filament-timesheets"
-        }
-    ],
     "minimum-stability": "stable",
     "prefer-stable": true
 }
