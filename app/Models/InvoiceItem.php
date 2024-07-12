@@ -16,21 +16,23 @@ class InvoiceItem extends Model
 	];
 	protected $guarded = [];
 
-	public function Invoice()
+	public function invoice()
 	{
-		return $this->belongsTo(Invoice::class);
+		return $this->belongsTo(TenantInvoice::class,'invoice_id','id');
 	}
 
 	protected static function booted(): void
     {
         static::creating(function (InvoiceItem $invoiceItem) {
+
+			// dd($invoiceItem);
 			$rate = $invoiceItem->invoice->customer->rate;
-			$invoiceItem->price = Invoice::getPriceAmount($invoiceItem->type,$invoiceItem->amount,$rate);
+			$invoiceItem->price = TenantInvoice::getPriceAmount($invoiceItem->type,$invoiceItem->amount,$rate);
         });
 
 		static::updating(function (InvoiceItem $invoiceItem) {
 			$rate = $invoiceItem->invoice->customer->rate;
-			$invoiceItem->price = Invoice::getPriceAmount($invoiceItem->type,$invoiceItem->amount,$rate);
+			$invoiceItem->price = TenantInvoice::getPriceAmount($invoiceItem->type,$invoiceItem->amount,$rate);
         });
     }
 }

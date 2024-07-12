@@ -66,7 +66,7 @@ class Company extends Model implements HasAvatar
 
     public function invoices()
     {
-        return $this->morphMany(Invoice::class, 'invoiceable');
+        return $this->morphMany(TenantInvoice::class, 'invoiceable');
     }
     public function autoInvoices()
     {

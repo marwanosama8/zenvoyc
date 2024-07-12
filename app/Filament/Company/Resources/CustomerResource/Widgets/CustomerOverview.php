@@ -2,7 +2,7 @@
 
 namespace App\Filament\Company\Resources\CustomerResource\Widgets;
 
-use App\Models\Invoice;
+use App\Models\TenantInvoice as Invoice;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 

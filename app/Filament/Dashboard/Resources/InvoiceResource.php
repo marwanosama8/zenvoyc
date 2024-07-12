@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Product;
-use App\Models\Invoice;
+use App\Models\TenantInvoice as Invoice;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Form;

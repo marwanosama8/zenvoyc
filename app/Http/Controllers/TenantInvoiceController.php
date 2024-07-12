@@ -8,8 +8,8 @@ use App\Mail\MailInvoice;
 use App\Mail\MailReminder;
 use App\Mapper\InvoiceDataMapper;
 use App\Models\Company;
-use App\Models\Invoice;
-use App\Models\Scopes\InvoiceScope;
+use App\Models\TenantInvoice as Invoice;
+use App\Models\Scopes\TenantInvoiceScope as InvoiceScope;
 use Carbon\Carbon;
 use Filament\Facades\Filament;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use Knp\Snappy\Pdf;
 use Spatie\Browsershot\Browsershot;
 
-class InvoiceController extends Controller
+class TenantInvoiceController extends Controller
 {
     public function __construct(
         private InvoiceDataMapper $invoiceDataMapper,
@@ -142,7 +142,7 @@ class InvoiceController extends Controller
         return Browsershot::html($content)
             ->showBackground()
             ->waitUntilNetworkIdle()
-            ->paperSize(280, 330)
+            ->paperSize(300, 330)
             ->ignoreHttpsErrors();
     }
 
@@ -160,12 +160,12 @@ class InvoiceController extends Controller
 
         $pdf = $this->generatePdfFile($invoice);
 
-        if (Storage::exists($foldername)) {
-            return [
-                'pdf' => $pdf,
-                'path' => $invoiceMedia->path
-            ];
-        }
+        // if (Storage::exists($foldername)) {
+        //     return [
+        //         'pdf' => $pdf,
+        //         'path' => $invoiceMedia->path
+        //     ];
+        // }
 
         Storage::put($foldername . $filename, $pdf->pdf());
 

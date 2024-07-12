@@ -10,7 +10,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use App\Models\Invoice;
+use App\Models\TenantInvoice as Invoice;
 use App\Models\Scopes\CustomerScope;
 use App\Models\Scopes\InvoiceScope;
 use Carbon\Carbon;

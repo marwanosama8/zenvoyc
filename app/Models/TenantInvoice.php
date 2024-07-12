@@ -7,17 +7,16 @@ use App\Setting;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Scopes\InvoiceScope;
+use App\Models\Scopes\TenantInvoiceScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Str;
 
-#[ScopedBy([InvoiceScope::class])]
-class Invoice extends Model
+#[ScopedBy([TenantInvoiceScope::class])]
+class TenantInvoice extends Model
 {
 	use SoftDeletes;
 	protected $fillable = [
 		'customer_id',
-		// 'user_id',
 		'rgnr',
 		'customer_address',
 		'date_origin',
@@ -34,17 +33,8 @@ class Invoice extends Model
 		'regenerated',
 		'options',
 	];
-	// protected $with = ['Customer'];
-	// protected $rules = [
-	// 	'customer_id' => 'required',
-	// ];
 	protected $guarded = [];
 
-	// Owner Realtionship
-	// public function company()
-	// {
-	// 	return $this->belongsTo(Company::class);
-	// }
 
 
 
@@ -55,13 +45,13 @@ class Invoice extends Model
 
 	public function InvoiceItem()
 	{
-		return $this->hasMany(InvoiceItem::class);
+		return $this->hasMany(InvoiceItem::class,'invoice_id','id');
 	}
 
 	//just for Filament 3
 	public function invoice_item()
 	{
-		return $this->hasMany(InvoiceItem::class);
+		return $this->hasMany(InvoiceItem::class,'invoice_id','id');
 	}
 
 
@@ -184,7 +174,7 @@ class Invoice extends Model
 	 */
 	public function invoiceMedia()
 	{
-		return $this->hasMany(InvoiceMedia::class);
+		return $this->hasMany(InvoiceMedia::class,'invoice_id','id');
 	}
 
 	/**
@@ -199,7 +189,7 @@ class Invoice extends Model
 
 	protected static function booted(): void
 	{
-		static::creating(function (Invoice $model) {
+		static::creating(function (TenantInvoice $model) {
 
 			$currentTenant = TenancyHelpers::getTenant();
 			$model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';

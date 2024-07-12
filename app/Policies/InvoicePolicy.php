@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Invoice;
+use App\Models\TenantInvoice as Invoice;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 

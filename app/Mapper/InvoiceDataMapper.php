@@ -2,9 +2,7 @@
 
 namespace App\Mapper;
 
-use App\Constants\OrderStatus;
 use App\Models\Company;
-use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
 
 class InvoiceDataMapper

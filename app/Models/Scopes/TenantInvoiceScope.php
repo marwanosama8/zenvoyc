@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class InvoiceScope implements Scope
+class TenantInvoiceScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.

@@ -44,12 +44,12 @@ class Customer extends Model
 
     public function Invoice()
     {
-        return $this->hasMany(Invoice::class);
+        return $this->hasMany(TenantInvoice::class);
     }
 
     public function getAllInvoices()
     {
-        return Invoice::where('customer_id', $this->id)->get();
+        return TenantInvoice::where('customer_id', $this->id)->get();
     }
 
     public static function getRate($customerID)
@@ -68,7 +68,7 @@ class Customer extends Model
 
     public function getLastYear()
     {
-        $data = Invoice::where('customer_id', $this->id)->whereYear('date_origin', '=', Carbon::now()->subYear()->format('Y'))->get();
+        $data = TenantInvoice::where('customer_id', $this->id)->whereYear('date_origin', '=', Carbon::now()->subYear()->format('Y'))->get();
         $result = 0;
         foreach ($data as $invoice) {
             $result += $invoice->getTotalNetto();

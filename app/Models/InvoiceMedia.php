@@ -18,6 +18,6 @@ class InvoiceMedia extends Model
      */
     public function invoice()
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(TenantInvoice::class,'invoice_id','id');
     }
 }

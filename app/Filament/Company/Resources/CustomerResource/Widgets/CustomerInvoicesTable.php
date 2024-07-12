@@ -3,7 +3,7 @@
 namespace App\Filament\Company\Resources\CustomerResource\Widgets;
 
 use App\Filament\Company\Resources\InvoiceResource;
-use App\Models\Invoice;
+use App\Models\TenantInvoice as Invoice;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;

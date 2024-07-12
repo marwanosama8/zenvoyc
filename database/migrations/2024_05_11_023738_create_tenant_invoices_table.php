@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('tenant_invoices', function (Blueprint $table) {
             $table->id();
             $table->morphs('invoiceable');
             $table->unsignedBigInteger('customer_id');
+            $table->string('invoice_number')->index();
             $table->string('rgnr', 50);
             $table->text('user_address')->nullable();
             $table->date('date_origin');
