@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->morphs('expenditureable');
             $table->string('name', 200);
+            $table->date('start');
+            $table->date('end');
             $table->text('description')->nullable();
             $table->decimal('cost', 10, 2);
             $table->enum('frequency', ['one-time', 'monthly', 'quarterly', 'yearly']);

@@ -22,11 +22,14 @@ class Expenditure extends Model
         'description',
         'cost',
         'frequency',
-        // 'company_id'
+        'end',
+        'start'
     ];
 
     protected $casts = [
         'frequency' => FrequencyEnums::class,
+        'start' => 'datetime:Y-m-d',
+        'end' => 'datetime:Y-m-d'
     ];
 
     public function expenditureable()

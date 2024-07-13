@@ -6,11 +6,14 @@ use App\Enums\FrequencyEnums;
 use App\Filament\Company\Resources\ExpenditureResource\Pages;
 use App\Filament\Company\Resources\ExpenditureResource\RelationManagers;
 use App\Models\Expenditure;
+use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -48,20 +51,60 @@ class ExpenditureResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('expenditure.field.name')
-                    ->required(),
-                Textarea::make('description')
-                    ->label('expenditure.field.description')
-                    ->required(),
-                TextInput::make('cost')
-                    ->label('expenditure.field.cost')
-                    ->required()
-                    ->numeric(),
-                Select::make('frequency')
-                    ->label('expenditure.field.frequency')
-                    ->options(FrequencyEnums::class)
-                    ->required()
+                Fieldset::make('info')
+                    ->label(__('expenditure.label.info'))
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('expenditure.field.name'))
+                            ->required(),
+                        TextInput::make('cost')
+                            ->label(__('expenditure.field.cost'))
+                            ->required()
+                            ->numeric(),
+                        Textarea::make('description')
+                            ->label(__('expenditure.field.description'))
+                            ->columnSpanFull()
+                            ->required(),
+                    ]),
+                Fieldset::make('date')
+                    ->label(__('expenditure.label.date'))
+                    ->schema([
+                        Select::make('frequency')
+                            ->label(__('expenditure.field.frequency'))
+                            ->default(FrequencyEnums::OneTime)
+                            ->options(FrequencyEnums::class)
+                            ->live()
+                            ->required(),
+                        Select::make('start')
+                            ->label(__('expenditure.field.start'))
+                            ->live()
+                            ->default(Carbon::today()->toDateString())
+                            ->options(fn (Get $get, $livewire): array => match ($get('frequency')->value ?? $get('frequency')) {
+                                'one-time' => $livewire->getStartDateOption('one-time'),
+                                'monthly' => $livewire->getStartDateOption('monthly'),
+                                'yearly' =>  $livewire->getStartDateOption('yearly'),
+                                default => [],
+                            })
+                            ->native(0)
+                            ->required(),
+                        Select::make('end')
+                            ->label(__('expenditure.field.end'))
+                            ->hidden(function (Get $get) {
+                                if ($get('frequency') instanceof FrequencyEnums) {
+                                    return $get('frequency')->value  == 'one-time';
+                                } else {
+                                    return $get('frequency') == 'one-time';
+                                }
+                            })
+                            ->options(fn (Get $get, $livewire): array => match ($get('frequency')->value ?? $get('frequency')) {
+                                'one-time' => $livewire->getEndDateOption('one-time', $get('start')),
+                                'monthly' => $livewire->getEndDateOption('monthly',  $get('start')),
+                                'yearly' =>  $livewire->getEndDateOption('yearly', $get('start')),
+                                default => [],
+                            })
+                            ->native(0)
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -75,10 +118,12 @@ class ExpenditureResource extends Resource
                     ->label('expenditure.field.description'),
                 Tables\Columns\TextColumn::make('cost')
                     ->label('expenditure.field.cost'),
-                    Tables\Columns\SelectColumn::make('frequency')
+                Tables\Columns\TextColumn::make('frequency')
+                ->getStateUsing(function($record) {
+                    return ucfirst($record->frequency->value);
+                })
                     ->label('expenditure.field.frequency')
-                    ->options(FrequencyEnums::class)
-
+                    ->badge()
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
