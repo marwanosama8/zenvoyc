@@ -12,7 +12,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use App\Models\TenantInvoice as Invoice;
 use App\Models\Scopes\CustomerScope;
-use App\Models\Scopes\InvoiceScope;
+use App\Models\Scopes\TenantInvoiceScope as InvoiceScope;
 use Carbon\Carbon;
 use Filament\Tables;
 
@@ -29,8 +29,8 @@ class CustomerInvoices extends Component implements HasForms, HasTable
     public function mount($token)
     {
         $customer = Customer::withoutGlobalScope(CustomerScope::class)->whereToken($token)->first();
-        
-        abort_if(is_null($customer), 404);
+
+        abort_if(is_null($customer) || !$customer?->general_access, 404);
         $this->customer = $customer;
         $year = Carbon::now()->year;
         $this->lastThreeYears = range($year - 3, $year);

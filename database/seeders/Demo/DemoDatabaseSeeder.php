@@ -88,7 +88,7 @@ class DemoDatabaseSeeder extends Seeder
                 'is_admin' => true,
             ]);
 
-            $adminUser->assignRole(['admin', 'super_comapny', 'user', 'employee']);
+            $adminUser->assignRole(['admin', 'super_company', 'user', 'employee']);
         }
 
         $this->seedDemoData();

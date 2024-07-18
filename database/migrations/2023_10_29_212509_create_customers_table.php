@@ -16,18 +16,20 @@ return new class extends Migration
             $table->morphs('customerable');
             $table->string('name', 200);
             $table->text('added')->nullable();
-            $table->string('street', 100);
-            $table->string('token', 100);
-            $table->string('nr', 20);
-            $table->string('zip', 20);
-            $table->string('city', 100);
-            $table->string('country', 100);
+            $table->string('street', 100)->nullable();
+            $table->string('token', 100)->nullable();
+            $table->string('nr', 20)->nullable();
+            $table->string('zip', 20)->nullable();
+            $table->string('city', 100)->nullable();
+            $table->string('country', 100)->nullable();
             $table->string('contact', 100)->nullable();
             $table->string('email', 200)->nullable();
             $table->string('cc', 200)->nullable();
             $table->string('vatid', 50)->nullable();
             $table->decimal('rate', 8, 2)->default(100.00);
             $table->longText('options')->nullable();
+            $table->boolean('general_access')->default(0);
+            $table->boolean('reverse_charge')->default(0);
             $table->timestamps(); // This will automatically add created_at and updated_at
             $table->softDeletes(); // This will add deleted_at column for soft deletes
         });

@@ -28,6 +28,12 @@ class TenancyHelpers
    {
       return is_null(Filament::getTenant()) ? auth()->user()->customers->pluck('name', 'id') : Filament::getTenant()->customers->pluck('name', 'id');
    }
+
+   public static function getPluckContacts()
+   {
+      return is_null(Filament::getTenant()) ? auth()->user()->customer_contact->pluck('name', 'id') : Filament::getTenant()->customer_contact->pluck('name', 'id');
+   }
+
    public static function getPluckEmployeeTasks()
    {
       return Task::authEmployeeTasks()->get()->pluck('title', 'id')->toArray();

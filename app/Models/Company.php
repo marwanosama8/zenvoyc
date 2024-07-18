@@ -106,5 +106,10 @@ class Company extends Model implements HasAvatar
         return $this->morphMany(Task::class, 'taskable');
     }
 
+    public function contacts()
+    {
+        return $this->morphMany(Contact::class, 'contactable');
+    }
+
 
 }

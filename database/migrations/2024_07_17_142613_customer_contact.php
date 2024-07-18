@@ -14,11 +14,7 @@ return new class extends Migration
         Schema::create('customer_contacts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id');
-            $table->string('name');
-            $table->string('email');
-            $table->string('role')->nullable();
-            $table->string('phone')->nullable();
-            $table->text('information');
+            $table->unsignedBigInteger('contact_id');
             $table->timestamps();
         });
     }

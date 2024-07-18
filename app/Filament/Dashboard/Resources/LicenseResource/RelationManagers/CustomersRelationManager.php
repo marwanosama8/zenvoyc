@@ -21,7 +21,7 @@ class CustomersRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
-                ->relationship('customer', 'name')
+                // ->relationship('customer', 'name')
                 ->options(TenancyHelpers::getPluckCustomers())
                 ->live()
                 ->required()

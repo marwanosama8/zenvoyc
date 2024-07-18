@@ -21,14 +21,9 @@ class CustomersRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
-                ->relationship('customer', 'name')
                 ->options(TenancyHelpers::getPluckCustomers())
                 ->lazy()
-                ->live()
                 ->required()
-                // ->afterStateUpdated(function (Set $set, ?string $state) {
-                //     session(['current_customer_id' => $state]);
-                // })
                 ->native(false)
                 ->label(__("invoice.field.customer"))
             ]);

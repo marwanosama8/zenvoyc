@@ -94,6 +94,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         return $this->hasMany(Transaction::class);
     }
 
+
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() == 'admin' && !$this->is_admin) {
@@ -207,6 +208,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     public function sales()
     {
         return $this->morphMany(Sales::class, 'salesable');
+    }
+
+    public function contacts()
+    {
+        return $this->morphMany(Contact::class, 'contactable');
     }
 
     public function getDefaultTenant(Panel $panel): ?Model

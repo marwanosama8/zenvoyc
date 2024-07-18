@@ -18,14 +18,14 @@ class DatabaseSeeder extends Seeder
         $admin = User::find(1)->update([
             'password' => bcrypt('admin'),
         ]);
-        
+
         $this->callOnce([
-        //     IntervalsSeeder::class,
-        //     CurrenciesSeeder::class,
-        //     OAuthLoginProviderSeeder::class,
-        //     PaymentProvidersSeeder::class,
+            IntervalsSeeder::class,
+            CurrenciesSeeder::class,
+            OAuthLoginProviderSeeder::class,
+            PaymentProvidersSeeder::class,
             RolesAndPermissionsSeeder::class,
-        //     EmailProviderSeeder::class,
+            // EmailProviderSeeder::class,
         ]);
     }
 }

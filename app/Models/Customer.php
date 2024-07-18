@@ -33,6 +33,8 @@ class Customer extends Model
         'rate',
         'vatid',
         'options',
+        'general_access',
+        'reverse_charge',
     ];
     // Owner Realtionship
     public function customerable()
@@ -108,14 +110,15 @@ class Customer extends Model
         return $this->belongsToMany(License::class, 'license_allocations', 'customer_id', 'license_id')->withTimestamps();
     }
 
+
     /**
-     * Get all of the contacts for the Customer
+     * The customer_contacts that belong to the Customer
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function customer_contacts()
+    public function contacts()
     {
-        return $this->hasMany(CustomerContact::class);
+        return $this->belongsToMany(Contact::class, 'customer_contacts', 'customer_id', 'contact_id');
     }
 
     /**
@@ -124,7 +127,6 @@ class Customer extends Model
     protected static function booted(): void
     {
         static::creating(function (Customer $model) {
-            // dd(is_null(Filament::getTenant()) ? auth()->user()->customers->pluck('name', 'id') : Filament::getTenant()->customers->pluck('name', 'id'));
             $model->token = Str::random(20);
 
             $currentTenant = TenancyHelpers::getTenant();

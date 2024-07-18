@@ -54,10 +54,10 @@ class RolesAndPermissionsSeeder extends Seeder
             'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
             'create company', 'update company', 'delete company', 'view company',
             'create multi companies',
-            'create time tracking', 'update time tracking', 'delete time tracking', 'view time tracking',
             'create employees', 'update employees', 'delete employees', 'view employees',
             'create tasks', 'update tasks', 'delete tasks', 'view tasks',
             'create projects', 'update projects', 'delete projects', 'view projects',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
             'create timesheets', 'update timesheets', 'delete timesheets', 'view timesheets',
             'create task comments', 'update task comments', 'delete task comments', 'view task comments',
         ];
@@ -99,12 +99,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'create offers', 'update offers', 'delete offers', 'view offers',
             'create licences', 'update licences', 'delete licences', 'view licences',
             'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
-            'create time tracking', 'update time tracking', 'delete time tracking', 'view time tracking',
             'create company', 'update company', 'delete company', 'view company',
             'create multi companies',
             'create employees', 'update employees', 'delete employees', 'view employees',
             'create tasks', 'update tasks', 'delete tasks', 'view tasks',
             'update timesheets', 'delete timesheets', 'view timesheets',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
             'create projects', 'update projects', 'delete projects', 'view projects',
             'create tasks', 'update tasks', 'delete tasks', 'view tasks',
             'create task comments', 'update task comments', 'delete task comments', 'view task comments',
@@ -126,11 +126,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'create licences', 'update licences', 'delete licences', 'view licences',
             'create company', 'update company', 'delete company', 'view company',
             'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
-            'create time tracking', 'update time tracking', 'delete time tracking', 'view time tracking',
             'create employees', 'update employees', 'delete employees', 'view employees',
             'create timesheets', 'update timesheets', 'delete timesheets', 'view timesheets',
             'create projects', 'update projects', 'delete projects', 'view projects',
             'create tasks', 'update tasks', 'delete tasks', 'view tasks',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
             'create task comments', 'update task comments', 'delete task comments', 'view task comments',
         ];
 
@@ -151,6 +151,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'create projects', 'update projects', 'delete projects', 'view projects',
             'create tasks', 'update tasks', 'delete tasks', 'view tasks',
             'create licences', 'update licences', 'delete licences', 'view licences',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
             'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
         ];
 
@@ -164,7 +165,6 @@ class RolesAndPermissionsSeeder extends Seeder
     private function createEmployeeRole(): void
     {
         $permissions = [
-            'create time tracking', 'update time tracking', 'delete time tracking', 'view time tracking',
             'update tasks', 'view tasks',
             'create task comments', 'view task comments',
             'create timesheets', 'update timesheets', 'view timesheets',

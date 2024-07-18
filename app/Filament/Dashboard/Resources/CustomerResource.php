@@ -3,6 +3,7 @@
 namespace App\Filament\Dashboard\Resources;
 
 use App\Filament\Dashboard\Resources\CustomerResource\Pages;
+use App\Filament\Dashboard\Resources\CustomerResource\RelationManagers\CustomerContactsRelationManager;
 use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,13 +19,13 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
-  
+
     public static function getModelLabel(): string
     {
         return __('navigation.customer');
     }
 
-  
+
     public static function getPluralModelLabel(): string
     {
         return __('navigation.customers');
@@ -44,71 +45,40 @@ class CustomerResource extends Resource
             ->schema([
                 Fieldset::make('Inforamtions')
                     ->schema([
-                        // ...
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(200),
+                        Forms\Components\TextInput::make('rate')
+                            ->required()
+                            ->numeric()
+                            ->default(100.00),
                         Forms\Components\Textarea::make('added')
-                            ->maxLength(65535)
+                            ->maxLength(65535),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->maxLength(200),
+                        Forms\Components\TextInput::make('cc')
+                            ->maxLength(200),
+                        Forms\Components\TextInput::make('vatid')
+                            ->maxLength(50),
+                        Forms\Components\Textarea::make('options')
                             ->columnSpanFull(),
                     ]),
                 Fieldset::make('Address')
                     ->schema([
                         Forms\Components\TextInput::make('street')
-                            ->required()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('nr')
-                            ->required()
                             ->maxLength(20),
                         Forms\Components\TextInput::make('zip')
-                            ->required()
                             ->maxLength(20),
                         Forms\Components\TextInput::make('city')
-                            ->required()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('country')
-                            ->required()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('contact')
                             ->maxLength(100),
-                    ]),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(200),
-                Forms\Components\TextInput::make('cc')
-                    ->maxLength(200),
-                Forms\Components\TextInput::make('vatid')
-                    ->maxLength(50),
-                Forms\Components\TextInput::make('rate')
-                    ->required()
-                    ->numeric()
-                    ->default(100.00),
-                Forms\Components\Textarea::make('options')
-                    ->columnSpanFull(),
-                Fieldset::make('Contract')
-                    ->schema([
-                        Forms\Components\Repeater::make('customer_contacts')
-                            ->relationship()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(200),
-                                Forms\Components\TextInput::make('email')
-                                    ->email()
-                                    ->required()
-                                    ->maxLength(200),
-                                Forms\Components\TextInput::make('role')
-                                    ->maxLength(100),
-                                Forms\Components\TextInput::make('phone')
-                                    ->maxLength(100),
-                                Forms\Components\Textarea::make('information')
-                                    ->maxLength(65535)
-                                    ->required()
-                                    ->columnSpanFull(),
-                            ])
-                            ->columnSpanFull()
-                            ->grid(2),
-                    ]),
+                    ])
             ]);
     }
 
@@ -119,30 +89,38 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('street')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nr')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('zip')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('country')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('contact')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('cc')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('vatid')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rate')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('token')
-                    ->label('customer.field.token')
-                    ->copyable()
-                    ->getStateUsing(fn (Customer $record): string =>  route('list.invoices', $record->token)),
+                Tables\Columns\ToggleColumn::make('general_access')
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('reverse_charge')
+                    ->sortable(),
+                Tables\Columns\ViewColumn::make('token')
+                    ->view('filament.tables.columns.token-copy-column')
+                    ->label('customer.field.token'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -154,11 +132,6 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('#')
-                    ->getStateUsing(function ($record) {
-                        return '<a target="_blank" href="' . route('list.invoices', ['token' => $record->token]) . '">' . __('invoice.link.invoice') . '</a>';
-                    })
-                    ->html()
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -179,7 +152,7 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CustomerContactsRelationManager::class
         ];
     }
 
