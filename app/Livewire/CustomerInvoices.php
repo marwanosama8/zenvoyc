@@ -29,7 +29,6 @@ class CustomerInvoices extends Component implements HasForms, HasTable
     public function mount($token)
     {
         $customer = Customer::withoutGlobalScope(CustomerScope::class)->whereToken($token)->first();
-
         abort_if(is_null($customer) || !$customer?->general_access, 404);
         $this->customer = $customer;
         $year = Carbon::now()->year;

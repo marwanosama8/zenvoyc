@@ -18,9 +18,6 @@ class Offer extends Model
         'customer_id',
         'general_access',
         'token',
-        'user_id',
-        'user_address',
-        'user_email',
         'title',
         'introtext',
         'positions',
@@ -80,8 +77,13 @@ class Offer extends Model
         static::creating(function (Offer $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->offerable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->offerable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+       
+            if (empty($model->offerable_type)) {
+                $model->offerable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->offerable_id)) {
+                $model->offerable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 }

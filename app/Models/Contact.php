@@ -43,8 +43,12 @@ class Contact extends Model
         static::creating(function (Contact $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->contactable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->contactable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            if (empty($model->contactable_type)) {
+                $model->contactable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->contactable_id)) {
+                $model->contactable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 }

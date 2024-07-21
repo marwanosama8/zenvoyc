@@ -15,7 +15,6 @@ class Task extends Model
     use HasFactory,HasFilamentComments;
 
     protected $fillable = [
-        'company_id',
         'title',
         'description',
         'subtasks',
@@ -71,8 +70,13 @@ class Task extends Model
         static::creating(function (Task $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->taskable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->taskable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+
+            if (empty($model->taskable_type)) {
+                $model->taskable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->taskable_id)) {
+                $model->taskable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 

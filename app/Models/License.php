@@ -56,8 +56,13 @@ class License extends Model
         static::creating(function (License $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->licenseable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->licenseable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+       
+            if (empty($model->licenseable_type)) {
+                $model->licenseable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->licenseable_id)) {
+                $model->licenseable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 }

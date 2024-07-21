@@ -63,7 +63,7 @@ class RegisterCompany extends RegisterTenant
 
     protected function handleRegistration(array $data): Company
     {
-        $data['slug'] =  Str::slug($data['name']) . '@' . random_int(1, 999);
+        $data['slug'] =  Str::slug($data['name']) . '-' . random_int(100, 999);
         $comapny = Company::create($data);
 
         $comapny->users()->attach(auth()->user());

@@ -160,20 +160,20 @@ class TaskResource extends Resource
                     Tables\Columns\TextColumn::make('tags')
                         ->icon('heroicon-m-tag')
                         ->badge(),
-                    Tables\Columns\TextColumn::make('subtasks')
-                        ->alignCenter()
-                        ->weight(FontWeight::Bold)
+                    // Tables\Columns\TextColumn::make('subtasks')
+                    //     ->alignCenter()
+                    //     ->weight(FontWeight::Bold)
 
-                        ->getStateUsing(function ($record): ?string {
-                            if ($record->subtasks) {
-                                $uncompletedTasks = array_filter($record->subtasks, function ($task) {
-                                    return $task['done_subtask'] === false;
-                                });
+                    //     ->getStateUsing(function ($record): ?string {
+                    //         if ($record->subtasks) {
+                    //             $uncompletedTasks = array_filter($record->subtasks, function ($task) {
+                    //                 return $task['done_subtask'] === false;
+                    //             });
 
-                                return 'has  ' .  count($uncompletedTasks) . ' Uncompleted Subtasks';
-                            }
-                            return '';
-                        }),
+                    //             return 'has  ' .  count($uncompletedTasks) . ' Uncompleted Subtasks';
+                    //         }
+                    //         return '';
+                    //     }),
 
                     Tables\Columns\TextColumn::make('created_at')
                         ->dateTime()

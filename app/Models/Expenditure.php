@@ -44,8 +44,13 @@ class Expenditure extends Model
     {
         static::creating(function (Expenditure $model) {
             $currentTenant = TenancyHelpers::getTenant();
-            $model->expenditureable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->expenditureable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+       
+            if (empty($model->expenditureable_type)) {
+                $model->expenditureable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->expenditureable_id)) {
+                $model->expenditureable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 }

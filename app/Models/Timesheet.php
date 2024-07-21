@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Builder;
 
 #[ScopedBy([TimesheetScope::class])]
@@ -115,10 +116,13 @@ class Timesheet extends Model
         static::creating(function (Timesheet $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->timesheetable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->timesheetable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
-
-            if (TenancyHelpers::isEmployee()) {
+            if (empty($model->timesheetable_type)) {
+                $model->timesheetable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->timesheetable_id)) {
+                $model->timesheetable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
+            if (!is_null(Filament::getTenant()) && TenancyHelpers::isEmployee()) {
                 $model->employee_id =  auth()->id();
             }
         });

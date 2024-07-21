@@ -17,7 +17,10 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\MetricsManager;
 use Carbon\Carbon;
+use Database\Seeders\AdminRoleDataSeeder;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\SuperCompanyRoleDataSeeder;
+use Database\Seeders\UserRoleDataSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -73,28 +76,22 @@ class DemoDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->callOnce([
+            // configration data
             DatabaseSeeder::class,
+            // users data
+            AdminRoleDataSeeder::class,
+            UserRoleDataSeeder::class,
+            SuperCompanyRoleDataSeeder::class
         ]);
 
-        // add admin user
-        $adminUser = User::where('email', 'admin@admin.com')->first();
-        if (! $adminUser) {
-
-            $adminUser = User::factory()->create([
-                'email' => 'admin@admin.com',
-                'password' => bcrypt('admin'),
-                'name' => 'Admin',
-                'public_name' => 'John Doe',
-                'is_admin' => true,
-            ]);
-
-            $adminUser->assignRole(['admin', 'super_company', 'user', 'employee']);
-        }
+        
+        
+        // get admin user
+        $adminUser = User::where('email', 'admin@test.com')->first();
 
         $this->seedDemoData();
         $this->addDiscounts();
-        $this->addBlogPosts($adminUser);
-        $this->addSomeUsers();
+        // $this->addBlogPosts($adminUser);
         $this->addMetrics();
         $this->addSomeRoadmapItems();
 
@@ -388,17 +385,7 @@ class DemoDatabaseSeeder extends Seeder
         }
     }
 
-    private function addSomeUsers()
-    {
-        $numberOfUsers = rand(100, 150);
 
-        for ($i = 0; $i < $numberOfUsers; $i++) {
-            $date = now()->subDays(rand(1, 1000));
-            $user = User::factory()->create();
-            $user->created_at = $date;
-            $user->save();
-        }
-    }
 
     private function addSomeRoadmapItems()
     {

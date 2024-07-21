@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Str;
 use App\Models\Scopes\CustomerScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
- 
+
 #[ScopedBy([CustomerScope::class])]
 class Customer extends Model
 {
@@ -127,12 +127,18 @@ class Customer extends Model
     protected static function booted(): void
     {
         static::creating(function (Customer $model) {
-            $model->token = Str::random(20);
 
+            if (empty($model->token)) {
+                $model->token = Str::random(20);
+            }
             $currentTenant = TenancyHelpers::getTenant();
 
-            $model->customerable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->customerable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            if (empty($model->customerable_type)) {
+                $model->customerable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->customerable_id)) {
+                $model->customerable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 }

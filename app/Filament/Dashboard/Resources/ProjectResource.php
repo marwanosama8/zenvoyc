@@ -39,7 +39,7 @@ class ProjectResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('filament-timesheet::timesheet.timesheets');
+        return __('navigation.project');
     }
 
 

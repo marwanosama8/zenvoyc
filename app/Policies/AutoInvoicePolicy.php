@@ -29,7 +29,7 @@ class AutoInvoicePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('update auto invoice') && $user->userSetting->ready_to_generate;
+        return $user->hasPermissionTo('update auto invoice') && $user->userSetting()->first() ? $user->userSetting->ready_to_generate : true;
     }
 
     /**

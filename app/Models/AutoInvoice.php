@@ -58,8 +58,12 @@ class AutoInvoice extends Model
         static::creating(function (AutoInvoice $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->auto_invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->auto_invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            if (empty($model->auto_invoiceable_type)) {
+                $model->auto_invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->auto_invoiceable_id)) {
+                $model->auto_invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 

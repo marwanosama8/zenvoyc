@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Wizard\Step;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class EmployeeResource extends Resource
 {
@@ -34,7 +35,6 @@ class EmployeeResource extends Resource
     {
         return __('navigation.employee');
     }
-
 
     public static function getPluralModelLabel(): string
     {
@@ -49,6 +49,7 @@ class EmployeeResource extends Resource
     {
         return __('navigation.mangment');
     }
+
     protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form
@@ -130,6 +131,7 @@ class EmployeeResource extends Resource
                             ->label(__('employee.manual_timesheet'))
 
                     ]),
+                    Impersonate::make()->redirectTo(route('home')),
 
             ])
             ->bulkActions([

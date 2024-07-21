@@ -100,10 +100,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         if ($panel->getId() == 'admin' && !$this->is_admin) {
             return false;
         }
-        // if ($panel->getId() == 'employee' && !$this->hasRole('employee')) {
-        //     return false;
-        // }
-        if ($panel->getId() == 'user' && !$this->hasRole('user')) {
+        if ($panel->getId() == 'dashboard' && !$this->hasRole('user')) {
             return false;
         }
         if ($panel->getId() == 'company' && !$this->hasRole(['company', 'super_company'])) {
@@ -130,7 +127,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
 
     public function canImpersonate()
     {
-        return $this->hasPermissionTo('impersonate users') && $this->isAdmin();
+        return $this->hasPermissionTo('impersonate users') || $this->isAdmin();
     }
 
     public function isSubscribed(?string $productSlug = null): bool
@@ -254,13 +251,13 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
      */
     protected static function booted(): void
     {
-        static::created(function (User $model) {
-            if (!is_null(auth()->user()) && !is_null(TenancyHelpers::getTenant()) && auth()->user()->hasRole(['company', 'super_company'])) {
-                TenancyHelpers::getTenant()->users()->attach($model->id);
-            } else {
-                $model->userSetting()->create();
-            }
-        });
+        // static::created(function (User $model) {
+        //     if (!is_null(auth()->user()) && !is_null(TenancyHelpers::getTenant()) && auth()->user()->hasRole(['company', 'super_company'])) {
+        //         TenancyHelpers::getTenant()->users()->attach($model->id);
+        //     } else {
+        //         $model->userSetting()->create();
+        //     }
+        // });
     }
     public function address()
     {

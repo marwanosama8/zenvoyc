@@ -40,8 +40,13 @@ class Project extends Model
         static::creating(function (Project $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-            $model->projectable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            $model->projectable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+       
+            if (empty($model->projectable_type)) {
+                $model->projectable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->projectable_id)) {
+                $model->projectable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
         });
     }
 }

@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Scopes\TenantInvoiceScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Str;
 
 #[ScopedBy([TenantInvoiceScope::class])]
 class TenantInvoice extends Model
 {
-	use SoftDeletes;
+	use HasFactory, SoftDeletes;
 	protected $fillable = [
 		'customer_id',
 		'rgnr',
@@ -33,6 +34,7 @@ class TenantInvoice extends Model
 		'regenerated',
 		'options',
 	];
+
 	protected $guarded = [];
 
 
@@ -192,9 +194,16 @@ class TenantInvoice extends Model
 		static::creating(function (TenantInvoice $model) {
 
 			$currentTenant = TenancyHelpers::getTenant();
-			$model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-			$model->invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
-			$model->invoice_number = now()->format('Y') . rand(2000, 9999);
+            if (empty($model->invoice_number)) {
+				$model->invoice_number = now()->format('Y') . rand(2000, 9999);
+            }
+            if (empty($model->invoiceable_type)) {
+                $model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+            }
+            if (empty($model->invoiceable_id)) {
+                $model->invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+            }
+
 		});
 	}
 }

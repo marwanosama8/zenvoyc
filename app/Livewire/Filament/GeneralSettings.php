@@ -34,8 +34,6 @@ class GeneralSettings extends Component implements HasForms
 
     public function boot(ConfigManager $configManager): void
     {
-        // $user = auth()->user();
-        // dd($user->hasPermissionTo('create multi companies'));
         $this->configManager = $configManager;
     }
 
@@ -133,7 +131,7 @@ class GeneralSettings extends Component implements HasForms
                                 ->options(function () {
                                     $currencies = [];
                                     foreach (Currency::all() as $currency) {
-                                        $currencies[$currency->code] = $currency->name.' ('.$currency->code.')';
+                                        $currencies[$currency->code] = $currency->name . ' (' . $currency->code . ')';
                                     }
 
                                     return $currencies;
