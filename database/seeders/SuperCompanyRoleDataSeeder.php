@@ -74,8 +74,12 @@ class SuperCompanyRoleDataSeeder extends Seeder
                 'contact_number' => fake('de_DE')->phoneNumber(),
                 'contact_email' => fake('de_DE')->safeEmail(),
             ];
-
             $comapny = Company::create($companyData);
+            $comapny->settings()->updateOrCreate([
+                'company_id' => $comapny->id
+            ], [
+                'vat_percent' => fake()->randomFloat(2, 5, 20)
+            ]);
             $comapny->users()->attach($user);
 
             $modelId = $comapny->id;
@@ -163,7 +167,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
                 ->count(10)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id, 'rate' => fake()->randomFloat(2, 10, 100), 'customer_address' => fake('de_DE')->address()]
                     ),
                 )
                 ->has(InvoiceItem::factory()->count(3))

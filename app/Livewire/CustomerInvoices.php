@@ -58,7 +58,7 @@ class CustomerInvoices extends Component implements HasForms, HasTable
                 Action::make('download')
                     ->label(__('invoice.link.download'))
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn (Invoice $record): string => route('invoice.download', ['invoice' => $record->invoice_number]))
+                    ->url(fn (Invoice $record): string => route('invoice.download', ['invoice' => $record->rgnr]))
             ]);
     }
 

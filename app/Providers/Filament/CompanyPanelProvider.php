@@ -9,6 +9,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use App\Filament\Company\Pages;
+use App\Helpers\TenancyHelpers;
 use App\Http\Middleware\RememberTenantMiddleware;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -25,6 +26,7 @@ use Filament\Navigation\MenuItem;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use App\Livewire\Filament\MyProfilePersonalInfo;
 use App\Models\Company;
+use Filament\Facades\Filament;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
 use Spatie\Color\Rgb;
 
@@ -35,7 +37,7 @@ class CompanyPanelProvider extends PanelProvider
         $myArr = explode(', ', Color::Orange[500]);
         $hex = new Rgb(...$myArr);
         $color = $hex->toHex()->__toString();
-
+        
         return $panel
             ->id('company')
             ->path('company')
@@ -51,6 +53,13 @@ class CompanyPanelProvider extends PanelProvider
                     ->url(fn () => route('filament.admin.pages.dashboard'))
                     ->icon('heroicon-s-cog-8-tooth'),
             ])
+            ->tenantMenuItems([
+                'profile' => MenuItem::make()->hidden(),
+                MenuItem::make()
+                ->label('Settings')
+                ->url(fn (): string => Filament::getUrl() .'/company-settings')
+                ->icon('heroicon-m-cog-8-tooth'),
+            ])
             ->discoverResources(in: app_path('Filament/Company/Resources'), for: 'App\\Filament\\Company\\Resources')
             ->discoverPages(in: app_path('Filament/Company/Pages'), for: 'App\\Filament\\Company\\Pages')
             ->pages([
@@ -61,6 +70,8 @@ class CompanyPanelProvider extends PanelProvider
                 'Project',
                 'Mangment',
             ])
+            ->viteTheme('resources/css/filament/company/theme.css')
+
             ->discoverWidgets(in: app_path('Filament/Company/Widgets'), for: 'App\\Filament\\Company\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,

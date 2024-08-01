@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\InvoiceThemeConstants;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -37,6 +38,9 @@ return new class extends Migration
             
             // other settings
             $table->boolean('ready_to_generate')->default(0);
+            $table->decimal('vat_percent', 5, 2)->default(0.00);
+            $table->string('invoice_language')->default('de');
+            $table->string('invoice_theme')->default(InvoiceThemeConstants::DEFAULT);
 
             // time
             $table->timestamps();

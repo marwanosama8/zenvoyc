@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->morphs('invoiceable');
             $table->unsignedBigInteger('customer_id');
-            $table->string('invoice_number')->index();
             $table->string('rgnr', 50);
-            $table->text('user_address')->nullable();
+            $table->text('customer_address')->nullable();
             $table->date('date_origin');
             $table->date('date_start');
             $table->date('date_end');
@@ -25,9 +24,10 @@ return new class extends Migration
             $table->decimal('rate', 8, 2)->nullable();
             $table->text('info')->nullable();
             $table->tinyInteger('ust')->default(0);
-            $table->tinyInteger('printed')->default(0);
-            $table->tinyInteger('send')->default(0);
-            $table->tinyInteger('payed')->default(0);
+            $table->boolean('has_vat')->default(1);
+            $table->boolean('printed')->default(0);
+            $table->boolean('send')->default(0);
+            $table->boolean('payed')->default(0);
             $table->longText('options')->nullable();
             $table->timestamps(); // This will automatically add created_at and updated_at
             $table->softDeletes(); // This will add deleted_at column for soft deletes
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('tenant_invoices');
     }
 };

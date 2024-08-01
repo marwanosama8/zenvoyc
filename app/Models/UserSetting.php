@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserSetting extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'user_id',
         'name',
@@ -27,7 +27,10 @@ class UserSetting extends Model
         'bank_code',
         'bic',
         'contact_number',
-        'contact_email'
+        'contact_email',
+        'vat_percent',
+        'invoice_language',
+        'invoice_theme'
     ];
 
     /**

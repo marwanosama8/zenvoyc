@@ -78,7 +78,7 @@ class Customer extends Model
         return number_format($result, 2, ',', '.');
     }
 
-    public function getAddress()
+    public function getFullCustomerAddressAttribute()
     {
         $html = $this->name . '<br>' . $this->added . '<br>' . $this->street . ' ' . $this->nr . '<br>' . $this->zip . ' ' . $this->city . '<br>';
         if ($this->country !== 'Germany') {

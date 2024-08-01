@@ -18,8 +18,8 @@ class InvoiceItemFactory extends Factory
     {
         return [
             'description' => fake('de_DE')->sentence(),
-            'amount' => fake('de_DE')->randomFloat(2, 10, 100),
-            'price' => fake('de_DE')->randomFloat(2, 10, 100),
+            'amount' => fake()->randomFloat(2, 10, 100),
+            'price' => fake()->randomFloat(2, 10, 100),
         ];
     }
 }

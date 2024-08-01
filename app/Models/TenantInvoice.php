@@ -16,6 +16,7 @@ use Str;
 class TenantInvoice extends Model
 {
 	use HasFactory, SoftDeletes;
+
 	protected $fillable = [
 		'customer_id',
 		'rgnr',
@@ -24,6 +25,7 @@ class TenantInvoice extends Model
 		'date_start',
 		'date_end',
 		'date_pay',
+		'has_vat',
 		'rate',
 		'info',
 		'ust',
@@ -151,7 +153,7 @@ class TenantInvoice extends Model
 
 	public function getTotalVat()
 	{
-		return (($this->getTotalNetto() / 100) * $this->getCurrentVat());
+		return ($this->getTotalNetto() / 100) * $this->getCurrentVat();
 	}
 
 	public function getPercentVat()
@@ -192,10 +194,10 @@ class TenantInvoice extends Model
 	protected static function booted(): void
 	{
 		static::creating(function (TenantInvoice $model) {
-
+			
 			$currentTenant = TenancyHelpers::getTenant();
-            if (empty($model->invoice_number)) {
-				$model->invoice_number = now()->format('Y') . rand(2000, 9999);
+			if (empty($model->rgnr)) {
+				$model->rgnr = self::getNextNr();
             }
             if (empty($model->invoiceable_type)) {
                 $model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';

@@ -4,7 +4,9 @@ namespace App\Filament\Company\Resources;
 
 use App\Filament\Company\Resources\CustomerResource\Pages;
 use App\Filament\Dashboard\Resources\CustomerResource\RelationManagers\CustomerContactsRelationManager;
+use App\Helpers\Helpers;
 use App\Models\Customer;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,13 +21,12 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
-  
+
     public static function getModelLabel(): string
     {
         return __('navigation.customer');
     }
 
-  
     public static function getPluralModelLabel(): string
     {
         return __('navigation.customers');
@@ -44,6 +45,7 @@ class CustomerResource extends Resource
 
     public static function form(Form $form): Form
     {
+
         return $form
             ->schema([
                 Fieldset::make('Inforamtions')
@@ -121,6 +123,8 @@ class CustomerResource extends Resource
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('reverse_charge')
                     ->sortable(),
+                // Tables\Columns\TextColumn::make('id')
+                //     ->formatStateUsing(fn (string $state): HtmlString => Helpers::customeHtmlElement('a' ,"href=''")),
                 Tables\Columns\ViewColumn::make('token')
                     ->view('filament.tables.columns.token-copy-column')
                     ->label('customer.field.token'),
