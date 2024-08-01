@@ -25,16 +25,16 @@
         @if (!$print)
             <span class="">
                 <a href="/invoices" class="inline-block p-4 text-blue-600 "><i class="far fa-home"></i> Index</a>
-                <a href="{{ route('invoice.send', $data['invoice']->invoice_number) }}"
+                <a href="{{ route('invoice.send', $data['invoice']->rgnr) }}"
                     class="inline-block p-4 text-blue-600 blue"><i class="far fa-paper-plane"></i>
                     Sende Rechnungen</a>
-                <a href="{{ route('invoice.download', $data['invoice']->invoice_number) }}"
+                <a href="{{ route('invoice.download', $data['invoice']->rgnr) }}"
                     class="inline-block p-4 text-red-600 -red"><i class="far fa-file-pdf"></i>
                     Download PDF</a>
-                <a href="/invoices/{{ $data['invoice']->invoice_number }}/edit" class="inline-block p-4 text-green-900"><i
+                <a href="/invoices/{{ $data['invoice']->rgnr }}/edit" class="inline-block p-4 text-green-900"><i
                         class="far fa-pencil"></i>
                     Editieren</a>
-                <a href="/invoices/{{ $data['invoice']->invoice_number }}/create" class="inline-block p-4 text-green-900"><i
+                <a href="/invoices/{{ $data['invoice']->rgnr }}/create" class="inline-block p-4 text-green-900"><i
                         class="far fa-plus"></i>
                     Neue Rechnung</a>
             </span>

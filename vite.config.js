@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/blog.js',
                 'resources/css/filament/dashboard/theme.css',
                 'resources/css/filament/admin/theme.css',
+                'resources/css/filament/company/theme.css',
             ],
             refresh: true,
         }),

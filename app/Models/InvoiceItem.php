@@ -11,6 +11,15 @@ class InvoiceItem extends Model
 
 	use HasFactory;
 
+	protected $fillable = [
+		'invoice_id	',
+		'description',
+		'amount',
+		'type',
+		'price',
+		'notInvoiced',
+		'order_column',
+	];
 
 	public function invoice()
 	{
@@ -20,17 +29,19 @@ class InvoiceItem extends Model
 	protected static function booted(): void
 	{
 		static::creating(function (InvoiceItem $invoiceItem) {
-			if (empty($invoiceItem->price)) {
-				$rate = $invoiceItem->invoice->customer->rate;
-				$invoiceItem->price = TenantInvoice::getPriceAmount($invoiceItem->type, $invoiceItem->amount, $rate);
-			}
+			// dd($invoiceItem);
+			// 	if (empty($invoiceItem->price)) {
+		// 		$rate = $invoiceItem->invoice->customer->rate;
+		// 		dd($rate);
+		// 		$invoiceItem->price = TenantInvoice::getPriceAmount($invoiceItem->type, $invoiceItem->amount, $rate);
+		// 	}
 		});
 
-		static::updating(function (InvoiceItem $invoiceItem) {
-			if (empty($invoiceItem->price)) {
-				$rate = $invoiceItem->invoice->customer->rate;
-				$invoiceItem->price = TenantInvoice::getPriceAmount($invoiceItem->type, $invoiceItem->amount, $rate);
-			}
-		});
+		// static::updating(function (InvoiceItem $invoiceItem) {
+		// 	if (empty($invoiceItem->price)) {
+		// 		$rate = $invoiceItem->invoice->customer->rate;
+		// 		$invoiceItem->price = TenantInvoice::getPriceAmount($invoiceItem->type, $invoiceItem->amount, $rate);
+		// 	}
+		// });
 	}
 }

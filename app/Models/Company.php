@@ -39,24 +39,19 @@ class Company extends Model implements HasAvatar
         return $this->belongsToMany(User::class, 'users_companies', 'company_id', 'user_id');
     }
 
-    // public function belongsToCompany()
-    // {
-    //     return $this->belongsTo(Company::class);
-    // }
-
-    // public function belongsToManyCompanies()
-    // {
-    //     return $this->belongsToMany(Company::class, 'users_companies');
-    // }
-
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->avatar_url;
     }
 
-    public function hasRole($role)
+    /**
+     * Get the settings associated with the Company
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function settings()
     {
-        // Logic to check if the user has a specific role
+        return $this->hasOne(CompanySetting::class);
     }
 
     public function expenditures()
@@ -110,6 +105,4 @@ class Company extends Model implements HasAvatar
     {
         return $this->morphMany(Contact::class, 'contactable');
     }
-
-
 }

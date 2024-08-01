@@ -15,12 +15,9 @@ return new class extends Migration
             $table->id();
             $table->morphs('auto_invoiceable');
             $table->unsignedBigInteger('customer_id');
-            $table->string('rgnr', 50);
-            $table->text('customer_address')->nullable();
-            $table->decimal('rate', 8, 2)->nullable();
             $table->text('info')->nullable();
-            $table->longText('options')->nullable();
             $table->json('items')->nullable();
+            $table->boolean('has_vat')->default(1);
             $table->tinyInteger('custom_interval');
             $table->date('next_generate_date');
             $table->timestamps();

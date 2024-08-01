@@ -63,10 +63,10 @@ class TimesheetResource extends Resource
                     ->disabled(fn (Get $get): bool => !empty($get('manual_time'))),
                 Forms\Components\TextInput::make('manual_time')
                     ->required(fn (Get $get): bool => !filled($get('end_time')))
-                    ->disabled(fn (Get $get): bool => !empty($get('end_time') && empty($get('manual_time'))))
+                    ->disabled(fn (Get $get): bool => !empty($get('end_time')) && empty($get('manual_time')))
                     ->live()
                     ->afterStateUpdated(fn (Set $set, Get $get) => $set('end_time', \App\Helpers\CalculationHelpers::getEndTimeAfterParseToTimeString($get('start_time'), $get('manual_time'))))
-                    ->hint('you can add the hours here manually, ex: 3h 30m'),
+                    ->hint('you can add the hours here manually, ex: 3h 30m')
             ]);
     }
 

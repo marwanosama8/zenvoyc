@@ -19,7 +19,6 @@ class TenantInvoiceFactory extends Factory
     {
         return [
             'rgnr' => TenantInvoice::getNextNr(),
-            'invoice_number' => now()->format('Y') . rand(2000, 9999),
             'date_origin' => now(),
             'date_start' => now(),
             'date_end' =>  now()->addMonths(rand(2, 10)),

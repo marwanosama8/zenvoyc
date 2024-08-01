@@ -132,6 +132,13 @@ class InvoiceResource extends Resource
                                 }),
                             Forms\Components\TextInput::make('amount')
                                 ->label(__("invoice.field.amount"))->numeric()->required(),
+                                Forms\Components\TextInput::make('price')
+                                ->label(__("invoice.field.price"))
+                                ->numeric()
+                                ->disabled(fn (Get $get): bool => !filled($get('type')))
+                                ->minValue(1)
+                                ->inputMode('decimal')
+                                ->required(),
                         ]),
                 ])
                 ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
@@ -149,9 +156,6 @@ class InvoiceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('invoice_number')
-                    ->label(__("invoice.field.invoice_number"))
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('rgnr')
                     ->label(__("invoice.field.rgnr"))->getStateUsing(fn ($record) => $record->rgnr)
                     ->sortable()
@@ -170,7 +174,7 @@ class InvoiceResource extends Resource
                     ->label(__("invoice.field.payed")),
                 Tables\Columns\TextColumn::make('#')
                     ->getStateUsing(function ($record) {
-                        return '<a target="_blank" href="' . route('invoice.view', ['invoice' => $record->invoice_number]) . '">' . __('invoice.link.view') . '</a>';
+                        return '<a target="_blank" href="' . route('invoice.view', ['invoice' => $record->rgnr]) . '">' . __('invoice.link.view') . '</a>';
                     })->html(),
             ])->defaultSort('created_at', 'desc')
             ->filters([

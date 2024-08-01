@@ -30,7 +30,7 @@ class TenantInvoiceController extends Controller
 
     public function view($invoice)
     {
-        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->with('customer')->whereInvoiceNumber($invoice)->first();
+        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->with('customer')->whereRgnr($invoice)->first();
         $data = $this->invoiceDataMapper->getData($invoice);
         // dd($data);
         abort_if(!$this->isInvoiceAccessable($invoice), 401);
@@ -39,7 +39,7 @@ class TenantInvoiceController extends Controller
 
     public function generate($invoice)
     {
-        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereInvoiceNumber($invoice)->first();
+        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereRgnr($invoice)->first();
         $info = $this->invoiceDataMapper->getData($invoice);
 
         $data = ['data' => $info, 'print' => 1];
@@ -62,7 +62,7 @@ class TenantInvoiceController extends Controller
     public function download($invoice)
     {
         if (!$invoice instanceof Collection) {
-            $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereInvoiceNumber($invoice)->first();
+            $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereRgnr($invoice)->first();
         }
         $pdf = $this->storePdfFile($invoice);
         return  response()->download($pdf['path']);
@@ -70,7 +70,7 @@ class TenantInvoiceController extends Controller
 
     public function send($invoice)
     {
-        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereInvoiceNumber($invoice)->first();
+        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereRgnr($invoice)->first();
         // dd($invoice);
 
         $this->download($invoice);
@@ -89,7 +89,7 @@ class TenantInvoiceController extends Controller
             $invoice->save();
         } else {
         }
-        return $this->view($invoice->invoice_number);
+        return $this->view($invoice->rgnr);
     }
 
     public function resend($invoice)
@@ -102,7 +102,7 @@ class TenantInvoiceController extends Controller
             $sendmail->cc($invoice->Customer->cc);
         }
         $sendmail->send(new InvoiceMailInvoice($invoice, $fileData));
-        return $this->view($invoice->invoice_number);
+        return $this->view($invoice->rgnr);
     }
 
 
