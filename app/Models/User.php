@@ -218,17 +218,17 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     }
 
     /**
-     * Get the userSetting associated with the User
+     * Get the setting associated with the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function userSetting()
+    public function settings()
     {
         return $this->hasOne(UserSetting::class);
     }
 
     /**
-     * Get the userSetting associated with the User
+     * Get the setting associated with the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -255,7 +255,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         //     if (!is_null(auth()->user()) && !is_null(TenancyHelpers::getTenant()) && auth()->user()->hasRole(['company', 'super_company'])) {
         //         TenancyHelpers::getTenant()->users()->attach($model->id);
         //     } else {
-        //         $model->userSetting()->create();
+        //         $model->setting()->create();
         //     }
         // });
     }

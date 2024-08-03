@@ -182,6 +182,7 @@ Route::get('/invoice/month2month',[TenantInvoiceController::class, 'month2month'
 Route::get('/invoice/pdf/{invoice}',[TenantInvoiceController::class, 'pdf'])->name('invoice.pdf');
 Route::get('/sign-contract/{token}', ViewOffer::class)->name('sign.contract');
 Route::get('/list-invoices/{token}', CustomerInvoices::class)->name('list.invoices');
+Route::get('/fakepdf/{type}', [TenantInvoiceController::class,'createFakeInvoice'])->name('fake.pdf');
 // Invoice
 
 Route::get('/invoice/generate/{transactionUuid}', [

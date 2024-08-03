@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import { globSync } from "glob";
 
 export default defineConfig({
     plugins: [
@@ -11,6 +12,7 @@ export default defineConfig({
                 'resources/css/filament/dashboard/theme.css',
                 'resources/css/filament/admin/theme.css',
                 'resources/css/filament/company/theme.css',
+                ...globSync("resources/css/invoice/themes/*.css")
             ],
             refresh: true,
         }),

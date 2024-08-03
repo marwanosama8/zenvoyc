@@ -40,7 +40,8 @@ return new class extends Migration
             $table->boolean('ready_to_generate')->default(0);
             $table->decimal('vat_percent', 5, 2)->default(0.00);
             $table->string('invoice_language')->default('de');
-            $table->string('invoice_theme')->default(InvoiceThemeConstants::DEFAULT);
+            $table->unsignedBigInteger('currency_id')->default(96);
+            $table->unsignedBigInteger('invoice_theme_id')->default(InvoiceThemeConstants::DEFAULTID);
 
             // time
             $table->timestamps();

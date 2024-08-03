@@ -14,7 +14,7 @@ class OfferDataMapper
             $providerData = Company::find($offer->offerable_id);
         } else { // this in user offer            
             // get user data
-            $providerData = Auth::user()->userSetting;
+            $providerData = Auth::user()->settings;
         }
 
         return $providerData;

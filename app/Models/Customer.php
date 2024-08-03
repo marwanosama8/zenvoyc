@@ -80,12 +80,12 @@ class Customer extends Model
 
     public function getFullCustomerAddressAttribute()
     {
-        $html = $this->name . '<br>' . $this->added . '<br>' . $this->street . ' ' . $this->nr . '<br>' . $this->zip . ' ' . $this->city . '<br>';
+        $html =  $this->street . ', ' . $this->nr . ', ' . $this->zip . ', ' . $this->city . ', ';
         if ($this->country !== 'Germany') {
-            $html .= $this->country . '<br>';
+            $html .= $this->country . ' ';
         }
         if ($this->vatid !== null) {
-            $html .= $this->vatid . '<br>';
+            $html .= $this->vatid . ' ';
         }
         return $html;
     }

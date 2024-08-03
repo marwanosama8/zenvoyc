@@ -33,7 +33,7 @@
                     Download PDF</a>
                 <a href="/invoices/{{ $data['invoice']->rgnr }}/edit" class="inline-block p-4 text-green-900"><i
                         class="far fa-pencil"></i>
-                    Editieren</a>
+                    Editieren</a>   `
                 <a href="/invoices/{{ $data['invoice']->rgnr }}/create" class="inline-block p-4 text-green-900"><i
                         class="far fa-plus"></i>
                     Neue Rechnung</a>

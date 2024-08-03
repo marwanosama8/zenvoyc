@@ -11,13 +11,58 @@ class InvoiceDataMapper
     {
         if ($this->getInvoiceType($invoice) == 'App\Models\Company') {
             // get company data
-            $providerData = Company::find($invoice->invoiceable_id);
-
+            $data = Company::with('settings')->where('id', $invoice->invoiceable_id)->first();
+            $providerData = [
+                'currency_id' => $data->settings->currency_id,
+                'invoice_language' => $data->settings->invoice_language,
+                'invoice_theme_id' => $data->settings->invoice_theme_id,
+                'vat_percent' => $data->settings->vat_percent,
+                'name' => $data->name,
+                'managing_director' => $data->managing_director,
+                'legal_name' => $data->legal_name,
+                'avatar_url' => $data->avatar_url,
+                'website_url' => $data->website_url,
+                'place_of_jurisdiction' => $data->place_of_jurisdiction,
+                'slug' => $data->slug,
+                'address' => $data->address,
+                'postal_code' => $data->postal_code,
+                'tax_id' => $data->tax_id,
+                'vat_id' => $data->vat_id,
+                'iban' => $data->iban,
+                'account_number' => $data->account_number,
+                'bank_code' => $data->bank_code,
+                'bic' => $data->bic,
+                'contact_number' => $data->contact_number,
+                'contact_email' =>  $data->contact_number
+            ];
             // get invoice data
             $invoiceData = $invoice;
         } else { // this in user invoice            
             // get user data
-            $providerData = Auth::user()->userSetting;
+            $data = Auth::user();
+            $providerData = [
+                'currency_id' => $data->settings->currency_id,
+                'invoice_language' => $data->settings->invoice_language,
+                'invoice_theme_id' => $data->settings->invoice_theme_id,
+                'vat_percent' => $data->settings->vat_percent,
+                'name' => $data->settings->name,
+                'managing_director' => $data->settings->managing_director,
+                'legal_name' => $data->settings->legal_name,
+                'avatar_url' => $data->settings->avatar_url,
+                'website_url' => $data->settings->website_url,
+                'place_of_jurisdiction' => $data->settings->place_of_jurisdiction,
+                'slug' => $data->settings->slug,
+                'address' => $data->settings->address,
+                'postal_code' => $data->settings->postal_code,
+                'tax_id' => $data->settings->tax_id,
+                'vat_id' => $data->settings->vat_id,
+                'iban' => $data->settings->iban,
+                'account_number' => $data->settings->account_number,
+                'bank_code' => $data->settings->bank_code,
+                'bic' => $data->settings->bic,
+                'contact_number' => $data->settings->contact_number,
+                'contact_email' =>  $data->settings->contact_number
+            ];
 
             // get invoice data
             $invoiceData = $invoice;

@@ -13,6 +13,7 @@ class CompanySetting extends Model
         'company_id',
         'vat_percent',
         'invoice_language',
-        'invoice_theme',
+        'invoice_theme_id',
+        'currency_id',
     ];
 }

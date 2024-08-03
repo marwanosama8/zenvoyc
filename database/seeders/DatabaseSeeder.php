@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             OAuthLoginProviderSeeder::class,
             PaymentProvidersSeeder::class,
             RolesAndPermissionsSeeder::class,
+            InvoiceThemeSeeder::class,
             // EmailProviderSeeder::class,
         ]);
     }
