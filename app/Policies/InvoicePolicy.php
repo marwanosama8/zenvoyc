@@ -29,7 +29,7 @@ class InvoicePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create invoice') && $user->userSetting->ready_to_generate;
+        return $user->hasPermissionTo('create invoice') && $user->settings->ready_to_generate;
     }
 
     /**

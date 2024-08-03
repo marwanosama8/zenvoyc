@@ -86,12 +86,9 @@ class InvoiceResource extends Resource
                                 ->inputMode('decimal')
                                 ->default('0.00')
                                 ->label(__("invoice.field.rate")),
-                            Forms\Components\RichEditor::make('customer_address')
+                            Forms\Components\TextInput::make('customer_address')
                                 ->columnSpanFull()
                                 ->disabled(fn (Livewire $livewire, $operation): bool => is_null($livewire->data['customer_id']) || $operation == 'edit')
-                                ->toolbarButtons([
-                                    'undo',
-                                ])
                                 ->label(__("invoice.field.customer_address")),
                         ]),
 
@@ -188,7 +185,6 @@ class InvoiceResource extends Resource
                                                 ->numeric()
                                                 ->live()
                                                 ->afterStateUpdated(function (Set $set, Get $get, ?string $state, Livewire $livewire) {
-                                                    $product =  Sales::find($get('product'));
                                                     $amount = filled($get('amount')) ? $get('amount') : 0.00;
                                                     switch ($get('type')) {
                                                         case 1:
@@ -208,6 +204,7 @@ class InvoiceResource extends Resource
                                             Forms\Components\TextInput::make('unit_price')
                                                 ->default(0)
                                                 ->numeric()
+                                                ->hidden(fn ($operation): bool => $operation == 'edit')
                                                 ->label(fn (Get $get): string => $get('type') == 1 ? __("invoice.field.per_hour") : __("invoice.field.unit_price"))
                                                 ->minValue(1)
                                                 ->live()
@@ -241,9 +238,7 @@ class InvoiceResource extends Resource
                                 ]),
                         ])
                         ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
-                            unset($data['product']);
-                            unset($data['unit_price']);
-                            // dd($data);
+                            unset($data['product'], $data['unit_price']);
                             return $data;
                         })
                         ->columns(1),

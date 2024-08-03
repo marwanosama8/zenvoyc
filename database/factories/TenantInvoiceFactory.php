@@ -19,6 +19,7 @@ class TenantInvoiceFactory extends Factory
     {
         return [
             'rgnr' => TenantInvoice::getNextNr(),
+            'customer_address' => fake('de_DE')->address(),
             'date_origin' => now(),
             'date_start' => now(),
             'date_end' =>  now()->addMonths(rand(2, 10)),

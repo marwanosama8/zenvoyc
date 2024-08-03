@@ -52,13 +52,13 @@ class UserRoleDataSeeder extends Seeder
                 $user = $userManager->createUser($data, 'user');
             }
 
-            $user->userSetting()->updateOrCreate([
+            $user->settings()->updateOrCreate([
                 'user_id' => $user->id
             ], [
                 'name' => fake('de_DE')->name(),
                 'managing_director' => fake('de_DE')->name(),
                 'legal_name' => fake('de_DE')->company(),
-                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: 'logo', width: 620, height: 320)),
+                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: fake('de_DE')->company(), width: 620, height: 320)),
                 'website_url' => fake('de_DE')->url(),
                 'place_of_jurisdiction' => fake('de_DE')->city(),
                 'slug' => Str::slug(fake('de_DE')->name()),

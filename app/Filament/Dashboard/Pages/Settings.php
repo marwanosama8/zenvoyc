@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Company\Pages;
+namespace App\Filament\Dashboard\Pages;
 
+use Filament\Pages\Page;
 use App\Constants\InvoiceThemeConstants;
 use App\Helpers\TenancyHelpers;
 use Filament\Forms\Components\Select;
-use Filament\Pages\Page;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Components\FileUpload;
@@ -14,30 +14,36 @@ use Filament\Notifications\Notification;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Get;
 use Illuminate\Support\HtmlString;
 
-class CompanySettings extends Page
+class Settings extends Page
 {
 
-    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $navigationIcon = 'heroicon-o-cog';
-    protected static string $view = 'filament.company.pages.company-settings';
-
-    public function mount()
-    {
-        $companyProfileArray = TenancyHelpers::getTenant()->toArray();
-        $companyInvoiceSettingArray = TenancyHelpers::getTenant()->settings()->first()?->toArray();
-        // The Forms
-        $this->profileSettingsForm->fill($companyProfileArray);
-        $this->invoiceSettingsForm->fill($companyInvoiceSettingArray);
-    }
-
     public static function getNavigationLabel(): string
     {
-        return __('company-settings.page_title');
+        return __('navigation.settings');
     }
 
-    public $activeTap = 1;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation.mangment');
+    }
+    protected static string $view = 'filament.dashboard.pages.settings';
+    
+    public $activeTap;
+    
+    public function mount()
+    {
+        $this->activeTap = request()->activeTap ?? 1;
+        $userSettingArray = auth()->user()->settings()->first()?->toArray();
+        // The Forms
+        $this->profileSettingsForm->fill($userSettingArray);
+        $this->invoiceSettingsForm->fill($userSettingArray);
+    }
+
 
     public $invoiceSettingsValues;
     public $profileSettingsValues;
@@ -108,6 +114,10 @@ class CompanySettings extends Page
 
         return $form
             ->schema([
+                Toggle::make('ready_to_generate')
+                ->label('Start generating')
+                ->hint('you must trigger this button then fill the below form to start generating invoices')
+                ->live(),
                 TextInput::make('vat_percent')
                 ->numeric()
                 ->minValue(1)
@@ -115,6 +125,7 @@ class CompanySettings extends Page
                 ->inputMode('decimal')
                 ->label(__('vat_percent'))
                 ->suffix('%')
+                ->disabled(fn (Get $get): bool => !$get('ready_to_generate'))
                 ->hint(__('Loream ismapnn aqwouzpo pdocvb'))
                 ->required(),
                 Select::make('invoice_language')->label(__('invoice_language'))
@@ -122,6 +133,7 @@ class CompanySettings extends Page
                         'en' => 'English',
                         'de' => 'Dutch',
                     ])
+                    ->disabled(fn (Get $get): bool => !$get('ready_to_generate'))
                     ->suffixIcon('heroicon-m-language')
                     ->required(),
 
@@ -130,6 +142,7 @@ class CompanySettings extends Page
                     ->native(0)
                     ->required()
                     ->allowHtml()
+                    ->disabled(fn (Get $get): bool => !$get('ready_to_generate'))
                     ->label(__('invoice_theme'))->nullable(),
                 Select::make('currency_id')
                     ->options(
@@ -140,6 +153,7 @@ class CompanySettings extends Page
                             ->toArray()
                     )
                     ->required()
+                    ->disabled(fn (Get $get): bool => !$get('ready_to_generate'))
                     ->suffixIcon('heroicon-m-currency-dollar')
                     ->label(__('Currency')),
                 Actions::make([
@@ -147,6 +161,7 @@ class CompanySettings extends Page
                         ->label(__('Generate Preview'))
                         ->icon('heroicon-o-eye')
                         ->color('gray')
+                        ->disabled(fn (Get $get): bool => !$get('ready_to_generate'))
                         ->modalSubmitAction(false)
                         ->modalCancelAction(false)
                         ->openUrlInNewTab()
@@ -165,14 +180,14 @@ class CompanySettings extends Page
     public function saveProfileSettingsForm(): void
     {
         $data = $this->toKeyValueArray($this->profileSettingsForm->getState());
-        TenancyHelpers::getTenant()->update($data);
+        auth()->user()->settings()->update($data);
         Notification::make()->title(__('settings.profile-settings.notification'))->success()->send();
     }
 
     public function saveInvoiceSettingsForm(): void
     {
         $data = $this->toKeyValueArray($this->invoiceSettingsForm->getState());
-        TenancyHelpers::getTenant()->settings()->update($data);
+        auth()->user()->settings()->update($data);
         Notification::make()->title(__('settings.invoice-settings.notification'))->success()->send();
     }
 
@@ -199,11 +214,11 @@ class CompanySettings extends Page
 
     public function getHeading(): string
     {
-        return __('company_settings_page_heading');
+        return __('settings_page_heading');
     }
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole(['company', 'super_company']);
+        return auth()->user()->hasRole('user');
     }
 }

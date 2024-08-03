@@ -84,8 +84,8 @@ class DemoDatabaseSeeder extends Seeder
             SuperCompanyRoleDataSeeder::class
         ]);
 
-        
-        
+
+
         // get admin user
         $adminUser = User::where('email', 'admin@test.com')->first();
 
@@ -208,8 +208,8 @@ class DemoDatabaseSeeder extends Seeder
     private function createPlans(Product $product, $priceMonthly, $priceYearly): void
     {
         $basicPlan = $this->findOrCreatePlan([
-            'name' => $product->name.' Monthly',
-            'slug' => $product->slug.'-monthly',
+            'name' => $product->name . ' Monthly',
+            'slug' => $product->slug . '-monthly',
             'interval_id' => Interval::where('slug', 'month')->first()->id,
             'interval_count' => 1,
             'trial_interval_id' => Interval::where('slug', 'week')->first()->id,
@@ -229,8 +229,8 @@ class DemoDatabaseSeeder extends Seeder
         // add yearly plan
 
         $basicPlan = $this->findOrCreatePlan([
-            'name' => $product->name.' Yearly',
-            'slug' => $product->slug.'-yearly',
+            'name' => $product->name . ' Yearly',
+            'slug' => $product->slug . '-yearly',
             'interval_id' => Interval::where('slug', 'year')->first()->id,
             'interval_count' => 1,
             'trial_interval_id' => Interval::where('slug', 'week')->first()->id,
@@ -324,7 +324,7 @@ class DemoDatabaseSeeder extends Seeder
 
         for ($i = 1; $i <= $discountsToAdd; $i++) {
             $discount = Discount::create([
-                'name' => 'Discount '.$i,
+                'name' => 'Discount ' . $i,
                 'amount' => rand(10, 70),
                 'type' => 'percentage',
                 'valid_until' => null,
@@ -350,7 +350,7 @@ class DemoDatabaseSeeder extends Seeder
             $blog = BlogPost::create([
                 'title' => $title,
                 'slug' => Str::slug($title),
-                'body' => str_repeat('<p>'.$this->loremIpsum.'</p>', rand(10, 15)),
+                'body' => str_repeat('<p>' . $this->loremIpsum . '</p>', rand(10, 15)),
                 'is_published' => true,
                 'published_at' => now()->sub(rand(1, 10), 'days'),
                 'user_id' => $user->id,
@@ -396,8 +396,8 @@ class DemoDatabaseSeeder extends Seeder
             $user = User::inRandomOrder()->first();
 
             $item = $user->roadmapItems()->create([
-                'title' => 'Roadmap Item '.$i,
-                'slug' => 'roadmap-item-'.$i,
+                'title' => 'Roadmap Item ' . $i,
+                'slug' => 'roadmap-item-' . $i,
                 'type' => RoadmapItemType::FEATURE->value,
                 'description' => $this->loremIpsum,
                 'upvotes' => rand(1, 10),

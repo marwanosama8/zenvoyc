@@ -10,6 +10,10 @@ use App\Models\AutoInvoice;
 use App\Models\Customer;
 use App\Models\Sales;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Split;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -18,6 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Component as Livewire;
 
 class AutoInvoiceResource extends Resource
 {
@@ -48,103 +53,196 @@ class AutoInvoiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('customer_id')
-                    ->required()
-                    ->native(0)
-                    ->searchable()
-                    ->options(TenancyHelpers::getPluckCustomers())
-                    ->label(__("invoice.field.customer")),
-                Forms\Components\TextInput::make('rgnr')
-                    ->required()
-                    ->maxLength(50)
-                    ->label(__("invoice.field.rgnr")),
-                Forms\Components\Textarea::make('customer_address')
-                ->required()
-                    ->label(__("invoice.field.customer_address"))
-                    ->maxLength(65535),
-                Forms\Components\Textarea::make('options')
-                    ->label(__("invoice.field.options")),
-                Forms\Components\Textarea::make('info')
-                    ->label(__("invoice.field.info"))
-                    ->maxLength(65535),
-                Forms\Components\TextInput::make('rate')
-                    ->label(__("invoice.field.rate"))
-                    ->numeric(),
-                Forms\Components\Repeater::make('items')
-                    ->label(__("invoice.field.items"))
-                    ->orderColumn('order_column')
-                    ->cloneable()
-                    ->addActionLabel(__("invoice.field.add_item"))
+                Forms\Components\Grid::make()
                     ->schema([
-                        Forms\Components\Select::make('product')
-                            ->hint(__('invoice.hint.product'))
-                            ->live()
-                            ->afterStateUpdated(function (Set $set, ?string $state) {
-                                $product =  Sales::find($state);
-
-                                $set('type', 2);
-                                $set('amount', $product->price);
-                                $set('description', $product->description);
-                            })
-                            ->native(false)
-                            ->searchable()
-                            ->hiddenOn('edit')
-
-                            ->options(TenancyHelpers::getPluckSales()),
-                        Forms\Components\Textarea::make('description')
-                            ->label(__("invoice.field.description"))->rows(5)->required(),
-
-                        Forms\Components\Grid::make(2)
+                        Section::make('customer')
+                            ->columns(2)
+                            ->label(__('invoice.customer_details'))
                             ->schema([
-                                Forms\Components\Select::make('type')
-                                    ->label(__("invoice.field.type"))
-                                    ->required()
-                                    ->options([
-                                        '1' => __("invoice.select.type1"),
-                                        '2' => __("invoice.select.type2"),
-                                    ])
+                                Forms\Components\Select::make('customer_id')
+                                    ->relationship('customer', 'name')
+                                    ->options(TenancyHelpers::getPluckCustomers())
                                     ->live()
-                                    ->afterStateUpdated(function (Set $set, Get $get, ?string $state) {
-                                        $product =  Sales::find($get('product'));
-                                        if (!$product) {
-                                            return;
+                                    ->required()
+                                    ->afterStateUpdated(function (Set $set, ?string $state, string $operation) {
+                                        if ($operation === 'create') {
+                                            $customer = Customer::find($state);
+                                            $set('rate', $customer->rate ?? 0);
+                                            $set('customer_address', $customer->full_customer_address ?? 0);
                                         }
-                                        if ($state == 2) {
-                                            $set('amount', $product->price);
-                                        } else {
-                                            $customer = Customer::find(session()->get('current_customer_id'));
-
-                                            $set('amount', number_format((float)$customer->rate * $product->price, 2, '.', ''));
-                                        }
-                                    }),
-                                Forms\Components\TextInput::make('amount')
-                                    ->label(__("invoice.field.amount"))->numeric()->required(),
-
-                                Forms\Components\TextInput::make('price')
-                                    ->label(__("invoice.field.price"))->numeric()->required(),
+                                    })
+                                    ->columnSpanFull()
+                                    ->native(false)
+                                    ->label(__("invoice.field.customer")),
                             ]),
 
-                    ])
-                    ->columnSpanFull(),
-                Forms\Components\Select::make('custom_interval')
-                    ->label(__("invoice.field.custom_interval"))
-                    ->options(config('auto_invoice.custom_interval'))
-                    ->required(),
-                Forms\Components\DatePicker::make('next_generate_date')
-                    ->label(__("invoice.field.next_generate_date"))
-                    ->default(now()->addMonth())
-                    ->required()
-            ]);
+
+
+                    ]),
+                Section::make('invoice items')
+                    ->label(__('invoice.invoice_items'))
+                    ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                    ->schema([
+                        Forms\Components\Repeater::make('items')
+                            ->orderColumn('order_column')
+                            ->cloneable()
+                            ->required()
+                            ->addActionLabel(__("invoice.field.add_item"))
+                            ->schema([
+                                Forms\Components\Select::make('product')
+                                    ->hint(__('invoice.hint.product'))
+                                    ->live()
+                                    ->afterStateUpdated(function (Set $set, Get $get, ?string $state) {
+                                        $product =  Sales::find($state);
+
+                                        $set('type', 2);
+                                        $set('price', $get('amount') * $product?->price ?? 1);
+                                        $set('unit_price', $product?->price ?? 1);
+                                        $set('description', $product?->description ?? '');
+                                    })
+                                    ->native(true)
+                                    ->searchable()
+                                    ->lazy()
+                                    ->hiddenOn('edit')
+                                    ->options(TenancyHelpers::getPluckSales()),
+                                Forms\Components\Textarea::make('description')
+                                    ->label(__("invoice.field.description"))->rows(5)->required(),
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Grid::make([
+                                            'default' => 1,
+                                            'lg' => 4,
+                                        ])
+                                            ->schema([
+                                                Forms\Components\Select::make('type')
+                                                    ->label(__("invoice.field.type"))
+                                                    ->required()
+                                                    ->options([
+                                                        '1' => __("invoice.select.type1"),
+                                                        '2' => __("invoice.select.type2"),
+                                                    ])
+                                                    ->live()
+                                                    ->afterStateUpdated(function (Set $set, Get $get, ?string $state, Livewire $livewire) {
+                                                        switch ($state) {
+                                                            case 1:
+                                                                $set('unit_price', $livewire->data['rate']);
+                                                                $set('price', number_format((float)$livewire->data['rate'] * $get('amount') ?? 0, 2, '.', ''));
+                                                                break;
+
+                                                            case 2:
+                                                                $set('amount', 1 ?? 0);
+                                                                $set('unit_price', 0);
+                                                                $set('price', 0);
+                                                                break;
+
+                                                            default:
+                                                                break;
+                                                        }
+                                                    }),
+                                                Forms\Components\TextInput::make('amount')
+                                                    ->label(__("invoice.field.amount"))
+                                                    ->default(1)
+                                                    ->minValue(1)
+                                                    ->disabled(fn (Get $get): bool => !filled($get('type')))
+                                                    ->inputMode('decimal')
+                                                    ->numeric()
+                                                    ->live()
+                                                    ->afterStateUpdated(function (Set $set, Get $get, ?string $state, Livewire $livewire) {
+                                                        $amount = filled($get('amount')) ? $get('amount') : 0.00;
+                                                        switch ($get('type')) {
+                                                            case 1:
+                                                                $price =  $get('unit_price') ?? 0;
+                                                                $set('price', number_format((float)$livewire->data['rate'] * $amount ?? 0.00, 2, '.', ''));
+                                                                break;
+                                                            case 2:
+                                                                $price = $get('unit_price') ?? 0;
+                                                                $set('price', $state * $price);
+                                                                break;
+
+                                                            default:
+                                                                break;
+                                                        }
+                                                    })
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('unit_price')
+                                                    ->label(fn (Get $get): string => $get('type') == 1 ? __("invoice.field.per_hour") : __("invoice.field.unit_price"))
+                                                    ->default(0)
+                                                    ->numeric()
+                                                    ->hidden(fn ($operation): bool => $operation == 'edit')
+                                                    ->minValue(1)
+                                                    ->live()
+                                                    ->readOnly(fn (Get $get): bool => $get('type') == 1)
+                                                    ->disabled(fn (Get $get): bool => !filled($get('type')))
+                                                    ->afterStateUpdated(function (Set $set, Get $get, ?string $state, Livewire $livewire) {
+                                                        $amount = filled($get('amount')) ? $get('amount') : 0.00;
+                                                        switch ($get('type')) {
+                                                            case 1:
+                                                                $set('price', number_format((float)$livewire->data['rate'] * $amount ?? 0, 2, '.', ''));
+                                                                break;
+                                                            case 2:
+                                                                $set('price', $state * $amount ?? 0);
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
+                                                    })
+                                                    ->required(fn ($operation): bool => $operation == 'create'),
+                                                Forms\Components\TextInput::make('price')
+                                                    ->label(__("invoice.field.price"))
+                                                    ->numeric()
+                                                    ->disabled(fn (Get $get): bool => !filled($get('type')))
+                                                    ->minValue(1)
+                                                    ->inputMode('decimal')
+                                                    ->required(),
+                                            ]),
+                                    ]),
+                            ])
+                            ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                                unset($data['product'], $data['unit_price']);
+                                return $data;
+                            })
+                            ->columns(1),
+                    ]),
+                Split::make([
+                    Section::make('info')
+                        ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                        ->label(__('invoice.info'))
+                        ->description(__('invoice.here_you_can_define_invoice_footer'))
+                        ->schema([
+                            Forms\Components\Textarea::make('info')
+                                ->label(__("invoice.field.information"))->rows(5)
+                        ]),
+                    Section::make('invoice options')
+                        ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                        ->label(__('invoice.invoice_options'))
+                        ->description(__('invoice.here_you_can_define_invoice_options'))
+                        ->schema([
+                            Toggle::make('has_vat')
+                                ->default(1)
+                                ->label(__('invoice.has_vat'))
+                        ])->grow(false),
+                ])->from('md'),
+                Section::make('Date Details')
+                    ->label(__('invoice.date_details'))
+                    ->columns(2)
+                    ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                    ->schema([
+                        Forms\Components\Select::make('custom_interval')
+                            ->label(__("invoice.field.custom_interval"))
+                            ->options(config('auto_invoice.custom_interval'))
+                            ->required(),
+                        Forms\Components\DatePicker::make('next_generate_date')
+                            ->label(__("invoice.field.next_generate_date"))
+                            ->default(now()->addMonth())
+                            ->required()
+                    ]),
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('rgnr')
-                    ->label(__("invoice.field.rgnr"))->getStateUsing(fn ($record) => $record->rgnr)
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->label(__("invoice.field.customer"))->getStateUsing(fn ($record) => $record->customer->name)
                     ->sortable()
@@ -155,7 +253,7 @@ class AutoInvoiceResource extends Resource
                     ->getStateUsing(fn ($record) => config('auto_invoice.custom_interval')[$record->custom_interval])
                     ->badge(),
                 Tables\Columns\TextColumn::make('next_generate_date')
-                    
+
                     ->label(__("invoice.field.next_generate_date"))->date('d.m.Y'),
             ])->defaultSort('created_at', 'desc')
             ->filters([
@@ -172,7 +270,6 @@ class AutoInvoiceResource extends Resource
                 ]),
             ]);
     }
-
     public static function getRelations(): array
     {
         return [

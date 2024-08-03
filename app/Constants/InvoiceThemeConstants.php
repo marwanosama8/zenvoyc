@@ -2,33 +2,24 @@
 
 namespace App\Constants;
 
+use App\Models\InvoiceTheme;
+
 class InvoiceThemeConstants
 {
-    public const DEFAULT = 'Pro-Tool';
-
-    private static $themes =  [
-        'Pro-Tool' => [
-            'name' => 'Pro-Tool',
-            'colors' => ['#1e40af', '#fcfcfc', '#000000'],
-        ],
-        'Pro-Tool 2' => [
-            'name' => 'Pro-Tool 2',
-            'colors' => ['#1fdd28', '#fcfcfc', '#000000'],
-        ],
-    ];
+    public const DEFAULTID = 1;
 
     public static function getFormattedThemes()
     {
-        $themes = self::$themes;
+        $themes = InvoiceTheme::all();
         $options = [];
-        foreach ($themes as $key => $theme) {
-            $options[$key] = '
+        foreach ($themes as  $theme) {
+            $options[$theme->id] = '
             <div class="flex items-center justify-between">
-                <span class="mr-4">' . $theme['name'] . '</span>
+                <span class="mr-4">' . $theme->name . '</span>
                 <div class="flex gap-1">
-                    <div class="w-5 h-5 border-2 border-white rounded" style="background-color: ' . $theme['colors'][0] . ';"></div>
-                    <div class="w-5 h-5 border-2 border-white rounded" style="background-color: ' . $theme['colors'][1] . ';"></div>
-                    <div class="w-5 h-5 border-2 border-white rounded" style="background-color: ' . $theme['colors'][2] . ';"></div>
+                    <div class="w-5 h-5 border-2 border-white rounded" style="background-color: ' . $theme->colors[0] . ';"></div>
+                    <div class="w-5 h-5 border-2 border-white rounded" style="background-color: ' . $theme->colors[1] . ';"></div>
+                    <div class="w-5 h-5 border-2 border-white rounded" style="background-color: ' . $theme->colors[2] . ';"></div>
                 </div>
             </div>';
         }

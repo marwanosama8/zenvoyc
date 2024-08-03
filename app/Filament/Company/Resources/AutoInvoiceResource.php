@@ -153,7 +153,6 @@ class AutoInvoiceResource extends Resource
                                                     ->numeric()
                                                     ->live()
                                                     ->afterStateUpdated(function (Set $set, Get $get, ?string $state, Livewire $livewire) {
-                                                        $product =  Sales::find($get('product'));
                                                         $amount = filled($get('amount')) ? $get('amount') : 0.00;
                                                         switch ($get('type')) {
                                                             case 1:
@@ -172,8 +171,8 @@ class AutoInvoiceResource extends Resource
                                                     ->required(),
                                                 Forms\Components\TextInput::make('unit_price')
                                                     ->label(fn (Get $get): string => $get('type') == 1 ? __("invoice.field.per_hour") : __("invoice.field.unit_price"))
-                                                    ->default(0)
                                                     ->numeric()
+                                                    ->hidden(fn ($operation): bool => $operation == 'edit')
                                                     ->minValue(1)
                                                     ->live()
                                                     ->readOnly(fn (Get $get): bool => $get('type') == 1)

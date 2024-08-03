@@ -33,7 +33,6 @@ class TenantInvoice extends Model
 		'send',
 		'payed',
 		'monthely',
-		'regenerated',
 		'options',
 	];
 
@@ -138,17 +137,7 @@ class TenantInvoice extends Model
 
 	public function getCurrentVat()
 	{
-		/**
-		 * Corona UsT Check for 19% => 16% UST between 01.07.2020 - 31.12.2020
-		 */
-		$CoronaUSTStart = Carbon::createFromFormat('Y-m-d', '2020-07-01');
-		$CoronaUSTEnd = Carbon::createFromFormat('Y-m-d', '2020-12-31');
-		$CoronaCheck = Carbon::createFromFormat('d.m.Y', $this->date_origin)->between($CoronaUSTStart, $CoronaUSTEnd);
-
-		if ($CoronaCheck) {
-			return 16;
-		}
-		return 19;
+		return TenancyHelpers::getCurrentVat();
 	}
 
 	public function getTotalVat()

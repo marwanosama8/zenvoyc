@@ -30,7 +30,8 @@ class UserSetting extends Model
         'contact_email',
         'vat_percent',
         'invoice_language',
-        'invoice_theme'
+        'invoice_theme_id',
+        'currency_id',
     ];
 
     /**

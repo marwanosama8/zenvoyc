@@ -23,6 +23,11 @@ class TenancyHelpers
       return Filament::getCurrentPanel()->getId();
    }
 
+   public static function getCurrentVat()
+   {
+      return Filament::getTenant()->settings->vat_percent;
+   }
+
 
    public static function getPluckCustomers()
    {
@@ -100,5 +105,10 @@ class TenancyHelpers
    public static function isEmployee()
    {
       return auth()->user()->hasRole('employee');
+   }
+   
+   public static function isCompanyOrUser()
+   {
+      return is_null(Filament::getTenant()) ? 'user' : 'company';
    }
 }
