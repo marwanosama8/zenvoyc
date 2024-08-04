@@ -104,10 +104,7 @@ class CompanyPanelProvider extends PanelProvider
                         shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
-                    )
-                    ->myProfileComponents([
-                        'personal_info' => MyProfilePersonalInfo::class,
-                    ]),
+                    ),
                 FilamentProgressbarPlugin::make()->color($color)
             ])
             ->tenantMiddleware([

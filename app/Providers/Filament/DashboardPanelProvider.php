@@ -87,11 +87,7 @@ class DashboardPanelProvider extends PanelProvider
                         shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
-                    )
-                    ->myProfileComponents([
-                        \App\Livewire\AddressForm::class,
-
-                    ]),
+                    ),
                 FilamentProgressbarPlugin::make()->color($color)
             ]);
     }
