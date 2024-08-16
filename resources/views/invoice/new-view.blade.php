@@ -11,7 +11,7 @@
     if ($invoiceTheme && $invoiceTheme->is_active) {
         $invoiceThemeAliases = $invoiceTheme->aliases;
     } else {
-        $invoiceThemeAliases = InvoiceTheme::find(InvoiceThemeConstants::DEFAULTID)->aliases;
+        $invoiceThemeAliases = InvoiceTheme::find(InvoiceThemeConstants::DEFAULT_ID)->aliases;
     }
 @endphp
 <!doctype html>
@@ -28,7 +28,8 @@
     <title>{{ __('invoice-template.invoice', locale: $lang) }}</title>
 </head>
 
-<body>
+<body style="{{ !$print ? 'width: 1140px; margin: auto; padding: 20px;' : ''}}">
+
     <table class="w-full">
         <tr>
             <td class="w-half">

@@ -65,7 +65,9 @@ class UserRoleDataSeeder extends Seeder
                 'address' => fake('de_DE')->address(),
                 'postal_code' => fake('de_DE')->postcode(),
                 'tax_id' => fake('de_DE')->regexify('[A-Z0-9]{10}'),
-                'vat_id' => fake('de_DE')->regexify('[A-Z]{2}[0-9]{9}'),
+                'city' => fake('de_DE')->city(),
+                'vat_id' => 'DE20111340209',
+                'country_id' => 51, // 'Germany' Id from countries table
                 'iban' => fake('de_DE')->iban(),
                 'account_number' => fake('de_DE')->bankAccountNumber(),
                 'bank_code' => fake('de_DE')->regexify('[0-9]{8}'),
@@ -186,7 +188,7 @@ class UserRoleDataSeeder extends Seeder
                     'taskable_type' => $modelType,
                 ]);
 
-                $contacts = Contact::factory()->count(6)
+            $contacts = Contact::factory()->count(6)
                 ->state(
                     new Sequence(
                         fn (Sequence $sequence) =>  ['company' => 'Apple'],
@@ -197,11 +199,11 @@ class UserRoleDataSeeder extends Seeder
                     'contactable_type' => $modelType,
                 ]);
 
-                // assign some contacts to customers
+            // assign some contacts to customers
 
-                foreach ($contacts as  $contact) {
-                    $contact->customers()->attach($customers->random()->id);
-                }
+            foreach ($contacts as  $contact) {
+                $contact->customers()->attach($customers->random()->id);
+            }
 
             DB::commit();
         } catch (\Exception $e) {

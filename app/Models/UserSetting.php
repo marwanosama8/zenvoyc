@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class UserSetting extends Model
 {
@@ -17,6 +18,8 @@ class UserSetting extends Model
         'avatar_url',
         'website_url',
         'place_of_jurisdiction',
+        'country_id',
+        'city',
         'slug',
         'address',
         'postal_code',
@@ -42,5 +45,10 @@ class UserSetting extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getCountryAttribute()
+    {
+       return DB::table('countries')->where('id',$this->country_id)->first();
     }
 }

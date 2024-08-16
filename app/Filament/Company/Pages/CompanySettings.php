@@ -3,6 +3,7 @@
 namespace App\Filament\Company\Pages;
 
 use App\Constants\InvoiceThemeConstants;
+use App\Helpers\Helpers;
 use App\Helpers\TenancyHelpers;
 use Filament\Forms\Components\Select;
 use Filament\Pages\Page;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Support\HtmlString;
+use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 
 class CompanySettings extends Page
 {
@@ -67,35 +69,42 @@ class CompanySettings extends Page
                                     ->imageEditor()
                                     ->imageEditorAspectRatios([
                                         '92:16'
-                                    ])->label('Avatar URL')->nullable(),
-                                TextInput::make('name')->label('Company Name'),
-                                TextInput::make('managing_director')->label('Managing Director')->nullable(),
-                                TextInput::make('legal_name')->label('Legal Name')->nullable(),
-                                TextInput::make('website_url')->label('Website URL')->nullable(),
-                                TextInput::make('place_of_jurisdiction')->label('Place of Jurisdiction')->nullable(),
+                                    ])->label(__('Avatar URL'))->required(),
+                                TextInput::make('name')->label(__('Company Name')),
+                                TextInput::make('managing_director')->label(__('Managing Director'))->required(),
+                                TextInput::make('legal_name')->label(__('Legal Name'))->required(),
+                                TextInput::make('website_url')->label(__('Website URL'))->required(),
+                                TextInput::make('place_of_jurisdiction')->label(__('Place of Jurisdiction'))->required(),
                             ]),
                         Tabs\Tab::make('Address')
                             ->label(__('address'))
                             ->schema([
                                 RichEditor::make('address')
-                                    ->label('Address')->nullable(),
-                                TextInput::make('postal_code')->label('Postal Code')->nullable(),
+                                    ->label(__('Address'))->required(),
+                                TextInput::make('postal_code')->label(__('Postal Code'))->required(),
+                                Select::make('country_id')
+                                    ->label(__('label.county_id'))
+                                    ->options(Helpers::getPluckCountries())
+                                    ->searchable()
+                                    ->required(),
+                                    TextInput::make('city')->label(__('city'))->required(),
+
                             ]),
                         Tabs\Tab::make('Bank Information')
                             ->label(__('bank_info'))
                             ->schema([
-                                TextInput::make('tax_id')->label('Tax ID')->nullable(),
-                                TextInput::make('vat_id')->label('VAT ID')->nullable(),
-                                TextInput::make('iban')->label('IBAN')->nullable(),
-                                TextInput::make('account_number')->label('Account Number')->nullable(),
-                                TextInput::make('bank_code')->label('Bank Code')->nullable(),
-                                TextInput::make('bic')->label('BIC')->nullable(),
+                                TextInput::make('tax_id')->label(__('Tax ID'))->required(),
+                                TextInput::make('vat_id')->label(__('VAT ID'))->required(),
+                                TextInput::make('iban')->label(__('IBAN'))->nullable(),
+                                TextInput::make('account_number')->label(__('Account Number'))->nullable(),
+                                TextInput::make('bank_code')->label(__('Bank Code'))->nullable(),
+                                TextInput::make('bic')->label(__('BIC'))->nullable(),
                             ]),
                         Tabs\Tab::make('Contact Information')
                             ->label(__('contact_address'))
                             ->schema([
-                                TextInput::make('contact_number')->label('Contact Number')->nullable(),
-                                TextInput::make('contact_email')->label('Contact Email')->nullable(),
+                                TextInput::make('contact_number')->label(__('Contact Number'))->nullable(),
+                                TextInput::make('contact_email')->label(__('Contact Email'))->nullable(),
                             ])
                     ])
 
@@ -109,15 +118,16 @@ class CompanySettings extends Page
         return $form
             ->schema([
                 TextInput::make('vat_percent')
-                ->numeric()
-                ->minValue(1)
-                ->maxValue(100)
-                ->inputMode('decimal')
-                ->label(__('vat_percent'))
-                ->suffix('%')
-                ->hint(__('Loream ismapnn aqwouzpo pdocvb'))
-                ->required(),
-                Select::make('invoice_language')->label(__('invoice_language'))
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(100)
+                    ->inputMode('decimal')
+                    ->label(__('vat_percent'))
+                    ->suffix('%')
+                    ->hint(__('Loream ismapnn aqwouzpo pdocvb'))
+                    ->required(),
+                Select::make('invoice_language')
+                    ->label(__('invoice_language'))
                     ->options([
                         'en' => 'English',
                         'de' => 'Dutch',

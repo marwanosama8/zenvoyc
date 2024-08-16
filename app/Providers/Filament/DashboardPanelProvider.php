@@ -71,7 +71,7 @@ class DashboardPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 \App\Http\Middleware\RememberTenantMiddleware::class,
-            ])
+        ])
             ->tenantMiddleware([
                 \App\Http\Middleware\RememberTenantMiddleware::class,
             ])

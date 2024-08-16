@@ -21,14 +21,15 @@ class CustomerFactory extends Factory
             'street' => fake('de_DE')->streetName(),
             'nr' => fake('de_DE')->buildingNumber(),
             'zip' => fake('de_DE')->postcode(),
+            'reference' => "REF-" . rand(1111, 9999) . '-' . now()->year,
             'city' => fake('de_DE')->city(),
-            'country' => fake('de_DE')->country(),
+            'country_id' => 51, // 'Germany' Id from countries table            
             'email' => fake('de_DE')->safeEmail(),
             'token' => fake('de_DE')->uuid(),
             'cc' => fake('de_DE')->creditCardNumber(),
             'contact' => fake('de_DE')->phoneNumber(),
             'rate' => fake('de_DE')->randomFloat(2, 0, 100),
-            'vatid' => fake('de_DE')->regexify('[A-Z]{2}[0-9]{9}'),
+            'vat_id' => "DE20111340209",
         ];
     }
 }

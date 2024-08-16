@@ -163,3 +163,29 @@ table.products td.price {
     width: 20%;
     text-align: right;
 }
+
+.invoice-actions {
+    display: inline-block;
+}
+
+.invoice-link {
+    display: inline-block;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.text-blue {
+    color: #1d4ed8;
+}
+
+.text-red {
+    color: #dc2626;
+}
+
+.text-green {
+    color: #064e3b;
+}
+
+.invoice-link:hover {
+    opacity: 0.8;
+}

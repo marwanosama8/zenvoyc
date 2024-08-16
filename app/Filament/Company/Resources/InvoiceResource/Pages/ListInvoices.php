@@ -2,6 +2,7 @@
 
 namespace App\Filament\Company\Resources\InvoiceResource\Pages;
 
+use App\Filament\Company\Resources\AutoInvoiceResource\Pages\ListAutoInvoices;
 use App\Filament\Company\Resources\InvoiceResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -16,7 +17,7 @@ class ListInvoices extends ListRecords
         return [
             Actions\CreateAction::make(),
             Actions\Action::make(__('auto_invoices'))
-            ->action(fn () => redirect(Filament::getTenant()->slug."/auto-invoices")),
+            ->action(fn () => redirect(ListAutoInvoices::getUrl())),
         ];
     }
 }

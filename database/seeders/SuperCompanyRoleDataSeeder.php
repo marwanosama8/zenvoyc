@@ -54,20 +54,21 @@ class SuperCompanyRoleDataSeeder extends Seeder
             }
 
             // init the user's company
-
             $companyData = [
                 'name' => fake('de_DE')->name(),
                 'managing_director' => fake('de_DE')->name(),
                 'legal_name' => fake('de_DE')->company(),
-                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: 'logo', width: 620, height: 320)),
+                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: fake('de_DE')->company(), width: 620, height: 320)),
                 'website_url' => fake('de_DE')->url(),
                 'place_of_jurisdiction' => fake('de_DE')->city(),
                 'slug' => Str::slug(fake('de_DE')->name()),
                 'address' => fake('de_DE')->address(),
                 'postal_code' => fake('de_DE')->postcode(),
                 'tax_id' => fake('de_DE')->regexify('[A-Z0-9]{10}'),
-                'vat_id' => fake('de_DE')->regexify('[A-Z]{2}[0-9]{9}'),
                 'iban' => fake('de_DE')->iban(),
+                'city' => fake('de_DE')->city(),
+                'vat_id' => 'DE20111340209',
+                'country_id' => 51, // 'Germany' Id from countries table
                 'account_number' => fake('de_DE')->bankAccountNumber(),
                 'bank_code' => fake('de_DE')->regexify('[0-9]{8}'),
                 'bic' => fake('de_DE')->swiftBicNumber(),

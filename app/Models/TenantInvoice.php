@@ -48,13 +48,13 @@ class TenantInvoice extends Model
 
 	public function InvoiceItem()
 	{
-		return $this->hasMany(InvoiceItem::class,'invoice_id','id');
+		return $this->hasMany(InvoiceItem::class, 'invoice_id', 'id');
 	}
 
 	//just for Filament 3
 	public function invoice_item()
 	{
-		return $this->hasMany(InvoiceItem::class,'invoice_id','id');
+		return $this->hasMany(InvoiceItem::class, 'invoice_id', 'id');
 	}
 
 
@@ -137,7 +137,7 @@ class TenantInvoice extends Model
 
 	public function getCurrentVat()
 	{
-		return TenancyHelpers::getCurrentVat();
+		return $this->invoiceable->settings->vat_percent;
 	}
 
 	public function getTotalVat()
@@ -167,7 +167,7 @@ class TenantInvoice extends Model
 	 */
 	public function invoiceMedia()
 	{
-		return $this->hasMany(InvoiceMedia::class,'invoice_id','id');
+		return $this->hasMany(InvoiceMedia::class, 'invoice_id', 'id');
 	}
 
 	/**
@@ -183,18 +183,17 @@ class TenantInvoice extends Model
 	protected static function booted(): void
 	{
 		static::creating(function (TenantInvoice $model) {
-			
+
 			$currentTenant = TenancyHelpers::getTenant();
 			if (empty($model->rgnr)) {
 				$model->rgnr = self::getNextNr();
-            }
-            if (empty($model->invoiceable_type)) {
-                $model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
-            }
-            if (empty($model->invoiceable_id)) {
-                $model->invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
-            }
-
+			}
+			if (empty($model->invoiceable_type)) {
+				$model->invoiceable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
+			}
+			if (empty($model->invoiceable_id)) {
+				$model->invoiceable_id = is_null($currentTenant) ? auth()->id() : $currentTenant->id;
+			}
 		});
 	}
 }

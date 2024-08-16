@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Support\Facades\DB;
 
 class Company extends Model implements HasAvatar
 {
@@ -25,6 +26,8 @@ class Company extends Model implements HasAvatar
         'iban',
         'account_number',
         'bank_code',
+        'country_id',
+        'city',
         'bic',
         'contact_number',
         'contact_email'
@@ -105,4 +108,10 @@ class Company extends Model implements HasAvatar
     {
         return $this->morphMany(Contact::class, 'contactable');
     }
+
+    public function getCountryAttribute()
+    {
+       return DB::table('countries')->where('id',$this->country_id)->first();
+    }
+
 }

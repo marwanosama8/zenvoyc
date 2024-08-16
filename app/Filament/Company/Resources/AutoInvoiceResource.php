@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Component as Livewire;
 
-use function Deployer\get;
 
 class AutoInvoiceResource extends Resource
 {
