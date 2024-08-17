@@ -3,6 +3,7 @@
 namespace App\Filament\Company\Resources;
 
 use App\Filament\Company\Resources\CustomerResource\Pages;
+use App\Filament\Company\Resources\InvoiceResource\Pages\ListInvoices;
 use App\Filament\Dashboard\Resources\CustomerResource\RelationManagers\CustomerContactsRelationManager;
 use App\Helpers\Helpers;
 use App\Models\Customer;
@@ -115,7 +116,7 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('customer.label.name'))
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('reference')
+                Tables\Columns\TextColumn::make('reference')
                     ->label(__('customer.label.reference'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('street')
@@ -181,8 +182,12 @@ class CustomerResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make(name: 'see_invoices')
+                    ->label(__('invoice.action.see_invoices'))
+                    ->url(fn(Customer $record) => ListInvoices::getUrl(['tableFilters[customer_id][value]' => $record->id])),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
