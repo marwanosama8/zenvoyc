@@ -14,7 +14,10 @@ use App\Models\TenantInvoice as Invoice;
 use App\Models\Scopes\CustomerScope;
 use App\Models\Scopes\TenantInvoiceScope as InvoiceScope;
 use Carbon\Carbon;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\Select;
 use Filament\Tables;
+use Livewire\Component as Livewire;
 
 class CustomerInvoices extends Component implements HasForms, HasTable
 {
@@ -55,10 +58,38 @@ class CustomerInvoices extends Component implements HasForms, HasTable
                     ->label(__("invoice.field.date_pay"))->date('d.m.Y')
             ])
             ->actions([
-                Action::make('download')
-                    ->label(__('invoice.link.download'))
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn (Invoice $record): string => route('invoice.download', ['invoice' => $record->rgnr]))
+                ActionGroup::make([
+                    Tables\Actions\Action::make('viewInvoice')
+                        ->label(__('invoice.action.view_invoice'))
+                        ->icon('heroicon-m-eye')
+                        ->openUrlInNewTab()
+                        ->url(fn(Invoice $record) => route('invoice.view', $record->rgnr)),
+                    Tables\Actions\Action::make('streamInvoice')
+                        ->label(__('invoice.action.steam'))
+                        ->openUrlInNewTab()
+                        ->icon('heroicon-m-printer')
+                        ->url(fn(Invoice $record) => route('invoice.stream', $record->rgnr)),
+                    Action::make('generateXml')
+                        ->label(__('invoice.action.generate_xml'))
+                        ->icon('heroicon-m-code-bracket')
+                        ->form([
+                            Select::make('invoiceProfile')
+                                ->label(__('invoice.action.invoiceProfile'))
+                                ->options(config('zugferd-profiles.profiles'))
+                                ->default(10)
+                                ->required(),
+                        ])
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false)
+                        ->extraModalFooterActions([
+                            Action::make('mergeWithPdf')
+                                ->url(fn(Livewire $livewire, Invoice $record) => route('invoice.merge', ['rgnr' => $record->rgnr, 'profile' => $livewire->mountedTableActionsData[0]['invoiceProfile']]))
+                                ->label(__('invoice.action.merge_with_pdf')),
+                            Action::make('downloadXml')
+                                ->url(fn(Livewire $livewire, Invoice $record) => route('invoice.ddxml', ['rgnr' => $record->rgnr, 'profile' => $livewire->mountedTableActionsData[0]['invoiceProfile']]))
+                                ->label(__('invoice.action.xml_downlaod')),
+                        ])
+                ])
             ]);
     }
 
@@ -69,6 +100,7 @@ class CustomerInvoices extends Component implements HasForms, HasTable
         $this->selectedYear = $year;
         $this->resetTable();
     }
+
 
     public function render()
     {

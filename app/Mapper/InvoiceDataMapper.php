@@ -3,6 +3,7 @@
 namespace App\Mapper;
 
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class InvoiceDataMapper
@@ -41,7 +42,7 @@ class InvoiceDataMapper
             $invoiceData = $invoice;
         } else { // this in user invoice            
             // get user data
-            $data = Auth::user();
+            $data = User::with('settings')->where('id',$invoice->invoiceable_id)->first();
             $providerData = [
                 'currency_id' => $data->settings->currency_id,
                 'invoice_language' => $data->settings->invoice_language,

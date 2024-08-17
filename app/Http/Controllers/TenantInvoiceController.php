@@ -33,7 +33,7 @@ class TenantInvoiceController extends Controller
     {
         $data = $this->pdfGenerator->getData($rgnr);
 
-        abort_if(!$this->isInvoiceAccessable($data['invoice']), 401);
+        // abort_if(!$this->isInvoiceAccessable($data['invoice']), 401);
         return view('invoice.new-view', ['data' => $data, 'print' => 0]);
     }
 
@@ -77,6 +77,11 @@ class TenantInvoiceController extends Controller
     public function reminder($rgnr)
     {
         return $this->pdfGenerator->remind($rgnr);
+    }
+
+    public function customerInvoices($token)
+    {
+        return view('invoice.customer-invoices', ['token' => $token]);
     }
 
     // old

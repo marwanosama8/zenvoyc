@@ -135,6 +135,8 @@ class ViewOffer extends Component implements HasForms
 
     public function render()
     {
-        return view('livewire.offer.view-offer',['provider', $this->provider]);
+        return view('livewire.offer.view-offer',['provider', $this->provider])
+        ->extends('layouts.app') 
+        ->section('content');
     }
 }

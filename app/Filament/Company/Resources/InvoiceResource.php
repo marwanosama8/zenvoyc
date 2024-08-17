@@ -349,6 +349,7 @@ class InvoiceResource extends Resource
                                 ->label(__('invoice.action.xml_downlaod')),
                         ])
                 ])
+                
                     ->icon('heroicon-m-document-arrow-down')
             ])
             ->bulkActions([

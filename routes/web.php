@@ -185,7 +185,7 @@ Route::get('/invoice/{rgnr}/merge/{profile}',[TenantInvoiceController::class, 'm
 Route::get('/xml/{rgnr}/download/{profile}',[TenantInvoiceController::class, 'xmlDownload'])->name('invoice.ddxml');
 Route::get('/invoice/{rgnr}/reminder', [TenantInvoiceController::class, 'reminder'])->name('invoice.reminder');
 Route::get('/sign-contract/{token}', ViewOffer::class)->name('sign.contract');
-Route::get('/list-invoices/{token}', CustomerInvoices::class)->name('list.invoices');
+Route::get('/list-invoices/{token}', [TenantInvoiceController::class, 'customerInvoices'])->name('list.invoices');
 Route::get('/fakepdf/{type}', [TenantInvoiceController::class,'createFakeInvoice'])->name('fake.pdf');
 
 // Invoice
