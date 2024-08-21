@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.2",
         "aws/aws-sdk-php": "^3.293",
+        "bezhansalleh/filament-language-switch": "^3.1",
         "biscolab/laravel-recaptcha": "^6.1",
         "blade-ui-kit/blade-icons": "^1.5",
         "cknow/laravel-money": "^8.0",

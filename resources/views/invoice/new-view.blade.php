@@ -131,7 +131,7 @@
     @if ($data['invoice']->has_vat)
         <div class="total">
             {{ __('invoice-template.tax', locale: $lang) }}:
-            {{ $currency->symbol . number_format(CalculationHelpers::getTotalVat($data['invoice']->getTotalNetto(), $data['provider']['vat_percent']), 2, ',', '.') }}
+            {{ $currency->symbol . number_format(CalculationHelpers::getTotalVat($data['invoice']->getTotalNetto(), $data['invoice']->vat_percent), 2, ',', '.') }}
         </div>
         <div class="total-separator"></div>
         <table class="total-overall-table">
@@ -143,7 +143,7 @@
                 <td class="right" style="text-align: right;">
                     <h3>
                         {{ __('invoice-template.total', locale: $lang) }}:
-                        {{ $currency->symbol . number_format(CalculationHelpers::getTotalBrutto($data['invoice']->getTotalNetto(), $data['provider']['vat_percent']), 2, ',', '.') }}
+                        {{ $currency->symbol . number_format(CalculationHelpers::getTotalBrutto($data['invoice']->getTotalNetto(), $data['invoice']->vat_percent), 2, ',', '.') }}
                     </h3>
                 </td>
             </tr>

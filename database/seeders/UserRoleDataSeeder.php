@@ -69,6 +69,7 @@ class UserRoleDataSeeder extends Seeder
                 'vat_id' => 'DE20111340209',
                 'country_id' => 51, // 'Germany' Id from countries table
                 'iban' => fake('de_DE')->iban(),
+                'vat_percent' => 14.00,
                 'account_number' => fake('de_DE')->bankAccountNumber(),
                 'bank_code' => fake('de_DE')->regexify('[0-9]{8}'),
                 'bic' => fake('de_DE')->swiftBicNumber(),

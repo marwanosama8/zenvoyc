@@ -120,11 +120,11 @@ class XmlGenerator
             $document->addDocumentNote($invoice['info']);
         }
 
-        // add taxes
-        $brutto = CalculationHelpers::getTotalBrutto($invoice->getTotalNetto(), $provider['vat_percent']);
-        $vat = CalculationHelpers::getTotalVat($invoice->getTotalNetto(), $provider['vat_percent']);
+        // add taxes 
+        $brutto = CalculationHelpers::getTotalBrutto($invoice->getTotalNetto(), $invoice->vat_percent);
+        $vat = CalculationHelpers::getTotalVat($invoice->getTotalNetto(), $invoice->vat_percent);
 
-        $document->addDocumentTax('S', 'VAT', $invoice->getTotalNetto(), $vat, $provider['vat_percent']);
+        $document->addDocumentTax('S', 'VAT', $invoice->getTotalNetto(), $vat, $invoice->vat_percent);
 
         $document->setDocumentSummation(
             $brutto,
@@ -155,7 +155,7 @@ class XmlGenerator
                 ->setDocumentPositionGrossPrice($unitPrice)
                 ->setDocumentPositionNetPrice($unitPrice)
                 ->setDocumentPositionQuantity($item['amount'], 'H87')
-                ->addDocumentPositionTax('S', 'VAT', $provider['vat_percent'])
+                ->addDocumentPositionTax('S', 'VAT', $invoice->vat_percent)
                 ->setDocumentPositionLineSummation($item['price']);
         }
 

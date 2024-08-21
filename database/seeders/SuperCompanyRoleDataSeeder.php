@@ -79,7 +79,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
             $comapny->settings()->updateOrCreate([
                 'company_id' => $comapny->id
             ], [
-                'vat_percent' => fake()->randomFloat(2, 5, 20)
+                'vat_percent' => 14.00
             ]);
             $comapny->users()->attach($user);
 

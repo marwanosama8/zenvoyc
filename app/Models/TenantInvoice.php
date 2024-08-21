@@ -25,15 +25,13 @@ class TenantInvoice extends Model
 		'date_start',
 		'date_end',
 		'date_pay',
-		'has_vat',
 		'rate',
 		'info',
-		'ust',
-		'printed',
+		'has_vat',
+		'vat_percent',
 		'send',
 		'payed',
 		'monthely',
-		'options',
 	];
 
 	protected $guarded = [];
