@@ -141,7 +141,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
                     },
                     fn (Sequence $sequence) => [
                         'frequency' => 'monthly',
-                        'start' => Carbon::now(),
+                        'start' => Carbon::now()->startOfYear(),
                         'end' => Carbon::createFromDate(null, fake('de_DE')->numberBetween(2, 12), 1)->endOfMonth()
                     ],
                     fn (Sequence $sequence) =>  [

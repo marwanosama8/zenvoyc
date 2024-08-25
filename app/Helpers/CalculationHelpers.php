@@ -51,14 +51,25 @@ class CalculationHelpers
       return $end_time->toTimeString();
    }
 
+   /**
+    * Calculate the invoice payable amount = (VAT in dollers + Netto in dollers) .
+    * The money should client pay
+    * @var string 
+    */
+   
    public static function getTotalBrutto($getTotalNetto, $provider_vat)
    {
       return ($getTotalNetto + self::getTotalVat($getTotalNetto, $provider_vat));
    }
 
+
+   /**
+    * Calculate the invoice total vat only (All invoice items price * vat percent) = the vat in dollers .
+    *
+    * @var string 
+    */
    public static function getTotalVat($getTotalNetto, $provider_vat)
    {
       return ($getTotalNetto / 100) * $provider_vat;
    }
-
 }

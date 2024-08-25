@@ -292,6 +292,10 @@ class InvoiceResource extends Resource
                     ->label(__("invoice.field.date_pay"))->date('d.m.Y'),
                 Tables\Columns\ToggleColumn::make('payed')
                     ->label(__("invoice.field.payed")),
+                Tables\Columns\TextColumn::make('created_at')
+                ->sortable()
+                    ->label(__("invoice.field.created_at"))->date('d.m.Y'),
+
                 // Tables\Columns\TextColumn::make('#')
                 //     ->getStateUsing(function ($record) {
                 //         return '<a target="_blank" href="' . route('invoice.view', ['invoice' => $record->rgnr]) . '">' . __('invoice.link.view') . '</a>';
@@ -301,6 +305,12 @@ class InvoiceResource extends Resource
                 Tables\Filters\Filter::make('not_send')
                     ->label(__('invoice.filter.not_sended'))
                     ->query(fn(Builder $query): Builder => $query->where('send', 0)),
+                Tables\Filters\Filter::make('payed')
+                    ->label(__('invoice.filter.payed'))
+                    ->query(fn(Builder $query): Builder => $query->where('payed', 1)),
+                Tables\Filters\Filter::make('has_vat')
+                    ->label(__('invoice.filter.has_vat'))
+                    ->query(fn(Builder $query): Builder => $query->where('has_vat', 1)),
                 Tables\Filters\SelectFilter::make('customer_id')
                     ->label(__('invoice.field.customer'))
                     ->options(TenancyHelpers::getPluckCustomers())
@@ -321,13 +331,11 @@ class InvoiceResource extends Resource
                     Tables\Actions\Action::make('viewInvoice')
                         ->label(__('invoice.action.view_invoice'))
                         ->icon('heroicon-m-eye')
-                        ->openUrlInNewTab()
-                        ->url(fn(Invoice $record) => route('invoice.view', $record->rgnr)),
+                        ->url(fn(Invoice $record) => route('invoice.view', $record->rgnr), true),
                     Tables\Actions\Action::make('streamInvoice')
                         ->label(__('invoice.action.steam'))
-                        ->openUrlInNewTab()
                         ->icon('heroicon-m-printer')
-                        ->url(fn(Invoice $record) => route('invoice.stream', $record->rgnr)),
+                        ->url(fn(Invoice $record) => route('invoice.stream', $record->rgnr), true),
                     Action::make('generateXml')
                         ->label(__('invoice.action.generate_xml'))
                         ->icon('heroicon-m-code-bracket')
@@ -349,7 +357,7 @@ class InvoiceResource extends Resource
                                 ->label(__('invoice.action.xml_downlaod')),
                         ])
                 ])
-                
+
                     ->icon('heroicon-m-document-arrow-down')
             ])
             ->bulkActions([

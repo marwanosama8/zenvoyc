@@ -1,28 +1,20 @@
 <?php
 
-namespace App\Filament\Company\Pages;
+namespace App\Filament\Dashboard\Pages;
 
-use App\Filament\Company\Widgets\Dashboard\DashboardStats;
-use App\Filament\Company\Widgets\DashboardStats as WidgetsDashboardStats;
-use App\Filament\Company\Widgets\InvoicesStats;
-use App\Helpers\TenancyHelpers;
+
 use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
-use Filament\Pages\Page;
 use Filament\Support\Facades\FilamentIcon;
-use Filament\Widgets\Widget;
-use Filament\Widgets\WidgetConfiguration;
+
 use Illuminate\Contracts\Support\Htmlable;
 use Filament\Pages\Dashboard as BaseDashboard;
-use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class Dashboard extends BaseDashboard
 {
     use HasFiltersAction;
-    use InteractsWithPageFilters;
-
 
     protected static string $routePath = '/';
 
@@ -60,27 +52,28 @@ class Dashboard extends BaseDashboard
      */
     public function getColumns(): int | string | array
     {
-        return 3;
+        return 2;
     }
 
     public function getTitle(): string | Htmlable
     {
-        return __('company.dahboard.head_title');
+        return __('dashboard.dahboard.head_title');
     }
 
     protected function getHeaderActions(): array
     {
         return [
             FilterAction::make()
-                ->badge(count($this->filters))
                 ->form([
                     DatePicker::make('startDate')
                         ->label(__('dashboard.filter.start_date'))
                         ->default(now()->firstOfYear()->toDateString())
                         ->native(false)
+                        // ->format('d/m/Y')
                         ->hint(__('dashboard.filter.start_date.hint')),
                     DatePicker::make('endDate')
                         ->label(__('dashboard.filter.end_date'))
+                        // ->format('d/m/Y')
                         ->native(false)
                         ->default(now())
                         ->hint(__('dashboard.filter.end_date.hint')),

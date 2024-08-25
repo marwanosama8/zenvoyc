@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -50,5 +51,10 @@ class UserSetting extends Model
     public function getCountryAttribute()
     {
        return DB::table('countries')->where('id',$this->country_id)->first();
+    }
+
+    public function getCurrencyAttribute()
+    {
+        return Helpers::getCurrancyData($this->currency_id);
     }
 }
