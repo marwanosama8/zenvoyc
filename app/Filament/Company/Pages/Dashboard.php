@@ -2,18 +2,11 @@
 
 namespace App\Filament\Company\Pages;
 
-use App\Filament\Company\Widgets\Dashboard\DashboardStats;
-use App\Filament\Company\Widgets\DashboardStats as WidgetsDashboardStats;
-use App\Filament\Company\Widgets\InvoicesStats;
-use App\Helpers\TenancyHelpers;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
-use Filament\Pages\Page;
 use Filament\Support\Facades\FilamentIcon;
-use Filament\Widgets\Widget;
-use Filament\Widgets\WidgetConfiguration;
 use Illuminate\Contracts\Support\Htmlable;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -72,7 +65,7 @@ class Dashboard extends BaseDashboard
     {
         return [
             FilterAction::make()
-                ->badge(count($this->filters))
+                ->badge(count($this->filters ?? []))
                 ->form([
                     DatePicker::make('startDate')
                         ->label(__('dashboard.filter.start_date'))

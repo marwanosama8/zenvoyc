@@ -11,10 +11,12 @@ use Filament\Support\Facades\FilamentIcon;
 
 use Illuminate\Contracts\Support\Htmlable;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class Dashboard extends BaseDashboard
 {
     use HasFiltersAction;
+    use InteractsWithPageFilters;
 
     protected static string $routePath = '/';
 
@@ -64,16 +66,15 @@ class Dashboard extends BaseDashboard
     {
         return [
             FilterAction::make()
+                ->badge(count($this->filters ?? []))
                 ->form([
                     DatePicker::make('startDate')
                         ->label(__('dashboard.filter.start_date'))
                         ->default(now()->firstOfYear()->toDateString())
                         ->native(false)
-                        // ->format('d/m/Y')
                         ->hint(__('dashboard.filter.start_date.hint')),
                     DatePicker::make('endDate')
                         ->label(__('dashboard.filter.end_date'))
-                        // ->format('d/m/Y')
                         ->native(false)
                         ->default(now())
                         ->hint(__('dashboard.filter.end_date.hint')),

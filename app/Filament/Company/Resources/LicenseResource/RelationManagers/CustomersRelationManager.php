@@ -34,8 +34,9 @@ class CustomersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('volume'),
+                Tables\Columns\TextColumn::make('name')->label('name'),
+                Tables\Columns\TextColumn::make('volume')->label('volume'),
+                Tables\Columns\TextColumn::make('info')->label('information')->limit(100),
             ])
             ->filters([
                 //
@@ -43,8 +44,10 @@ class CustomersRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\AttachAction::make()->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                    Forms\Components\TextInput::make('volume')->required()
+                    Forms\Components\TextInput::make('volume')->label('volume')->required()
                         ->numeric()
+                        ->maxLength(255),
+                    Forms\Components\Textarea::make('info')->label('information')->required()
                         ->maxLength(255),
                 ])
 

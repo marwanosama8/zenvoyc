@@ -93,8 +93,8 @@ class CompanySettings extends Page
                         Tabs\Tab::make('Bank Information')
                             ->label(__('bank_info'))
                             ->schema([
-                                TextInput::make('tax_id')->label(__('Tax ID'))->required(),
-                                TextInput::make('vat_id')->label(__('VAT ID'))->required(),
+                                TextInput::make('tax_id')->label(__('Tax ID')),
+                                TextInput::make('vat_id')->label(__('VAT ID')),
                                 TextInput::make('iban')->label(__('IBAN'))->nullable(),
                                 TextInput::make('account_number')->label(__('Account Number'))->nullable(),
                                 TextInput::make('bank_code')->label(__('Bank Code'))->nullable(),

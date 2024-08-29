@@ -18,8 +18,10 @@ class NoticeLicenseRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('notice')
+                Forms\Components\Textarea::make('notice')
                     ->required()
+                    ->label('notice')
+                    ->columnSpanFull()
                     ->maxLength(255),
             ]);
     }
@@ -27,9 +29,10 @@ class NoticeLicenseRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('notice')
+            ->recordTitleAttribute(__('notice'))
             ->columns([
-                Tables\Columns\TextColumn::make('notice'),
+                Tables\Columns\TextColumn::make('notice')
+                ->label('notice'),
             ])
             ->filters([
                 //
