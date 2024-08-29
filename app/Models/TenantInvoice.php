@@ -158,6 +158,16 @@ class TenantInvoice extends Model
 		return ($this->getTotalNetto() + $this->getTotalVat());
 	}
 
+	public function scopeHasBeenPaid($query)
+	{
+		return $query->where('payed', 1);
+	}
+
+	public function scopeHasNotPayed($query)
+	{
+		return $query->where('payed', 0);
+	}	
+
 	/**
 	 * Get all of the invoice_media for the Invoice
 	 *

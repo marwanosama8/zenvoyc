@@ -14,6 +14,8 @@ class ExpenditureWidget extends Widget
 
     public $selectedFrequency = ['monthly', 'one-time', 'yearly'];
 
+    protected static ?int $sort = 3;
+
     public function mount() {}
 
     public function render(): View

@@ -17,6 +17,7 @@
         "codeisawesomehq/filament-tinyeditor": "^1.4",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
+        "flowframe/laravel-trend": "^0.2.0",
         "guzzlehttp/guzzle": "^7.2",
         "horstoeko/zugferd": "^1",
         "horstoeko/zugferd-laravel": "^1.0",
