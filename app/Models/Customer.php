@@ -39,6 +39,11 @@ class Customer extends Model
         'general_access',
         'reverse_charge',
     ];
+
+    protected $casts = [
+        'cc' => 'array',
+    ];
+ 
     // Owner Realtionship
     public function customerable()
     {

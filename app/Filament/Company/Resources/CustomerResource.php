@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -63,22 +64,20 @@ class CustomerResource extends Resource
                             ->numeric()
                             ->default(100.00),
                         Forms\Components\Textarea::make('added')
-                            ->required()
                             ->label(__('customer.label.added'))
                             ->maxLength(65535),
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->label(__('customer.label.email'))
                             ->maxLength(200),
-                        Forms\Components\TextInput::make('cc')
-                            ->label(__('customer.label.cc'))
-                            ->maxLength(200),
+                        TagsInput::make('cc')
+                            ->label('cc')
+                            ->placeholder(__('customer.label.add_cc'))
+                            ->separator(','),
                         Forms\Components\TextInput::make('vat_id')
-                            ->required()
                             ->label(__('customer.label.vat_id'))
                             ->maxLength(50),
                         Forms\Components\Textarea::make('options')
-                            ->required()
                             ->label(__('customer.label.options'))
                             ->columnSpanFull(),
                     ]),
@@ -105,6 +104,11 @@ class CustomerResource extends Resource
                         Forms\Components\TextInput::make('contact')
                             ->label(__('customer.label.contact'))
                             ->maxLength(100),
+                    ]),
+                Fieldset::make('Options')
+                    ->schema([
+                        Forms\Components\Toggle::make('reverse_charge')
+                            ->label(__('customer.label.reverse_charge'))
                     ])
             ]);
     }
@@ -153,9 +157,6 @@ class CustomerResource extends Resource
                 Tables\Columns\ToggleColumn::make('general_access')
                     ->label(__('customer.label.general_access'))
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('reverse_charge')
-                    ->label(__('customer.label.reverse_charge'))
-                    ->sortable(),
                 // Tables\Columns\TextColumn::make('id')
                 //     ->formatStateUsing(fn (string $state): HtmlString => Helpers::customeHtmlElement('a' ,"href=''")),
                 Tables\Columns\ViewColumn::make('token')
@@ -176,6 +177,7 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->label(__('customer.label.deleted_at'))
                     ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
             ])
             ->filters([
