@@ -3,10 +3,7 @@
 namespace App\Filament\Company\Resources;
 
 use App\Filament\Company\Resources\TimesheetResource\Pages;
-use App\Filament\Company\Resources\TimesheetResource\RelationManagers;
 use App\Helpers\TenancyHelpers;
-use App\Models\Customer;
-use App\Models\Project;
 use App\Models\Timesheet;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -14,7 +11,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\Filter;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,12 +19,14 @@ class TimesheetResource extends Resource
 {
     protected static ?string $model = Timesheet::class;
 
+    protected static bool $isDiscovered = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-clock';
+
     public static function getModelLabel(): string
     {
         return __('navigation.timesheet');
     }
-
 
     public static function getPluralModelLabel(): string
     {

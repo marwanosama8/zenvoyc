@@ -24,6 +24,8 @@ use Str;
 
 class TaskResource extends Resource
 {
+    protected static bool $isDiscovered = false;
+
     protected static ?string $model = Task::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

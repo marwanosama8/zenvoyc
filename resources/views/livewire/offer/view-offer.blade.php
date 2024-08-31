@@ -1,25 +1,30 @@
+@use('App\Helpers\Helpers')
+@php
+    $currency = Helpers::getCurrancyData($providerArray['currency_id']);
+    $lang = $providerArray['invoice_language'];
+@endphp
 {{-- body --}}
-
 <div class="container p-10 m-10 mx-auto bg-gray-100 border-2 border-black">
     <div class="pb-3 text-sm">
         Date: {{ $offer->created_at->format('d.m.Y') }}
     </div>
     <div class="flex justify-between ">
         <div class="float-left w-4/6 px-4 mr-4">
-            <img class="mt-5 ml-10" style="max-width: 430px" src="{{ asset('storage/' . $provider['avatar_url']) }}" />
+            <img class="mt-5 ml-10" style="max-width: 430px"
+                src="{{ asset('storage/' . $providerArray['avatar_url']) }}" />
         </div>
         <div class="relative float-left w-1/3 px-4">
             <br />
-            <strong>{{$provider['legal_name']}}</strong>
+            <strong>{{ $providerArray['legal_name'] }}</strong>
             <br />
-                {!! $provider['address'] !!}
+            {!! $providerArray['address'] !!}
             <br />
         </div>
 
     </div>
 
     <div class="flex items-center justify-center">
-        <div class="h-0.5 w-1/3 mx-4 bg-gray-400"></div>
+        <div class="h-0.5 w-1/3 mx-4 bg-gray-400  mt-4"></div>
     </div>
 
     {{-- offer title --}}
@@ -29,12 +34,11 @@
             <h1>{{ $offer->title }}</h1>
         </div>
         <div class="flex items-center justify-center">
-            <div class="h-0.5 w-1/3 mx-4 bg-gray-400 py-3"></div>
+            <div class="h-0.5 w-1/3 mx-4 bg-gray-400  mt-4 py-3"></div>
         </div>
     </div>
     <br />
     {{-- end offer title --}}
-
     {{-- offer content --}}
     <div class="flex flex-col gap-4">
         <h1>Dear {{ $offer->customer()->withoutGlobalScopes()->first()->name }},</h1>
@@ -42,7 +46,7 @@
             <style>
                 ol {
                     list-style-type: decimal;
-                } 
+                }
 
                 ul {
                     list-style-type: disc;
@@ -53,7 +57,7 @@
         </div>
     </div>
     <div class="flex items-center justify-center my-4">
-        <div class="h-0.5 w-1/3 mx-4 bg-gray-400"></div>
+        <div class="h-0.5 w-1/3 mx-4 bg-gray-400  mt-4"></div>
     </div>
     {{-- end offer content --}}
 
@@ -69,12 +73,16 @@
                 <div class="overflow-hidden">
                     <table class="w-full mx-auto text-xs font-light text-center sm:text-sm">
                         <thead
-                            class="font-medium text-white bg-blue-800 border-b dark:border-neutral-500 dark:bg-neutral-900">
+                            class="font-medium text-white border-b bg-neutral-800 dark:border-neutral-500 dark:bg-neutral-900">
                             <tr>
                                 <th scope="col" class="px-6 py-4"> # </th>
-                                <th scope="col" class="px-6 py-4 text-center"> Beschreibung </th>
-                                <th scope="col" class="px-6 py-4"> Einheiten </th>
-                                <th scope="col" class="px-6 py-4"> Preis in € </th>
+                                <th scope="col" class="px-6 py-4 text-center">
+                                    {{ __('offer-contract.description', locale: $lang) }} </th>
+                                <th scope="col" class="px-6 py-4">
+                                    {{ __('offer-contract.units', locale: $lang) }} </th>
+                                <th scope="col" class="px-6 py-4">
+                                    {{ __('offer-contract.price_in', locale: $lang) . ' ' . $currency->symbol }}
+                                </th>
                             </tr>
                         </thead>
 
@@ -87,23 +95,24 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @switch($item['type'])
                                             @case(1)
-                                                pauschal
+                                            {{ __('offer-contract.price_in', locale: $lang) }}
                                             @break
 
                                             @case(2)
                                                 @if ($item['amount'] > 1)
-                                                    {{ $item['amount'] }} Stunden
+                                                    {{ $item['amount'] }} {{ __('offer-contract.hours', locale: $lang) }}
                                                 @else
-                                                    {{ $item['amount'] }} Stunde
+                                                    {{ $item['amount'] }} {{ __('offer-contract.hour', locale: $lang) }}
                                                 @endif
                                             @break
 
                                             @default
-                                                pauschal
+                                            {{ __('offer-contract.pauschal', locale: $lang) }}
                                         @endswitch
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ number_format($item['price'], 2, ',', '.') }} € </td>
+                                        {{ number_format($item['price'], 2, ',', '.') . ' ' . $currency->symbol }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -113,15 +122,15 @@
         </div>
     </div>
     <div class="flex items-center justify-center">
-        <div class="h-0.5 w-1/3 mx-4 bg-gray-400"></div>
+        <div class="h-0.5 w-1/3 mx-4 bg-gray-400  mt-4"></div>
     </div>
     {{-- end postions --}}
 
     <div class="flex flex-col gap-5 my-8 text-center">
 
-        <h1 class="text-xl font-bold">The Signture</h1>
+        <h1 class="text-xl font-bold">{{ __('offer-contract.the_signture', locale: $lang) }}</h1>
         @if (!$offer->signed)
-            <h4 class="text-gray-500">Once you submit your signutre you can't edit it again</h4>
+            <h4 class="text-gray-500">{{ __('offer-contract.once_you_sign_this_contract_and_submit_it_you_cant_edit_id', locale: $lang) }}</h4>
         @endif
         <form wire:submit="create">
             {{ $this->form }}
@@ -132,14 +141,15 @@
                         <x-slot name="trigger">
                             <div>
                                 <x-filament::button wire:click='trigger' class="bg-green-500">
-                                    {{ __('offer.submit') }}
+                                    {{ __('offer-contract.submit', locale: $lang) }}
                                 </x-filament::button>
                             </div>
                         </x-slot>
+                        {{ __('offer-contract.are_you_sure_you_want_to_submit_this_signture', locale: $lang) }}
                         Are you sure you want to submit this signture
                         <div class="flex justify-end gap-3">
                             <x-filament::button type='submit' class="bg-green-400">
-                                Submit
+                                {{ __('offer-contract.submit', locale: $lang) }}
                             </x-filament::button>
                         </div>
                     </x-filament::modal>

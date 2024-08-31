@@ -26,17 +26,15 @@ class ViewOffer extends Component implements HasForms
     public string $token;
     public ?array $data = [];
 
-    public $provider;
+    public $providerArray;
     protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function mount($token)
     {
-
         $this->token = $token;
         $this->offer = Offer::withoutGlobalScopes()->where('token', $this->token)->where('general_access', 1)->first();
         $dataMapper = new OfferDataMapper();
-        $this->provider = $dataMapper->getdata($this->offer)->toArray();
-        // dd($this->provider);
+        $this->providerArray = $dataMapper->getdata($this->offer);
         if (!$this->offer) {
             abort(404);
         }
@@ -91,14 +89,14 @@ class ViewOffer extends Component implements HasForms
                         ->schema([
                             SignaturePad::make('signature')
                                 ->label(__('offer.field.sign_here'))
-                                ->default($this->offer->signature)
+                                // ->default($this->offer->signature)
                                 ->dotSize(2.0)
                                 ->lineMinWidth(0.5)
                                 ->lineMaxWidth(2.5)
                                 ->throttle(16)
                                 ->minDistance(5)
                                 ->velocityFilterWeight(0.7)
-                                ->backgroundColor('red')  // Background color on light mode
+                                ->backgroundColor('white')  // Background color on light mode
                                 ->backgroundColorOnDark('red')     // Background color on dark mode (defaults to backgroundColor)
                                 ->exportBackgroundColor('red')     // Background color on export (defaults to backgroundColor)
                                 ->penColor('red')                  // Pen color on light mode
@@ -114,7 +112,7 @@ class ViewOffer extends Component implements HasForms
                             Forms\Components\TextInput::make('signature_name')
                                 ->required(),
                             Forms\Components\DatePicker::make('signature_date')
-                                ->default(Carbon::now()->format('d/m/Y')),
+                                ->default(Carbon::now()),
                         ])
                         ->columnSpan(1),
                 ])->columns(2)
@@ -135,8 +133,6 @@ class ViewOffer extends Component implements HasForms
 
     public function render()
     {
-        return view('livewire.offer.view-offer',['provider', $this->provider])
-        ->extends('layouts.app') 
-        ->section('content');
+        return view('livewire.offer.view-offer');
     }
 }

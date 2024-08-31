@@ -20,19 +20,20 @@ use Filament\Forms\Components\Actions\Action as ActionsAction;
 use App\Filament\Company\Resources\OfferResource\RelationManagers\CommentsRelationManager;
 use App\Helpers\TenancyHelpers;
 use App\Models\Customer;
+use Illuminate\Support\HtmlString;
 
 class OfferResource extends Resource
 {
     protected static ?string $model = Offer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-plus';
-  
+
     public static function getModelLabel(): string
     {
         return __('navigation.offer');
     }
 
-  
+
     public static function getPluralModelLabel(): string
     {
         return __('navigation.offers');
@@ -146,7 +147,6 @@ class OfferResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('signature_date')
-                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -163,9 +163,6 @@ class OfferResource extends Resource
                 Tables\Columns\ToggleColumn::make('general_access')
                     ->alignCenter()
                     ->label(__('offer.table.general_access')),
-                Tables\Columns\TextColumn::make('signed')
-                    ->alignCenter()
-                    ->label(__('offer.table.general_access'))
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -173,7 +170,7 @@ class OfferResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('View Contract')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->action(fn (Offer $record) => redirect("sign-contract/{$record->token}")),
+                    ->action(fn(Offer $record) => redirect("sign-contract/{$record->token}")),
                 Tables\Actions\EditAction::make()
             ])
             ->bulkActions([

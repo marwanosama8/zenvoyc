@@ -24,6 +24,8 @@ class TimesheetResource extends Resource
 {
     protected static ?string $model = Timesheet::class;
 
+    protected static bool $isDiscovered = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-clock';
     
     public static function getNavigationGroup(): ?string

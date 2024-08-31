@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\OAuthController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\TenantInvoiceController;
 use App\Http\Controllers\PaymentProviders\PaddleController as PaddleController;
 use App\Livewire\CustomerInvoices;
@@ -177,16 +178,16 @@ Route::get('/roadmap/i/{itemSlug}', [
 // Route::get('/invoice/pdf/{invoice}',[TenantInvoiceController::class, 'pdf'])->name('invoice.pdf');
 
 // with us
-Route::get('/invoice/{rgnr}/send',[TenantInvoiceController::class, 'send'])->name('invoice.send');
+Route::get('/invoice/{rgnr}/send', [TenantInvoiceController::class, 'send'])->name('invoice.send');
 Route::get('/invoice/{rgnr}/duplicate', [TenantInvoiceController::class, 'duplicate'])->name('invoice.duplicate');
-Route::get('/invoice/{rgnr}/stream',[TenantInvoiceController::class, 'streamPdfInvoice'])->name('invoice.stream');
-Route::get('/invoice/{rgnr}/view',[TenantInvoiceController::class, 'view'])->name('invoice.view');
-Route::get('/invoice/{rgnr}/merge/{profile}',[TenantInvoiceController::class, 'mergeWithPdf'])->name('invoice.merge');
-Route::get('/xml/{rgnr}/download/{profile}',[TenantInvoiceController::class, 'xmlDownload'])->name('invoice.ddxml');
+Route::get('/invoice/{rgnr}/stream', [TenantInvoiceController::class, 'streamPdfInvoice'])->name('invoice.stream');
+Route::get('/invoice/{rgnr}/view', [TenantInvoiceController::class, 'view'])->name('invoice.view');
+Route::get('/invoice/{rgnr}/merge/{profile}', [TenantInvoiceController::class, 'mergeWithPdf'])->name('invoice.merge');
+Route::get('/xml/{rgnr}/download/{profile}', [TenantInvoiceController::class, 'xmlDownload'])->name('invoice.ddxml');
 Route::get('/invoice/{rgnr}/reminder', [TenantInvoiceController::class, 'reminder'])->name('invoice.reminder');
-Route::get('/sign-contract/{token}', ViewOffer::class)->name('sign.contract');
+Route::get('/sign-contract/{token}', [OfferController::class, 'view'])->name('sign.contract');
 Route::get('/list-invoices/{token}', [TenantInvoiceController::class, 'customerInvoices'])->name('list.invoices');
-Route::get('/fakepdf/{type}', [TenantInvoiceController::class,'createFakeInvoice'])->name('fake.pdf');
+Route::get('/fakepdf/{type}', [TenantInvoiceController::class, 'createFakeInvoice'])->name('fake.pdf');
 
 // Invoice
 Route::get('/invoice/generate/{transactionUuid}', [
