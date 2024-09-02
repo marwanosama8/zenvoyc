@@ -107,12 +107,12 @@ class UserRoleDataSeeder extends Seeder
                             'end' => $dateOnTime
                         ];
                     },
-                    fn (Sequence $sequence) => [
+                    fn(Sequence $sequence) => [
                         'frequency' => 'monthly',
                         'start' => Carbon::now(),
                         'end' => Carbon::createFromDate(null, fake('de_DE')->numberBetween(2, 12), 1)->endOfMonth()
                     ],
-                    fn (Sequence $sequence) =>  [
+                    fn(Sequence $sequence) =>  [
                         'frequency' => 'yearly',
                         'start' => Carbon::now()->startOfYear(),
                         'end' => Carbon::now()->addYears(fake('de_DE')->numberBetween(2, 7)),
@@ -136,7 +136,7 @@ class UserRoleDataSeeder extends Seeder
                 ->count(10)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
                     ),
                 )
                 ->has(InvoiceItem::factory()->count(3))
@@ -149,7 +149,8 @@ class UserRoleDataSeeder extends Seeder
             $offer = Offer::factory()->count(3)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id],
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id, 'external_offer_url' => fake()->url(), 'external_offer' => true],
                     ),
                 )
                 ->create([
@@ -162,7 +163,7 @@ class UserRoleDataSeeder extends Seeder
                 ->count(3)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
                     ),
                 )
                 ->create([
@@ -181,7 +182,7 @@ class UserRoleDataSeeder extends Seeder
                 }), 'timesheet_tasks')
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['project_id' =>  $project->random()->id]
+                        fn(Sequence $sequence) =>  ['project_id' =>  $project->random()->id]
                     ),
                 )
                 ->create([
@@ -192,8 +193,8 @@ class UserRoleDataSeeder extends Seeder
             $contacts = Contact::factory()->count(6)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['company' => 'Apple'],
-                        fn (Sequence $sequence) =>  ['company' => 'Meta']
+                        fn(Sequence $sequence) =>  ['company' => 'Apple'],
+                        fn(Sequence $sequence) =>  ['company' => 'Meta']
                     ),
                 )->create([
                     'contactable_id' => $modelId,

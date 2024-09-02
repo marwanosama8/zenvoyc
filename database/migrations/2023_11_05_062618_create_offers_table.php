@@ -18,12 +18,18 @@ return new class extends Migration
             $table->string('token');
             $table->boolean('general_access')->default(1);
             $table->string('title');
-            $table->longText('introtext'); // Defining contact type
+            $table->longText('introtext')->nullable(); // Defining contact type
             $table->json('positions')->nullable();
             $table->longText('signature')->nullable();
             $table->string('signature_name')->nullable();
             $table->date('signature_date')->nullable();
             $table->boolean('signed')->default(0);
+            //new
+            $table->boolean('accepted')->default(0);
+            $table->boolean('external_offer')->default(0);
+            $table->string('external_offer_url')->nullable();
+            $table->string('offer_value')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

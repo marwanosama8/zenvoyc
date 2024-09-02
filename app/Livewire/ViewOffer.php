@@ -75,8 +75,10 @@ class ViewOffer extends Component implements HasForms
                     Forms\Components\Section::make(__('offer.section.title.details'))
                         ->schema([
                             Forms\Components\Placeholder::make('signature_name')
+                                ->label('offer.signature_name')
                                 ->content($this->offer->signature_name),
                             Forms\Components\Placeholder::make('signature_date')
+                                ->label('offer.signature_date')
                                 ->content($this->offer->signature_date),
                         ])
                         ->columnSpan(1),
@@ -110,8 +112,10 @@ class ViewOffer extends Component implements HasForms
                         ->description(__('offer.section.descr.details'))
                         ->schema([
                             Forms\Components\TextInput::make('signature_name')
+                                ->label('offer.signature_name')
                                 ->required(),
                             Forms\Components\DatePicker::make('signature_date')
+                                ->label('offer.signature_date')
                                 ->default(Carbon::now()),
                         ])
                         ->columnSpan(1),
