@@ -33,11 +33,9 @@ class ViewOffer extends Component implements HasForms
     {
         $this->token = $token;
         $this->offer = Offer::withoutGlobalScopes()->where('token', $this->token)->where('general_access', 1)->first();
+        abort_if(!$this->offer, 404);
         $dataMapper = new OfferDataMapper();
         $this->providerArray = $dataMapper->getdata($this->offer);
-        if (!$this->offer) {
-            abort(404);
-        }
         $this->form->fill();
     }
 
@@ -74,7 +72,7 @@ class ViewOffer extends Component implements HasForms
                         ->columnSpan(1),
                     Forms\Components\Section::make(__('offer.section.title.details'))
                         ->schema([
-                            Forms\Components\Placeholder::make('signature_name')
+                            Forms\Components\Placeholder::make( 'signature_name')
                                 ->label('offer.signature_name')
                                 ->content($this->offer->signature_name),
                             Forms\Components\Placeholder::make('signature_date')
