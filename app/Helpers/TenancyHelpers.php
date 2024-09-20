@@ -111,4 +111,20 @@ class TenancyHelpers
    {
       return is_null(Filament::getTenant()) ? 'user' : 'company';
    }
+
+   public static function getTenantModelOutSideFilament()
+   {
+       $tenantData = session('tenant_data');
+   
+       if ($tenantData) {
+           $tenantClass = $tenantData['class'];
+           $tenantId = $tenantData['id'];
+   
+           $tenantInstance = $tenantClass::find($tenantId);
+   
+           return $tenantInstance;
+       }
+   
+       return null;
+   }
 }

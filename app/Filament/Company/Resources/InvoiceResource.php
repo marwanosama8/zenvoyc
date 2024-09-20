@@ -305,7 +305,7 @@ class InvoiceResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('reminder_email')
-                        ->label(__('invoice.action.reminder_email'))
+                    ->label(__('invoice.action.reminder_email'))
                         ->icon('heroicon-m-chat-bubble-bottom-center-text')
                         ->url(fn (Invoice $record) => route('invoice.reminder', $record)),
                     Tables\Actions\Action::make('duplicate')

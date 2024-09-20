@@ -42,7 +42,8 @@
         "stripe/stripe-php": "^12.0",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0",
-        "symfony/postmark-mailer": "^7.0"
+        "symfony/postmark-mailer": "^7.0",
+        "visualbuilder/email-templates": "@dev"
     },
     "require-dev": {
         "deployer/deployer": "^7.3",
@@ -63,7 +64,8 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "App\\Helpers\\TenancyHelpers\\": "app/Helpers/TenancyHelpers/",
-            "App\\Helpers\\Helpers\\": "app/Helpers/Helpers/"
+            "App\\Helpers\\Helpers\\": "app/Helpers/Helpers/",
+            "VisualBuilder\\EmailTemplates\\": "packages/email-templates/src"
         }
     },
     "autoload-dev": {
@@ -94,6 +96,15 @@
             ]
         }
     },
+    "repositories": {
+        "local": {
+            "type": "path",
+            "url": "./packages/email-templates",
+            "options": {
+                "symlink": true
+            }
+        }
+    },    
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",

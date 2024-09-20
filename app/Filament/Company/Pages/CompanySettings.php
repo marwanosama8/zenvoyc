@@ -65,6 +65,7 @@ class CompanySettings extends Page
                                 FileUpload::make('avatar_url')
                                     ->image()
                                     ->imageEditor()
+                                    ->directory('media/logos')
                                     ->imageEditorAspectRatios([
                                         '92:16'
                                     ])->label('Avatar URL')->nullable(),

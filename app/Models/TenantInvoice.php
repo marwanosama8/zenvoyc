@@ -135,6 +135,14 @@ class TenantInvoice extends Model
 		return $this->Items()->where('created_at', '>=', $time->startOfQuarter())->sum('price');
 	}
 
+	public function getCustomerNameAttribute($value)
+	{
+		return $this->customer->name;
+	}
+	public function getNumberAttribute($value)
+	{
+		return $this->rgnr;
+	}
 	public function getCurrentVat()
 	{
 		return TenancyHelpers::getCurrentVat();

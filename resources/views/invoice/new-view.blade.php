@@ -32,7 +32,7 @@
     <table class="w-full">
         <tr>
             <td class="w-half">
-                <img src="{{ asset('storage/' . $data['provider']['avatar_url']) }}" alt="pro-tool" width="200" />
+                <img src="{{ asset(config('app.avatar_asset_url') . $data['provider']['avatar_url']) }}" alt="pro-tool" width="200" />
             </td>
             <td class="w-half">
                 <div class="head">

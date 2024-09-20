@@ -70,6 +70,7 @@ class Settings extends Page
                             ->schema([
                                 FileUpload::make('avatar_url')
                                     ->image()
+                                    ->directory('media/logos')
                                     ->imageEditor()
                                     ->imageEditorAspectRatios([
                                         '92:16'

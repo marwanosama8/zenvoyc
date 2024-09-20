@@ -217,7 +217,7 @@ class UserRoleDataSeeder extends Seeder
     {
         $contents = file_get_contents($url);
         $name = 'user_setting_image_' . Str::random(10) . '.jpg';
-        Storage::put('public/' . $name, $contents);
+        Storage::put('public/media/logos/' . $name, $contents);
         return $name;
     }
 }

@@ -29,6 +29,7 @@ use App\Models\Company;
 use Filament\Facades\Filament;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
 use Spatie\Color\Rgb;
+use Visualbuilder\EmailTemplates\EmailTemplatesPlugin;
 
 class CompanyPanelProvider extends PanelProvider
 {
@@ -108,7 +109,9 @@ class CompanyPanelProvider extends PanelProvider
                     ->myProfileComponents([
                         'personal_info' => MyProfilePersonalInfo::class,
                     ]),
-                FilamentProgressbarPlugin::make()->color($color)
+                FilamentProgressbarPlugin::make()->color($color),
+                EmailTemplatesPlugin::make(),
+
             ])
             ->tenantMiddleware([
                 RememberTenantMiddleware::class,

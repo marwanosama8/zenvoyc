@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Constants\FakeInvoiceData;
 use App\Helpers\TenancyHelpers;
+use App\Jobs\SendTenantInvoiceEmailReminderJob;
 use App\Mail\Invoice\MailInvoice as InvoiceMailInvoice;
 use App\Mail\Invoice\MailReminder as InvoiceMailReminder;
 use App\Mail\MailInvoice;
 use App\Mail\MailReminder;
+use App\Mail\Visualbuilder\EmailTemplates\Invoice as EmailTemplatesInvoice;
+use App\Mail\Visualbuilder\EmailTemplates\InvoiceEmail;
 use App\Mapper\InvoiceDataMapper;
 use App\Models\Company;
 use App\Models\Customer;
@@ -212,13 +215,10 @@ class TenantInvoiceController extends Controller
 
     public function reminder($invoice)
     {
-        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereId($invoice)->first();
+        $data = Invoice::withoutGlobalScope(InvoiceScope::class)->whereId($invoice)->first();
+        Mail::to($data->customer->email)->send(new InvoiceEmail($data));
 
-        $fileData = [
-            'file' => $this->generatePdfFile($invoice)->pdf(),
-            'filename' => $this->generateFileName($invoice)
-        ];
-        Mail::to($invoice->customer->email)->send(new InvoiceMailReminder($invoice, $fileData));
+        // SendTenantInvoiceEmailReminderJob::dispatch($data);
         return redirect()->back();
     }
 

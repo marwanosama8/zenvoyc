@@ -6,7 +6,7 @@
     </div>
     <div class="flex justify-between ">
         <div class="float-left w-4/6 px-4 mr-4">
-            <img class="mt-5 ml-10" style="max-width: 430px" src="{{ asset('storage/' . $provider['avatar_url']) }}" />
+            <img class="mt-5 ml-10" style="max-width: 430px" src="{{ asset(config('app.avatar_asset_url') . $provider['avatar_url']) }}" />
         </div>
         <div class="relative float-left w-1/3 px-4">
             <br />
