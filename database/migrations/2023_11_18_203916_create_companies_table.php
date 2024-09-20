@@ -24,6 +24,8 @@ return new class extends Migration
             // address
             $table->string('address')->nullable();
             $table->string('postal_code')->nullable();
+            $table->string('city')->nullable();
+            $table->unsignedInteger('country_id')->index();
             // back info
             $table->string('tax_id')->nullable();
             $table->string('vat_id')->nullable();

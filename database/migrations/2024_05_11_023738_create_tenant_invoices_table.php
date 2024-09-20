@@ -23,12 +23,10 @@ return new class extends Migration
             $table->date('date_pay');
             $table->decimal('rate', 8, 2)->nullable();
             $table->text('info')->nullable();
-            $table->tinyInteger('ust')->default(0);
+            $table->float('vat_percent')->default(0.00);
             $table->boolean('has_vat')->default(1);
-            $table->boolean('printed')->default(0);
             $table->boolean('send')->default(0);
             $table->boolean('payed')->default(0);
-            $table->longText('options')->nullable();
             $table->timestamps(); // This will automatically add created_at and updated_at
             $table->softDeletes(); // This will add deleted_at column for soft deletes
         });

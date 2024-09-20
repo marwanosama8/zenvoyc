@@ -1,5 +1,5 @@
-<div class=" mx-auto bg-gray-200 h-full min-h-screen">
-    <div class="container mx-auto pt-28 flex flex-col">
+<div class="h-full min-h-screen mx-auto bg-gray-200 ">
+    <div class="container flex flex-col mx-auto pt-28">
         <div class="flex flex-row gap-4">
             @foreach ($lastThreeYears as $key => $year)
                 <div class="mb-4">
@@ -10,5 +10,9 @@
             @endforeach
         </div>
         {{ $this->table }}
+
+        <x-filament-actions::modals />
+
     </div>
 </div>
+

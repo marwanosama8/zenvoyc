@@ -6,7 +6,7 @@ use App\Models\InvoiceTheme;
 
 class InvoiceThemeConstants
 {
-    public const DEFAULTID = 1;
+    public const DEFAULT_ID = 1;
 
     public static function getFormattedThemes()
     {

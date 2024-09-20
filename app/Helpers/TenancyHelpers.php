@@ -23,9 +23,14 @@ class TenancyHelpers
       return Filament::getCurrentPanel()->getId();
    }
 
-   public static function getCurrentVat()
+   public static function getCurrentModel()
    {
-      return Filament::getTenant()->settings->vat_percent;
+      return is_null(Filament::getTenant()) ? auth()->user() : Filament::getTenant();
+   }
+
+   public static function getVatPercent()
+   {
+      return is_null(Filament::getTenant()) ? auth()->user()->settings->vat_percent : Filament::getTenant()->settings->vat_percent;
    }
 
 

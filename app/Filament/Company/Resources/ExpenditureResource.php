@@ -25,13 +25,13 @@ class ExpenditureResource extends Resource
     protected static ?string $model = Expenditure::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-right-start-on-rectangle';
-  
+
     public static function getModelLabel(): string
     {
         return __('navigation.expenditure');
     }
 
-  
+
     public static function getPluralModelLabel(): string
     {
         return __('navigation.expenditures');
@@ -79,7 +79,7 @@ class ExpenditureResource extends Resource
                             ->label(__('expenditure.field.start'))
                             ->live()
                             ->default(Carbon::today()->toDateString())
-                            ->options(fn (Get $get, $livewire): array => match ($get('frequency')->value ?? $get('frequency')) {
+                            ->options(fn(Get $get, $livewire): array => match ($get('frequency')->value ?? $get('frequency')) {
                                 'one-time' => $livewire->getStartDateOption('one-time'),
                                 'monthly' => $livewire->getStartDateOption('monthly'),
                                 'yearly' =>  $livewire->getStartDateOption('yearly'),
@@ -96,7 +96,7 @@ class ExpenditureResource extends Resource
                                     return $get('frequency') == 'one-time';
                                 }
                             })
-                            ->options(fn (Get $get, $livewire): array => match ($get('frequency')->value ?? $get('frequency')) {
+                            ->options(fn(Get $get, $livewire): array => match ($get('frequency')->value ?? $get('frequency')) {
                                 'one-time' => $livewire->getEndDateOption('one-time', $get('start')),
                                 'monthly' => $livewire->getEndDateOption('monthly',  $get('start')),
                                 'yearly' =>  $livewire->getEndDateOption('yearly', $get('start')),
@@ -113,16 +113,16 @@ class ExpenditureResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('expenditure.field.name'),
+                    ->label(__('expenditure.field.name')),
                 Tables\Columns\TextColumn::make('description')
-                    ->label('expenditure.field.description'),
+                    ->label(__('expenditure.field.description')),
                 Tables\Columns\TextColumn::make('cost')
-                    ->label('expenditure.field.cost'),
+                    ->label(__('expenditure.field.cost')),
                 Tables\Columns\TextColumn::make('frequency')
-                ->getStateUsing(function($record) {
-                    return ucfirst($record->frequency->value);
-                })
-                    ->label('expenditure.field.frequency')
+                    ->getStateUsing(function ($record) {
+                        return ucfirst($record->frequency->value);
+                    })
+                    ->label(__('expenditure.field.frequency'))
                     ->badge()
             ])
             ->filters([

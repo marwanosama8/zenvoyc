@@ -87,11 +87,9 @@ class ContactResource extends Resource
                         Tables\Columns\TextColumn::make('email')
                             ->icon('heroicon-m-envelope')
                             ->label('contract.email')
-                            ->copyable()
                             ->searchable(),
                         Tables\Columns\TextColumn::make('phone')
                             ->icon('heroicon-m-phone')
-                            ->copyable()
                             ->label('contract.phone')
                             ->searchable(),
                     ]),

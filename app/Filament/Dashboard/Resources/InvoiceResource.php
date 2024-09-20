@@ -26,19 +26,23 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Toggle;
 use Livewire\Component as Livewire;
+use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
+use Filament\Support\Enums\Alignment;
+use Filament\Tables\Actions\Action;
 
 class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-  
+
     public static function getModelLabel(): string
     {
         return __('navigation.invoice');
     }
 
-  
+
     public static function getPluralModelLabel(): string
     {
         return __('navigation.invoices');
@@ -86,7 +90,7 @@ class InvoiceResource extends Resource
                                 ->label(__("invoice.field.rate")),
                             Forms\Components\TextInput::make('customer_address')
                                 ->columnSpanFull()
-                                ->disabled(fn (Livewire $livewire, $operation): bool => is_null($livewire->data['customer_id']) || $operation == 'edit')
+                                ->disabled(fn(Livewire $livewire, $operation): bool => is_null($livewire->data['customer_id']) || $operation == 'edit')
                                 ->label(__("invoice.field.customer_address")),
                         ]),
 
@@ -94,7 +98,7 @@ class InvoiceResource extends Resource
                     Section::make('Date Details')
                         ->label(__('invoice.date_details'))
                         ->columns(4)
-                        ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                        ->disabled(fn(Livewire $livewire): bool => is_null($livewire->data['customer_id']))
                         ->schema([
                             Forms\Components\DatePicker::make('date_origin')
                                 ->label(__("invoice.field.date_origin"))
@@ -115,7 +119,7 @@ class InvoiceResource extends Resource
                 ]),
             Section::make('invoice items')
                 ->label(__('invoice.invoice_items'))
-                ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                ->disabled(fn(Livewire $livewire): bool => is_null($livewire->data['customer_id']))
                 ->schema([
                     Forms\Components\Repeater::make('invoice_item')
                         ->relationship()
@@ -178,7 +182,7 @@ class InvoiceResource extends Resource
                                                 ->label(__("invoice.field.amount"))
                                                 ->default(1)
                                                 ->minValue(1)
-                                                ->disabled(fn (Get $get): bool => !filled($get('type')))
+                                                ->disabled(fn(Get $get): bool => !filled($get('type')))
                                                 ->inputMode('decimal')
                                                 ->numeric()
                                                 ->live()
@@ -202,12 +206,12 @@ class InvoiceResource extends Resource
                                             Forms\Components\TextInput::make('unit_price')
                                                 ->default(0)
                                                 ->numeric()
-                                                ->hidden(fn ($operation): bool => $operation == 'edit')
-                                                ->label(fn (Get $get): string => $get('type') == 1 ? __("invoice.field.per_hour") : __("invoice.field.unit_price"))
+                                                ->hidden(fn($operation): bool => $operation == 'edit')
+                                                ->label(fn(Get $get): string => $get('type') == 1 ? __("invoice.field.per_hour") : __("invoice.field.unit_price"))
                                                 ->minValue(1)
                                                 ->live()
-                                                ->readOnly(fn (Get $get): bool => $get('type') == 1)
-                                                ->disabled(fn (Get $get): bool => !filled($get('type')))
+                                                ->readOnly(fn(Get $get): bool => $get('type') == 1)
+                                                ->disabled(fn(Get $get): bool => !filled($get('type')))
                                                 ->afterStateUpdated(function (Set $set, Get $get, ?string $state, Livewire $livewire) {
                                                     $amount = filled($get('amount')) ? $get('amount') : 0.00;
 
@@ -224,11 +228,11 @@ class InvoiceResource extends Resource
                                                             break;
                                                     }
                                                 })
-                                                ->required(fn ($operation): bool => $operation == 'create'),
+                                                ->required(fn($operation): bool => $operation == 'create'),
                                             Forms\Components\TextInput::make('price')
                                                 ->label(__("invoice.field.price"))
                                                 ->numeric()
-                                                ->disabled(fn (Get $get): bool => !filled($get('type')))
+                                                ->disabled(fn(Get $get): bool => !filled($get('type')))
                                                 ->minValue(1)
                                                 ->inputMode('decimal')
                                                 ->required(),
@@ -236,14 +240,14 @@ class InvoiceResource extends Resource
                                 ]),
                         ])
                         ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
-                            unset($data['product'],$data['unit_price']);
+                            unset($data['product'], $data['unit_price']);
                             return $data;
                         })
                         ->columns(1),
                 ]),
             Split::make([
                 Section::make('info')
-                    ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                    ->disabled(fn(Livewire $livewire): bool => is_null($livewire->data['customer_id']))
                     ->label(__('invoice.info'))
                     ->description(__('invoice.here_you_can_define_invoice_footer'))
                     ->schema([
@@ -251,7 +255,7 @@ class InvoiceResource extends Resource
                             ->label(__("invoice.field.information"))->rows(5)
                     ]),
                 Section::make('invoice options')
-                    ->disabled(fn (Livewire $livewire): bool => is_null($livewire->data['customer_id']))
+                    ->disabled(fn(Livewire $livewire): bool => is_null($livewire->data['customer_id']))
                     ->label(__('invoice.invoice_options'))
                     ->description(__('invoice.here_you_can_define_invoice_options'))
                     ->schema([
@@ -271,30 +275,30 @@ class InvoiceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('rgnr')
-                    ->label(__("invoice.field.rgnr"))->getStateUsing(fn ($record) => $record->rgnr)
+                    ->label(__("invoice.field.rgnr"))->getStateUsing(fn($record) => $record->rgnr)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('customer.name')
-                    ->label(__("invoice.field.customer"))->getStateUsing(fn ($record) => $record->customer->name)
+                    ->label(__("invoice.field.customer"))->getStateUsing(fn($record) => $record->customer->name)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('invoice_value')
-                    ->label(__("invoice.field.invoice_value"))->getStateUsing(fn ($record) => number_format($record->getTotalNetto(), 2, ',', '.')),
+                    ->label(__("invoice.field.invoice_value"))->getStateUsing(fn($record) => number_format($record->getTotalNetto(), 2, ',', '.')),
                 Tables\Columns\TextColumn::make('date_origin')
                     ->label(__("invoice.field.date_origin"))->date('d.m.Y'),
                 Tables\Columns\TextColumn::make('date_pay')
                     ->label(__("invoice.field.date_pay"))->date('d.m.Y'),
                 Tables\Columns\ToggleColumn::make('payed')
                     ->label(__("invoice.field.payed")),
-                Tables\Columns\TextColumn::make('#')
-                    ->getStateUsing(function ($record) {
-                        return '<a target="_blank" href="' . route('invoice.view', ['invoice' => $record->rgnr]) . '">' . __('invoice.link.view') . '</a>';
-                    })->html(),
+                // Tables\Columns\TextColumn::make('#')
+                //     ->getStateUsing(function ($record) {
+                //         return '<a target="_blank" href="' . route('invoice.view', ['invoice' => $record->rgnr]) . '">' . __('invoice.link.view') . '</a>';
+                //     })->html(),
             ])->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\Filter::make('not_send')
                     ->label(__('invoice.filter.not_sended'))
-                    ->query(fn (Builder $query): Builder => $query->where('send', 0)),
+                    ->query(fn(Builder $query): Builder => $query->where('send', 0)),
                 Tables\Filters\SelectFilter::make('customer_id')
                     ->label(__('invoice.field.customer'))
                     ->options(TenancyHelpers::getPluckCustomers())
@@ -305,12 +309,47 @@ class InvoiceResource extends Resource
                     Tables\Actions\Action::make('reminder_email')
                         ->label(__('invoice.action.reminder_email'))
                         ->icon('heroicon-m-chat-bubble-bottom-center-text')
-                        ->url(fn (Invoice $record) => route('invoice.reminder', $record)),
+                        ->url(fn(Invoice $record) => route('invoice.reminder', $record->rgnr)),
                     Tables\Actions\Action::make('duplicate')
                         ->label(__('invoice.action.duplicate'))
                         ->icon('heroicon-m-document-duplicate')
-                        ->url(fn (Invoice $record) => route('invoice.duplicate', $record)),
+                        ->url(fn(Invoice $record) => route('invoice.duplicate', $record->rgnr)),
+                ]),
+                ActionGroup::make([
+                    Tables\Actions\Action::make('viewInvoice')
+                        ->label(__('invoice.action.view_invoice'))
+                        ->icon('heroicon-m-eye')
+                        ->openUrlInNewTab()
+                        ->url(fn(Invoice $record) => route('invoice.view', $record->rgnr)),
+                    Tables\Actions\Action::make('streamInvoice')
+                        ->label(__('invoice.action.steam'))
+                        ->openUrlInNewTab()
+                        ->icon('heroicon-m-printer')
+                        ->url(fn(Invoice $record) => route('invoice.stream', $record->rgnr)),
+                    Action::make('generateXml')
+                        ->label(__('invoice.action.generate_xml'))
+                        ->icon('heroicon-m-code-bracket')
+                        ->form([
+                            Select::make('invoiceProfile')
+                                ->label(__('invoice.action.invoiceProfile'))
+                                ->options(config('zugferd-profiles.profiles'))
+                                ->hint(__('invoice.invoice_profile_hint'))
+                                ->default(config('zugferd-profiles.default'))
+                                ->required(),
+                        ])
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false)
+                        ->modalFooterActionsAlignment(Alignment::Right)
+                        ->extraModalFooterActions([
+                            Action::make('mergeWithPdf')
+                                ->url(fn(Livewire $livewire, Invoice $record) => route('invoice.merge', ['rgnr' => $record->rgnr, 'profile' => $livewire->mountedTableActionsData[0]['invoiceProfile']]))
+                                ->label(__('invoice.action.merge_with_pdf')),
+                            Action::make('downloadXml')
+                                ->url(fn(Livewire $livewire, Invoice $record) => route('invoice.ddxml', ['rgnr' => $record->rgnr, 'profile' => $livewire->mountedTableActionsData[0]['invoiceProfile']]))
+                                ->label(__('invoice.action.xml_downlaod')),
+                        ])
                 ])
+                    ->icon('heroicon-m-document-arrow-down')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

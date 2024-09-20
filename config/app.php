@@ -238,6 +238,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'ZugferdLaravel' => horstoeko\zugferdlaravel\Facades\ZugferdLaravel::class,
+
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

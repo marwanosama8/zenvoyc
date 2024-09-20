@@ -25,6 +25,8 @@ return new class extends Migration
             // address
             $table->string('address')->nullable();
             $table->string('postal_code')->nullable();
+            $table->string('city')->nullable();
+            $table->unsignedInteger('country_id')->index();
             // back info
             $table->string('tax_id')->nullable();
             $table->string('vat_id')->nullable();
@@ -40,8 +42,8 @@ return new class extends Migration
             $table->boolean('ready_to_generate')->default(0);
             $table->decimal('vat_percent', 5, 2)->default(0.00);
             $table->string('invoice_language')->default('de');
-            $table->unsignedBigInteger('currency_id')->default(96);
-            $table->unsignedBigInteger('invoice_theme_id')->default(InvoiceThemeConstants::DEFAULTID);
+            $table->unsignedBigInteger('currency_id')->default(96); // the USD currancy ID in currencies table
+            $table->unsignedBigInteger('invoice_theme_id')->default(InvoiceThemeConstants::DEFAULT_ID);
 
             // time
             $table->timestamps();

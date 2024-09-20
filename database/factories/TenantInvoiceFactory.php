@@ -20,7 +20,8 @@ class TenantInvoiceFactory extends Factory
         return [
             'rgnr' => TenantInvoice::getNextNr(),
             'customer_address' => fake('de_DE')->address(),
-            'date_origin' => now(),
+            'date_origin' => fake()->dateTimeBetween('-1 year', 'now'),
+            'vat_percent' => 14.00,
             'date_start' => now(),
             'date_end' =>  now()->addMonths(rand(2, 10)),
             'date_pay' =>  now()->addMonths(rand(2, 10)),

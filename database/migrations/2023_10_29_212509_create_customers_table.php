@@ -21,11 +21,12 @@ return new class extends Migration
             $table->string('nr', 20)->nullable();
             $table->string('zip', 20)->nullable();
             $table->string('city', 100)->nullable();
-            $table->string('country', 100)->nullable();
+            $table->unsignedInteger('country_id')->index();
             $table->string('contact', 100)->nullable();
+            $table->string('reference')->nullable();
             $table->string('email', 200)->nullable();
             $table->string('cc', 200)->nullable();
-            $table->string('vatid', 50)->nullable();
+            $table->string('vat_id')->nullable();
             $table->decimal('rate', 8, 2)->default(100.00);
             $table->longText('options')->nullable();
             $table->boolean('general_access')->default(0);

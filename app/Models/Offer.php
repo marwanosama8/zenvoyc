@@ -25,6 +25,10 @@ class Offer extends Model
         'signature_name',
         'signature_date',
         'signed',
+        'external_offer_url',
+        'external_offer',
+        'accepted',
+        'offer_value'
     ];
 
     protected $casts = [
@@ -36,7 +40,7 @@ class Offer extends Model
     // {
     //     return $this->belongsTo(Company::class);
     // }
-    
+
     public function offerable()
     {
         return $this->morphTo();
@@ -62,6 +66,21 @@ class Offer extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function getOfferValue()
+    {
+        if ($this->external_offer) {
+            return $this->offer_value;
+        }
+
+        $arrayValue = [];
+        foreach ($this->positions as $value) {
+            $arrayValue[] = $value['amount'] * $value['price'];
+        }
+        return array_sum($arrayValue);
+    }
+
+
+
     /**
      * Get all of the comments for the Offer
      *
@@ -71,13 +90,13 @@ class Offer extends Model
     {
         return $this->hasMany(OfferComment::class);
     }
-    
-	protected static function booted(): void
+
+    protected static function booted(): void
     {
         static::creating(function (Offer $model) {
 
             $currentTenant = TenancyHelpers::getTenant();
-       
+
             if (empty($model->offerable_type)) {
                 $model->offerable_type = is_null($currentTenant) ? 'App\Models\User' : 'App\Models\Company';
             }

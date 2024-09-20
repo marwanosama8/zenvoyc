@@ -54,20 +54,21 @@ class SuperCompanyRoleDataSeeder extends Seeder
             }
 
             // init the user's company
-
             $companyData = [
                 'name' => fake('de_DE')->name(),
                 'managing_director' => fake('de_DE')->name(),
                 'legal_name' => fake('de_DE')->company(),
-                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: 'logo', width: 620, height: 320)),
+                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: fake('de_DE')->company(), width: 620, height: 320)),
                 'website_url' => fake('de_DE')->url(),
                 'place_of_jurisdiction' => fake('de_DE')->city(),
                 'slug' => Str::slug(fake('de_DE')->name()),
                 'address' => fake('de_DE')->address(),
                 'postal_code' => fake('de_DE')->postcode(),
                 'tax_id' => fake('de_DE')->regexify('[A-Z0-9]{10}'),
-                'vat_id' => fake('de_DE')->regexify('[A-Z]{2}[0-9]{9}'),
                 'iban' => fake('de_DE')->iban(),
+                'city' => fake('de_DE')->city(),
+                'vat_id' => 'DE20111340209',
+                'country_id' => 51, // 'Germany' Id from countries table
                 'account_number' => fake('de_DE')->bankAccountNumber(),
                 'bank_code' => fake('de_DE')->regexify('[0-9]{8}'),
                 'bic' => fake('de_DE')->swiftBicNumber(),
@@ -78,7 +79,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
             $comapny->settings()->updateOrCreate([
                 'company_id' => $comapny->id
             ], [
-                'vat_percent' => fake()->randomFloat(2, 5, 20)
+                'vat_percent' => 14.00
             ]);
             $comapny->users()->attach($user);
 
@@ -138,12 +139,12 @@ class SuperCompanyRoleDataSeeder extends Seeder
                             'end' => $dateOnTime
                         ];
                     },
-                    fn (Sequence $sequence) => [
+                    fn(Sequence $sequence) => [
                         'frequency' => 'monthly',
-                        'start' => Carbon::now(),
+                        'start' => Carbon::now()->startOfYear(),
                         'end' => Carbon::createFromDate(null, fake('de_DE')->numberBetween(2, 12), 1)->endOfMonth()
                     ],
-                    fn (Sequence $sequence) =>  [
+                    fn(Sequence $sequence) =>  [
                         'frequency' => 'yearly',
                         'start' => Carbon::now()->startOfYear(),
                         'end' => Carbon::now()->addYears(fake('de_DE')->numberBetween(2, 7)),
@@ -167,7 +168,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
                 ->count(10)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id, 'rate' => fake()->randomFloat(2, 10, 100), 'customer_address' => fake('de_DE')->address()]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id, 'rate' => fake()->randomFloat(2, 10, 100), 'customer_address' => fake('de_DE')->address()]
                     ),
                 )
                 ->has(InvoiceItem::factory()->count(3))
@@ -180,7 +181,8 @@ class SuperCompanyRoleDataSeeder extends Seeder
             $offer = Offer::factory()->count(3)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id],
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id, 'external_offer_url' => fake()->url(), 'external_offer' => true],
                     ),
                 )
                 ->create([
@@ -193,7 +195,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
                 ->count(3)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
                     ),
                 )
                 ->create([
@@ -211,7 +213,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
                 }), 'timesheet_tasks')
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['project_id' =>  $project->random()->id]
+                        fn(Sequence $sequence) =>  ['project_id' =>  $project->random()->id]
                     ),
                 )
                 ->create([
@@ -228,8 +230,8 @@ class SuperCompanyRoleDataSeeder extends Seeder
             $contacts = Contact::factory()->count(6)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['company' => 'Apple'],
-                        fn (Sequence $sequence) =>  ['company' => 'Meta']
+                        fn(Sequence $sequence) =>  ['company' => 'Apple'],
+                        fn(Sequence $sequence) =>  ['company' => 'Meta']
                     ),
                 )->create([
                     'contactable_id' => $modelId,

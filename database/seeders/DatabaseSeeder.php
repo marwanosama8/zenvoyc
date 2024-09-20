@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             PaymentProvidersSeeder::class,
             RolesAndPermissionsSeeder::class,
             InvoiceThemeSeeder::class,
+            InvoiceThemeSeeder::class,
+            CountrySeeder::class
             // EmailProviderSeeder::class,
         ]);
     }

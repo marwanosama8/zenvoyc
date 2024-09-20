@@ -89,14 +89,14 @@ class DemoDatabaseSeeder extends Seeder
         // get admin user
         $adminUser = User::where('email', 'admin@test.com')->first();
 
-        $this->seedDemoData();
-        $this->addDiscounts();
-        // $this->addBlogPosts($adminUser);
-        $this->addMetrics();
-        $this->addSomeRoadmapItems();
+        // $this->seedDemoData();
+        // $this->addDiscounts();
+        // // $this->addBlogPosts($adminUser);
+        // $this->addMetrics();
+        // $this->addSomeRoadmapItems();
 
-        // enable google oauth
-        OauthLoginProvider::where('provider_name', 'google')->update(['enabled' => true]);
+        // // enable google oauth
+        // OauthLoginProvider::where('provider_name', 'google')->update(['enabled' => true]);
     }
 
     private function seedDemoData(): void

@@ -2,170 +2,89 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\FakeInvoiceData;
-use App\Helpers\TenancyHelpers;
-use App\Jobs\SendTenantInvoiceEmailReminderJob;
 use App\Mail\Invoice\MailInvoice as InvoiceMailInvoice;
 use App\Mail\Invoice\MailReminder as InvoiceMailReminder;
-use App\Mail\MailInvoice;
-use App\Mail\MailReminder;
-use App\Mail\Visualbuilder\EmailTemplates\Invoice as EmailTemplatesInvoice;
-use App\Mail\Visualbuilder\EmailTemplates\InvoiceEmail;
 use App\Mapper\InvoiceDataMapper;
 use App\Models\Company;
-use App\Models\Customer;
 use App\Models\TenantInvoice as Invoice;
 use App\Models\Scopes\TenantInvoiceScope as InvoiceScope;
-use App\Models\TenantInvoice;
+use App\Services\TenantInvoiceService\PdfGenerator;
+use App\Services\TenantInvoiceService\XmlGenerator;
 use Carbon\Carbon;
-use Filament\Facades\Filament;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 // use Knp\Snappy\Pdf;
 use Spatie\Browsershot\Browsershot;
-use Barryvdh\DomPDF\Facade\Pdf;
-use stdClass;
-use Illuminate\Support\Facades\Auth;
+use horstoeko\zugferd\ZugferdDocumentPdfMerger;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 class TenantInvoiceController extends Controller
 {
     public function __construct(
-        private InvoiceDataMapper $invoiceDataMapper,
-    ) {
+        private XmlGenerator $xmlGenerator,
+        private PdfGenerator $pdfGenerator,
+        private InvoiceDataMapper $invoiceDataMapper
+
+    ) {}
+
+
+    public function view($rgnr)
+    {
+        $data = $this->pdfGenerator->getData($rgnr);
+
+        // abort_if(!$this->isInvoiceAccessable($data['invoice']), 401);
+        return view('invoice.new-view', ['data' => $data, 'print' => 0]);
     }
 
-
-    public function view($invoice)
+    public function streamPdfInvoice($rgnr)
     {
-        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->with('customer')->whereRgnr($invoice)->first();
+        return $this->pdfGenerator->stream($rgnr);
+    }
 
-        $data = $this->invoiceDataMapper->getData($invoice);
-        // dd($data);
-        // $data = [
-        //     [
-        //         'quantity' => 1,
-        //         'description' => '1 Year Subscription',
-        //         'price' => '129.00'
-        //     ]
-        // ];
-        $pdf = Pdf::loadView('invoice.new-view', ['data' => $data]);
+    public function mergeWithPdf($rgnr, $profile)
+    {
+        $xmlPath = $this->xmlGenerator->temporaryGenerate($rgnr, $profile);
+        $pdfPath = $this->pdfGenerator->temporary($rgnr);
+        $data = $this->pdfGenerator->getData($rgnr);
+        $filename = $this->pdfGenerator->generateFileName($data['invoice']);
+        $mergedPdfPath = $this->mergeXmlAndPdf($xmlPath, $pdfPath, $filename);
 
-        return $pdf->stream($this->generateFileName($data['invoice']));
-        // abort_if(!$this->isInvoiceAccessable($invoice), 401);
-        return view('invoice.new-view', ['data' => $data]);
+        return response()->download($mergedPdfPath);
+    }
+    private function mergeXmlAndPdf($xmlPath, $pdfPath, $filename)
+    {
+        $temporaryDirectory = (new TemporaryDirectory())->create();
+        $mergeToPdf = $temporaryDirectory->path($filename);
+
+        (new ZugferdDocumentPdfMerger(storage_path('app' . $xmlPath), storage_path('app' . $pdfPath)))
+            ->generateDocument()
+            ->saveDocument($mergeToPdf);
+
+        return $mergeToPdf;
+    }
+
+    public function xmlDownload($rgnr, $profile)
+    {
+        return $this->xmlGenerator->download($rgnr, $profile);
     }
 
     public function createFakeInvoice($type)
     {
-        switch ($type) {
-            case 'user':
-                $data = Auth::user();
-
-                $providerData = [
-                    'currency_id' => $data->settings->currency_id,
-                    'invoice_language' => $data->settings->invoice_language,
-                    'invoice_theme_id' => $data->settings->invoice_theme_id,
-                    'vat_percent' => $data->settings->vat_percent,
-                    'name' => $data->settings->name,
-                    'managing_director' => $data->settings->managing_director,
-                    'legal_name' => $data->settings->legal_name,
-                    'avatar_url' => $data->settings->avatar_url,
-                    'website_url' => $data->settings->website_url,
-                    'place_of_jurisdiction' => $data->settings->place_of_jurisdiction,
-                    'slug' => $data->settings->slug,
-                    'address' => $data->settings->address,
-                    'postal_code' => $data->settings->postal_code,
-                    'tax_id' => $data->settings->tax_id,
-                    'vat_id' => $data->settings->vat_id,
-                    'iban' => $data->settings->iban,
-                    'account_number' => $data->settings->account_number,
-                    'bank_code' => $data->settings->bank_code,
-                    'bic' => $data->settings->bic,
-                    'contact_number' => $data->settings->contact_number,
-                    'contact_email' =>  $data->settings->contact_number
-                ];
-                break;
-            case 'company':
-                $data = auth()->user()->companies()->with('settings')->first();
-                $providerData = [
-                    'currency_id' => $data->settings->currency_id,
-                    'invoice_language' => $data->settings->invoice_language,
-                    'invoice_theme_id' => $data->settings->invoice_theme_id,
-                    'vat_percent' => $data->settings->vat_percent,
-                    'name' => $data->name,
-                    'managing_director' => $data->managing_director,
-                    'legal_name' => $data->legal_name,
-                    'avatar_url' => $data->avatar_url,
-                    'website_url' => $data->website_url,
-                    'place_of_jurisdiction' => $data->place_of_jurisdiction,
-                    'slug' => $data->slug,
-                    'address' => $data->address,
-                    'postal_code' => $data->postal_code,
-                    'tax_id' => $data->tax_id,
-                    'vat_id' => $data->vat_id,
-                    'iban' => $data->iban,
-                    'account_number' => $data->account_number,
-                    'bank_code' => $data->bank_code,
-                    'bic' => $data->bic,
-                    'contact_number' => $data->contact_number,
-                    'contact_email' =>  $data->contact_number
-                ];
-                break;
-        }
-        $invoiceData = new FakeInvoiceData();
-
-        $invoiceData->rgnr = '2024-9999';
-        $invoiceData->customer->name = 'Johny English';
-        $invoiceData->customer_address = 'Christine-Moritz-Allee 2 52401 Rottenburg';
-        $invoiceData->has_vat = true;
-        $invoiceData->date_pay = now()->addMonths(5)->firstOfMonth()->toDateString();
-        $invoiceData->info = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore';
-
-        $invoiceItems = [
-            ['price' => 99, 'amount' => 1, 'type' => 1, 'description' => 'Neque porro quisquam est qui dolorem ipsum'],
-            ['price' => 49, 'amount' => 1, 'type' => 1, 'description' => 'Vquia dolor sit amet, consectetur, adipisci veli'],
-            ['price' => 80, 'amount' => 3, 'type' => 2, 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'],
-        ];
-
-        $invoiceData->invoice_item = array_map(function ($item) {
-            return (object) $item;
-        }, $invoiceItems);
-        
-        $data = [
-            'provider' => $providerData,
-            'invoice' => $invoiceData
-        ];
-
-        $pdf = Pdf::loadView('invoice.new-view', ['data' => $data]);
-
-
-        return $pdf->stream($this->generateFileName($data['invoice']));
+        return $this->pdfGenerator->generateFakePdf($type);
     }
-    public function generate($invoice)
+
+    public function reminder($rgnr)
     {
-        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereRgnr($invoice)->first();
-        $info = $this->invoiceDataMapper->getData($invoice);
-
-        $data = ['data' => $info, 'print' => 1];
-        $content = view('invoice.view', ['data' => $info, 'print' => 1])->render();
-        $filename = 'RG ' . $invoice->rgnr . ' ' . $info['invoice']->customer->name . '.pdf';
-        // $wkhtml2pdf = App::make('snappy.pdf');
-        $wkhtml2pdf = new Pdf('/usr/local/bin/wkhtmltopdf');
-        #dd(storage_path());
-        // dd($wkhtml2pdf->setTemporaryFolder(storage_path() . '/tmp'));
-
-
-        #return $wkhtml2pdf->getOutputFromHtml($content, []);
-        // dd($wkhtml2pdf->generateFromHtml($content, $filename));
-        return $wkhtml2pdf->generateFromHtml($content, $filename);
-        //return ['file' => $wkhtml2pdf->getOutputFromHtml($content), 'filename' => $filename ];
+        return $this->pdfGenerator->remind($rgnr);
     }
 
+    public function customerInvoices($token)
+    {
+        return view('invoice.customer-invoices', ['token' => $token]);
+    }
 
-
+    // old
     public function download($invoice)
     {
         if (!$invoice instanceof Collection) {
@@ -175,9 +94,9 @@ class TenantInvoiceController extends Controller
         return  response()->download($pdf['path']);
     }
 
-    public function send($invoice)
+    public function send($rgnr)
     {
-        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereRgnr($invoice)->first();
+        $invoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereRgnr($rgnr)->first();
         // dd($invoice);
 
         $this->download($invoice);
@@ -212,17 +131,6 @@ class TenantInvoiceController extends Controller
         return $this->view($invoice->rgnr);
     }
 
-
-    public function reminder($invoice)
-    {
-        $data = Invoice::withoutGlobalScope(InvoiceScope::class)->whereId($invoice)->first();
-        Mail::to($data->customer->email)->send(new InvoiceEmail($data));
-
-        // SendTenantInvoiceEmailReminderJob::dispatch($data);
-        return redirect()->back();
-    }
-
-    // new
     protected function generateFileName($invoice)
     {
         return "RG {$invoice->rgnr} {$invoice->customer->name}.pdf";
@@ -283,10 +191,11 @@ class TenantInvoiceController extends Controller
         ];
     }
 
-    public function duplicate(Invoice $invoice)
+    public function duplicate($rgnr)
     {
-        $oldInvoice = $invoice;
+        $oldInvoice = Invoice::withoutGlobalScope(InvoiceScope::class)->whereRgnr($rgnr)->first();
         $newInvoice = $oldInvoice->replicate();
+        $newInvoice->rgnr = Invoice::getNextNr();
         $newInvoice->save();
 
         $oldItems = $oldInvoice->InvoiceItem;

@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Str;
 use App\Models\Scopes\CustomerScope;
+use App\Setting;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Support\Facades\DB;
 
 #[ScopedBy([CustomerScope::class])]
 class Customer extends Model
@@ -24,18 +26,24 @@ class Customer extends Model
         'street',
         'nr',
         'zip',
-        'city',
-        'country',
         'email',
         'token',
         'cc',
         'contact',
+        'reference',
         'rate',
-        'vatid',
+        'country_id',
+        'city',
+        'vat_id',
         'options',
         'general_access',
         'reverse_charge',
     ];
+
+    protected $casts = [
+        'cc' => 'array',
+    ];
+ 
     // Owner Realtionship
     public function customerable()
     {
@@ -77,17 +85,21 @@ class Customer extends Model
         }
         return number_format($result, 2, ',', '.');
     }
-
     public function getFullCustomerAddressAttribute()
     {
-        $html =  $this->street . ', ' . $this->nr . ', ' . $this->zip . ', ' . $this->city . ', ';
-        if ($this->country !== 'Germany') {
-            $html .= $this->country . ' ';
+        $html =  $this->street . ', ' . $this->nr . ', ' . $this->zip . ', ' . $this->city;
+        if ($this->country->name_en !== 'Germany') {
+            $html .= $this->country->name_en . ' ';
         }
         if ($this->vatid !== null) {
             $html .= $this->vatid . ' ';
         }
         return $html;
+    }
+
+    public function getCountryAttribute()
+    {
+        return DB::table('countries')->where('id', $this->country_id)->first();
     }
 
     public function getalldata()
@@ -130,6 +142,15 @@ class Customer extends Model
 
             if (empty($model->token)) {
                 $model->token = Str::random(20);
+            }
+            if (empty($model->reference)) {
+                $generatedRef = "REF-" . rand(1111, 9999) . '-' . now()->year;
+
+                while (self::where('reference', $generatedRef)->first()) {
+                    $generatedRef = "REF-" . rand(1111, 9999) . '-' . now()->year;
+                }
+
+                $model->reference = $generatedRef;
             }
             $currentTenant = TenancyHelpers::getTenant();
 

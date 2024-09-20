@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,4 +17,9 @@ class CompanySetting extends Model
         'invoice_theme_id',
         'currency_id',
     ];
+
+    public function getCurrencyAttribute()
+    {
+        return Helpers::getCurrancyData($this->currency_id);
+    }
 }

@@ -34,7 +34,7 @@ class License extends Model
      */
     public function customers()
     {
-        return $this->belongsToMany(Customer::class, 'license_allocations', 'license_id', 'customer_id')->withPivot(['volume'])->withTimestamps();
+        return $this->belongsToMany(Customer::class, 'license_allocations', 'license_id', 'customer_id')->withPivot(['volume','info'])->withTimestamps();
     }
 
     public function licenseable()

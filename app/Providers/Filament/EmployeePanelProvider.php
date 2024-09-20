@@ -79,9 +79,6 @@ class EmployeePanelProvider extends PanelProvider
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
-                    ->myProfileComponents([
-                        'personal_info' => MyProfilePersonalInfo::class,
-                    ]),
             ])
             ->topNavigation()
             ->tenant(Company::class, slugAttribute: 'slug', ownershipRelationship: 'company');

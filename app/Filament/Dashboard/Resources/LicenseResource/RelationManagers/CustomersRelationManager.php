@@ -21,13 +21,9 @@ class CustomersRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
-                // ->relationship('customer', 'name')
                 ->options(TenancyHelpers::getPluckCustomers())
-                ->live()
+                ->lazy()
                 ->required()
-                // ->afterStateUpdated(function (Set $set, ?string $state) {
-                //     session(['current_customer_id' => $state]);
-                // })
                 ->native(false)
                 ->label(__("invoice.field.customer"))
             ]);
@@ -38,23 +34,20 @@ class CustomersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('volume'),
+                Tables\Columns\TextColumn::make('name')->label('name'),
+                Tables\Columns\TextColumn::make('volume')->label('volume'),
+                Tables\Columns\TextColumn::make('info')->label('information')->limit(100),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()
-                ->form(fn (AttachAction $action): array => [
-                    // $action->getRecordSelect(),
-                    Forms\Components\Select::make('recordId')
-                    ->options(TenancyHelpers::getPluckCustomers())
-                    ->required()
-                    ->native(false)
-                    ->label(__("invoice.field.customer")),
-                    Forms\Components\TextInput::make('volume')->required()
+                Tables\Actions\AttachAction::make()->form(fn (AttachAction $action): array => [
+                    $action->getRecordSelect(),
+                    Forms\Components\TextInput::make('volume')->label('volume')->required()
                         ->numeric()
+                        ->maxLength(255),
+                    Forms\Components\Textarea::make('info')->label('information')->required()
                         ->maxLength(255),
                 ])
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Company\Pages\Tenancy;
 
+use App\Helpers\Helpers;
 use App\Models\Company;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -9,6 +10,7 @@ use Filament\Pages\Tenancy\RegisterTenant;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 
 class RegisterCompany extends RegisterTenant
 {
@@ -41,6 +43,11 @@ class RegisterCompany extends RegisterTenant
                         ->schema([
                             TextInput::make('address')->label('Address')->nullable(),
                             TextInput::make('postal_code')->label('Postal Code')->nullable(),
+                            Select::make('country_id')
+                                ->label(__('label.county_id'))
+                                ->options(Helpers::getPluckCountries())
+                                ->searchable()
+                                ->required()
                         ]),
                     Wizard\Step::make('Back Information')
                         ->schema([
@@ -70,6 +77,4 @@ class RegisterCompany extends RegisterTenant
 
         return $comapny;
     }
-
-
 }

@@ -23,8 +23,8 @@ class ListExpenditures extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(),
-            'OneTime' => Tab::make()
+            'All' => Tab::make(),
+            'One-time' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('frequency', FrequencyEnums::OneTime)),
             'Monthly' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('frequency', FrequencyEnums::Monthly)),

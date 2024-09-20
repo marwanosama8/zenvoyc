@@ -63,6 +63,7 @@ class CompanyPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Company/Resources'), for: 'App\\Filament\\Company\\Resources')
             ->discoverPages(in: app_path('Filament/Company/Pages'), for: 'App\\Filament\\Company\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Company/Widgets/Dashboard'), for: 'App\\Filament\\Company\\Widgets\\Dashboard')
             ->pages([
                 Pages\Dashboard::class,
             ])
@@ -72,12 +73,6 @@ class CompanyPanelProvider extends PanelProvider
                 'Mangment',
             ])
             ->viteTheme('resources/css/filament/company/theme.css')
-
-            ->discoverWidgets(in: app_path('Filament/Company/Widgets'), for: 'App\\Filament\\Company\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -112,6 +107,8 @@ class CompanyPanelProvider extends PanelProvider
                 FilamentProgressbarPlugin::make()->color($color),
                 EmailTemplatesPlugin::make(),
 
+                    ),
+                FilamentProgressbarPlugin::make()->color($color)
             ])
             ->tenantMiddleware([
                 RememberTenantMiddleware::class,

@@ -65,8 +65,11 @@ class UserRoleDataSeeder extends Seeder
                 'address' => fake('de_DE')->address(),
                 'postal_code' => fake('de_DE')->postcode(),
                 'tax_id' => fake('de_DE')->regexify('[A-Z0-9]{10}'),
-                'vat_id' => fake('de_DE')->regexify('[A-Z]{2}[0-9]{9}'),
+                'city' => fake('de_DE')->city(),
+                'vat_id' => 'DE20111340209',
+                'country_id' => 51, // 'Germany' Id from countries table
                 'iban' => fake('de_DE')->iban(),
+                'vat_percent' => 14.00,
                 'account_number' => fake('de_DE')->bankAccountNumber(),
                 'bank_code' => fake('de_DE')->regexify('[0-9]{8}'),
                 'bic' => fake('de_DE')->swiftBicNumber(),
@@ -104,12 +107,12 @@ class UserRoleDataSeeder extends Seeder
                             'end' => $dateOnTime
                         ];
                     },
-                    fn (Sequence $sequence) => [
+                    fn(Sequence $sequence) => [
                         'frequency' => 'monthly',
                         'start' => Carbon::now(),
                         'end' => Carbon::createFromDate(null, fake('de_DE')->numberBetween(2, 12), 1)->endOfMonth()
                     ],
-                    fn (Sequence $sequence) =>  [
+                    fn(Sequence $sequence) =>  [
                         'frequency' => 'yearly',
                         'start' => Carbon::now()->startOfYear(),
                         'end' => Carbon::now()->addYears(fake('de_DE')->numberBetween(2, 7)),
@@ -133,7 +136,7 @@ class UserRoleDataSeeder extends Seeder
                 ->count(10)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
                     ),
                 )
                 ->has(InvoiceItem::factory()->count(3))
@@ -146,7 +149,8 @@ class UserRoleDataSeeder extends Seeder
             $offer = Offer::factory()->count(3)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id],
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id, 'external_offer_url' => fake()->url(), 'external_offer' => true],
                     ),
                 )
                 ->create([
@@ -159,7 +163,7 @@ class UserRoleDataSeeder extends Seeder
                 ->count(3)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
+                        fn(Sequence $sequence) =>  ['customer_id' =>  $customers->random()->id]
                     ),
                 )
                 ->create([
@@ -178,7 +182,7 @@ class UserRoleDataSeeder extends Seeder
                 }), 'timesheet_tasks')
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['project_id' =>  $project->random()->id]
+                        fn(Sequence $sequence) =>  ['project_id' =>  $project->random()->id]
                     ),
                 )
                 ->create([
@@ -186,22 +190,22 @@ class UserRoleDataSeeder extends Seeder
                     'taskable_type' => $modelType,
                 ]);
 
-                $contacts = Contact::factory()->count(6)
+            $contacts = Contact::factory()->count(6)
                 ->state(
                     new Sequence(
-                        fn (Sequence $sequence) =>  ['company' => 'Apple'],
-                        fn (Sequence $sequence) =>  ['company' => 'Meta']
+                        fn(Sequence $sequence) =>  ['company' => 'Apple'],
+                        fn(Sequence $sequence) =>  ['company' => 'Meta']
                     ),
                 )->create([
                     'contactable_id' => $modelId,
                     'contactable_type' => $modelType,
                 ]);
 
-                // assign some contacts to customers
+            // assign some contacts to customers
 
-                foreach ($contacts as  $contact) {
-                    $contact->customers()->attach($customers->random()->id);
-                }
+            foreach ($contacts as  $contact) {
+                $contact->customers()->attach($customers->random()->id);
+            }
 
             DB::commit();
         } catch (\Exception $e) {

@@ -3,6 +3,7 @@
 namespace App\Mapper;
 
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class InvoiceDataMapper
@@ -28,18 +29,20 @@ class InvoiceDataMapper
                 'postal_code' => $data->postal_code,
                 'tax_id' => $data->tax_id,
                 'vat_id' => $data->vat_id,
+                'city' => $data->city,
+                'country' => $data->country,
                 'iban' => $data->iban,
                 'account_number' => $data->account_number,
                 'bank_code' => $data->bank_code,
                 'bic' => $data->bic,
                 'contact_number' => $data->contact_number,
-                'contact_email' =>  $data->contact_number
+                'contact_email' =>  $data->contact_email
             ];
             // get invoice data
             $invoiceData = $invoice;
         } else { // this in user invoice            
             // get user data
-            $data = Auth::user();
+            $data = User::with('settings')->where('id',$invoice->invoiceable_id)->first();
             $providerData = [
                 'currency_id' => $data->settings->currency_id,
                 'invoice_language' => $data->settings->invoice_language,
@@ -47,6 +50,7 @@ class InvoiceDataMapper
                 'vat_percent' => $data->settings->vat_percent,
                 'name' => $data->settings->name,
                 'managing_director' => $data->settings->managing_director,
+                'country' => $data->settings->country,
                 'legal_name' => $data->settings->legal_name,
                 'avatar_url' => $data->settings->avatar_url,
                 'website_url' => $data->settings->website_url,
@@ -55,6 +59,7 @@ class InvoiceDataMapper
                 'address' => $data->settings->address,
                 'postal_code' => $data->settings->postal_code,
                 'tax_id' => $data->settings->tax_id,
+                'city' => $data->city,
                 'vat_id' => $data->settings->vat_id,
                 'iban' => $data->settings->iban,
                 'account_number' => $data->settings->account_number,

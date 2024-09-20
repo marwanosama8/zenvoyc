@@ -2,6 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Dashboard\Pages\Dashboard;
+use App\Filament\Dashboard\Widgets\Dashboard\ExpenditureWidget;
+use App\Filament\Dashboard\Widgets\TimesheetTracker;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -46,8 +49,9 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\\Filament\\Dashboard\\Resources')
             ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\\Filament\\Dashboard\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets/Dashboard'), for: 'App\\Filament\\Dashboard\\Widgets\\Dashboard')
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
             ])
             ->navigationGroups([
                 'Finance',
@@ -56,10 +60,6 @@ class DashboardPanelProvider extends PanelProvider
                 'Subscription',
             ])
             ->viteTheme('resources/css/filament/dashboard/theme.css')
-            ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets'), for: 'App\\Filament\\Dashboard\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -71,7 +71,7 @@ class DashboardPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 \App\Http\Middleware\RememberTenantMiddleware::class,
-            ])
+        ])
             ->tenantMiddleware([
                 \App\Http\Middleware\RememberTenantMiddleware::class,
             ])
@@ -87,11 +87,7 @@ class DashboardPanelProvider extends PanelProvider
                         shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
-                    )
-                    ->myProfileComponents([
-                        \App\Livewire\AddressForm::class,
-
-                    ]),
+                    ),
                 FilamentProgressbarPlugin::make()->color($color)
             ]);
     }

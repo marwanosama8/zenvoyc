@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('license_id');
             $table->unsignedBigInteger('customer_id');
             $table->integer('volume');
+            $table->text('info');
             $table->timestamps();
             $table->softDeletes();
         });

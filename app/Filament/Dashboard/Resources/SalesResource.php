@@ -30,17 +30,19 @@ class SalesResource extends Resource
   
     public static function getPluralModelLabel(): string
     {
-        return __('navigation.sales');
+        return __('navigation.sale_items');
     }
+
     public static function getNavigationLabel(): string
     {
-        return __('navigation.sale');
+        return __('navigation.sale_item');
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('navigation.project');
+        return __('navigation.finance');
     }
+    
     public static function form(Form $form): Form
     {
         return $form

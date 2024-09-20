@@ -11,7 +11,7 @@
     if ($invoiceTheme && $invoiceTheme->is_active) {
         $invoiceThemeAliases = $invoiceTheme->aliases;
     } else {
-        $invoiceThemeAliases = InvoiceTheme::find(InvoiceThemeConstants::DEFAULTID)->aliases;
+        $invoiceThemeAliases = InvoiceTheme::find(InvoiceThemeConstants::DEFAULT_ID)->aliases;
     }
 @endphp
 <!doctype html>
@@ -28,7 +28,8 @@
     <title>{{ __('invoice-template.invoice', locale: $lang) }}</title>
 </head>
 
-<body>
+<body style="{{ !$print ? 'width: 1140px; margin: auto; padding: 20px;' : ''}}">
+
     <table class="w-full">
         <tr>
             <td class="w-half">
@@ -130,7 +131,7 @@
     @if ($data['invoice']->has_vat)
         <div class="total">
             {{ __('invoice-template.tax', locale: $lang) }}:
-            {{ $currency->symbol . number_format(CalculationHelpers::getTotalVat($data['invoice']->getTotalNetto(), $data['provider']['vat_percent']), 2, ',', '.') }}
+            {{ $currency->symbol . number_format(CalculationHelpers::getTotalVat($data['invoice']->getTotalNetto(), $data['invoice']->vat_percent), 2, ',', '.') }}
         </div>
         <div class="total-separator"></div>
         <table class="total-overall-table">
@@ -142,7 +143,7 @@
                 <td class="right" style="text-align: right;">
                     <h3>
                         {{ __('invoice-template.total', locale: $lang) }}:
-                        {{ $currency->symbol . number_format(CalculationHelpers::getTotalBrutto($data['invoice']->getTotalNetto(), $data['provider']['vat_percent']), 2, ',', '.') }}
+                        {{ $currency->symbol . number_format(CalculationHelpers::getTotalBrutto($data['invoice']->getTotalNetto(), $data['invoice']->vat_percent), 2, ',', '.') }}
                     </h3>
                 </td>
             </tr>
