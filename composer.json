@@ -49,7 +49,7 @@
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0",
         "symfony/postmark-mailer": "^7.0",
-        "visualbuilder/email-templates": "@modified"
+        "visualbuilder/email-templates": "dev-modified"
     },
     "require-dev": {
         "deployer/deployer": "^7.3",
