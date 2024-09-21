@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17d01fe61cd4ec8069cb3fab736c4b5e",
+    "content-hash": "d1be587369333828ab90758e1fb4a8bf",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -13140,6 +13140,99 @@
             "time": "2024-08-12T08:25:45+00:00"
         },
         {
+            "name": "visualbuilder/email-templates",
+            "version": "dev-modified",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marwanosama8/email-templates.git",
+                "reference": "e5eb063f3f03b6d955b5f89ee7464225ea25fe85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marwanosama8/email-templates/zipball/e5eb063f3f03b6d955b5f89ee7464225ea25fe85",
+                "reference": "e5eb063f3f03b6d955b5f89ee7464225ea25fe85",
+                "shasum": ""
+            },
+            "require": {
+                "awcodes/filament-tiptap-editor": "^3.0@beta",
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0|^11.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "blade-ui-kit/blade-heroicons": "^2.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.9.1",
+                "pestphp/pest-plugin-laravel": "^2.2",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan-deprecation-rules": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.3",
+                "phpunit/phpunit": "^10.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Visualbuilder\\EmailTemplates\\EmailTemplatesServiceProvider"
+                    ],
+                    "aliases": {
+                        "EmailTemplates": "Visualbuilder\\EmailTemplates\\EmailTemplatesFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Visualbuilder\\EmailTemplates\\": "src",
+                    "Visualbuilder\\EmailTemplates\\Database\\Factories\\": "database/factories/",
+                    "Visualbuilder\\EmailTemplates\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Visualbuilder\\EmailTemplates\\Tests\\": "tests"
+                }
+            },
+            "scripts": {
+                "post-autoload-dump": [
+                    "@php ./vendor/bin/testbench package:discover --ansi"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "test": [
+                    "vendor/bin/pest"
+                ],
+                "test-coverage": [
+                    "vendor/bin/pest --coverage"
+                ],
+                "format": [
+                    "vendor/bin/pint"
+                ]
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Visual Builder",
+                    "email": "support@ekouk.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Email Template editor for Filament",
+            "homepage": "https://github.com/visualbuilder/email-templates",
+            "keywords": [
+                "email-templates",
+                "visualbuilder"
+            ],
+            "support": {
+                "source": "https://github.com/marwanosama8/email-templates/tree/modified"
+            },
+            "time": "2024-09-21T13:43:35+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.1",
             "source": {
@@ -15976,7 +16069,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "visualbuilder/email-templates": 20
     },

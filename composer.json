@@ -70,8 +70,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "App\\Helpers\\TenancyHelpers\\": "app/Helpers/TenancyHelpers/",
-            "App\\Helpers\\Helpers\\": "app/Helpers/Helpers/",
-            "VisualBuilder\\EmailTemplates\\": "packages/email-templates/src"
+            "App\\Helpers\\Helpers\\": "app/Helpers/Helpers/"
         }
     },
     "autoload-dev": {
