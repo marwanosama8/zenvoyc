@@ -258,7 +258,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
     {
         $contents = file_get_contents($url);
         $name = 'user_setting_image_' . Str::random(10) . '.jpg';
-        Storage::put('public/media/logos/' . $name, $contents);
-        return $name;
+        Storage::put('public/logos/' . $name, $contents);
+        return 'logos/'. $name;
     }
 }

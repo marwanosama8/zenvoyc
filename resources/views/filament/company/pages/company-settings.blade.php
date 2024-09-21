@@ -8,6 +8,10 @@
                 {{ __('company-settings.invoice-settings.top_heading') }}
             </x-filament::tabs.item>
 
+            <x-filament::tabs.item :active="$activeTap === 3" wire:click="$set('activeTap', 3)">
+                {{ __('company-settings.mail-configrations-settings.top_heading') }}
+            </x-filament::tabs.item>
+
         </x-filament::tabs>
 
 
@@ -36,6 +40,23 @@
             <x-filament::card header="{{ __('company-settings.invoice-settings.top_heading') }}">
                 <form wire:submit.prevent="saveInvoiceSettingsForm">
                     {{ $this->invoiceSettingsForm }}
+
+                    {{-- save --}}
+                    <div class="flex justify-end mt-8">
+                        <x-filament::button type="submit">
+                            <x-filament::loading-indicator class="inline w-5 h-5" wire:loading />
+                            {{ __('save') }}
+                        </x-filament::button>
+                    </div>
+                </form>
+            </x-filament::card>
+            {{-- end tap 2 --}}
+        @endif
+        @if ($activeTap == 3)
+            {{-- tap 2 --}}
+            <x-filament::card header="{{ __('company-settings.mail-configrations-settings.top_heading') }}">
+                <form wire:submit.prevent="saveMailConfigrationsSettingsForm">
+                    {{ $this->mailConfigrationsSettingsForm }}
 
                     {{-- save --}}
                     <div class="flex justify-end mt-8">

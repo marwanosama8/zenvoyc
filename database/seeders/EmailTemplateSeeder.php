@@ -114,7 +114,7 @@ class EmailTemplateSeeder extends Seeder
                 'key'       => 'invoice-reminder-email',
                 'from'      => ['email' => $data->contact_email, 'name' => $data->legal_name],
                 'name'      => 'Invoice Payment Reminder',
-                'title'     => "Reminder: Invoice from {$data->contact_email}",
+                'title'     => "Reminder: Invoice from {$data->legal_name}",
                 'subject'   => "Reminder: Payment due for your invoice from {$data->contact_email}",
                 'preheader' => 'Don’t forget to pay your invoice',
                 'content'   => "<p>Dear ##invoice.customer_name##,</p>

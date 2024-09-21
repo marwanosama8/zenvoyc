@@ -31,9 +31,13 @@ class TenantInvoiceController extends Controller
 
     public function view($rgnr)
     {
-        $data = $this->pdfGenerator->getData($rgnr);
+        try {
+            $data = $this->pdfGenerator->getData($rgnr);
+        } catch (\Exception $th) {
+            log($th->getMessage());
+            abort(401);
+        }
 
-        // abort_if(!$this->isInvoiceAccessable($data['invoice']), 401);
         return view('invoice.new-view', ['data' => $data, 'print' => 0]);
     }
 

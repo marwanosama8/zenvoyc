@@ -28,12 +28,12 @@
     <title>{{ __('invoice-template.invoice', locale: $lang) }}</title>
 </head>
 
-<body style="{{ !$print ? 'width: 1140px; margin: auto; padding: 20px;' : ''}}">
+<body style="{{ !$print ? 'width: 1140px; margin: auto; padding: 20px;' : '' }}">
 
     <table class="w-full">
         <tr>
             <td class="w-half">
-                <img src="{{ asset(config('app.avatar_asset_url') . $data['provider']['avatar_url']) }}" alt="pro-tool" width="200" />
+                <img src="{{ asset($data['provider']['avatar_url']) }}" alt="pro-tool" width="200" />
             </td>
             <td class="w-half">
                 <div class="head">

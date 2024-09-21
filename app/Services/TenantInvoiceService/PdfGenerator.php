@@ -3,6 +3,7 @@
 namespace App\Services\TenantInvoiceService;
 
 use App\Constants\FakeInvoiceData;
+use App\Jobs\SendReminderEmailJob;
 use App\Mail\TenantInvoice\MailReminder;
 use App\Mapper\InvoiceDataMapper;
 use App\Models\Scopes\TenantInvoiceScope;
@@ -43,7 +44,9 @@ class PdfGenerator
             'file' => Pdf::loadView('invoice.new-view', ['data' => $data, 'print' => 1])->output(),
             'filename' => $this->generateFileName($data['invoice'])
         ];
-        Mail::to($data['invoice']->customer->email)->send(new MailReminder($data['provider'], $data['invoice'], $fileData));
+
+        SendReminderEmailJob::dispatch($data);
+        // Mail::to($data['invoice']->customer->email)->send(new MailReminder($data['provider'], $data['invoice'], $fileData));
         return redirect()->back();
     }
 

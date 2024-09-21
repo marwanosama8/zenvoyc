@@ -60,7 +60,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
-    'avatar_asset_url' =>  'storage/media/logos/',
+    'avatar_asset_url' =>  'storage/logos/',
     
     /*
     |--------------------------------------------------------------------------

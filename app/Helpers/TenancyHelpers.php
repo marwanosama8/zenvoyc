@@ -120,7 +120,6 @@ class TenancyHelpers
    public static function getTenantModelOutSideFilament()
    {
        $tenantData = session('tenant_data');
-   
        if ($tenantData) {
            $tenantClass = $tenantData['class'];
            $tenantId = $tenantData['id'];
@@ -129,7 +128,6 @@ class TenancyHelpers
    
            return $tenantInstance;
        }
-   
        return null;
    }
 }

@@ -14,14 +14,8 @@ class PanelConfigScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $currentTenant = TenancyHelpers::getTenant();
-
-        if (is_null($currentTenant)) {
-            // retrive auth user model
-            $builder->where('configable_type', 'App\Models\User')->where('configable_id', auth()->id());
-        } else {
-            // retrive auth company model
-            $builder->where('configable_type', 'App\Models\Company')->where('configable_id', $currentTenant->id);
-        }
+        $currentTenant = TenancyHelpers::getTenantModelOutSideFilament();
+     
+        $builder->where('configable_type', get_class($currentTenant))->where('configable_id', $currentTenant->id);
     }
 }

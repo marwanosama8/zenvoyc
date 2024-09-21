@@ -29,6 +29,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Livewire\Component as Livewire;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Livewire\Notifications;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 
@@ -293,7 +294,7 @@ class InvoiceResource extends Resource
                 Tables\Columns\ToggleColumn::make('payed')
                     ->label(__("invoice.field.payed")),
                 Tables\Columns\TextColumn::make('created_at')
-                ->sortable()
+                    ->sortable()
                     ->label(__("invoice.field.created_at"))->date('d.m.Y'),
 
                 // Tables\Columns\TextColumn::make('#')
@@ -319,7 +320,7 @@ class InvoiceResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('reminder_email')
-                    ->label(__('invoice.action.reminder_email'))
+                        ->label(__('invoice.action.reminder_email'))
                         ->icon('heroicon-m-chat-bubble-bottom-center-text')
                         ->url(fn(Invoice $record) => route('invoice.reminder', $record->rgnr)),
                     Tables\Actions\Action::make('duplicate')

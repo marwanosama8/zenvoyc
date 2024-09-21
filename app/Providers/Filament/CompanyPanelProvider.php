@@ -86,6 +86,7 @@ class CompanyPanelProvider extends PanelProvider
             ])
             ->tenantMiddleware([
                 \App\Http\Middleware\RememberTenantMiddleware::class,
+
             ])
             ->renderHook('panels::head.start', function () {
                 return view('components.layouts.partials.analytics');
@@ -107,7 +108,6 @@ class CompanyPanelProvider extends PanelProvider
                 FilamentProgressbarPlugin::make()->color($color),
                 EmailTemplatesPlugin::make(),
 
-                    ),
                 FilamentProgressbarPlugin::make()->color($color)
             ])
             ->tenantMiddleware([

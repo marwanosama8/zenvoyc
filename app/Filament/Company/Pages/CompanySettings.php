@@ -5,6 +5,7 @@ namespace App\Filament\Company\Pages;
 use App\Constants\InvoiceThemeConstants;
 use App\Helpers\Helpers;
 use App\Helpers\TenancyHelpers;
+use App\Models\PanelConfig;
 use Filament\Forms\Components\Select;
 use Filament\Pages\Page;
 use Filament\Forms\Components\TextInput;
@@ -15,6 +16,7 @@ use Filament\Notifications\Notification;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Tables\Columns\Layout\Panel;
 use Illuminate\Support\HtmlString;
 use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 
@@ -29,9 +31,17 @@ class CompanySettings extends Page
     {
         $companyProfileArray = TenancyHelpers::getTenant()->toArray();
         $companyInvoiceSettingArray = TenancyHelpers::getTenant()->settings()->first()?->toArray();
+        $configsData = TenancyHelpers::getTenant()->configs();
+        $mailConfigrationsSettingArray = [
+            'host' => $configsData->where('key', 'mail.mailers.smtp.host')?->first(),
+            'port' => $configsData->where('key', 'mail.mailers.smtp.port')?->first(),
+            'password' => $configsData->where('key', 'mail.mailers.smtp.password')?->first(),
+            'username' => $configsData->where('key', 'mail.mailers.smtp.username')?->first(),
+        ];
         // The Forms
         $this->profileSettingsForm->fill($companyProfileArray);
         $this->invoiceSettingsForm->fill($companyInvoiceSettingArray);
+        $this->mailConfigrationsSettingsForm->fill($mailConfigrationsSettingArray);
     }
 
     public static function getNavigationLabel(): string
@@ -43,15 +53,18 @@ class CompanySettings extends Page
 
     public $invoiceSettingsValues;
     public $profileSettingsValues;
+    public $mailConfigrationsSettingsValues;
 
     public $profileSettings = [];
     public $invoiceSettings = [];
+    public $mailConfigrationsSettings = [];
 
     protected function getForms(): array
     {
         return [
             'profileSettingsForm',
-            'invoiceSettingsForm'
+            'invoiceSettingsForm',
+            'mailConfigrationsSettingsForm'
         ];
     }
 
@@ -67,7 +80,7 @@ class CompanySettings extends Page
                                 FileUpload::make('avatar_url')
                                     ->image()
                                     ->imageEditor()
-                                    ->directory('media/logos')
+                                    ->directory('logos')
                                     ->imageEditorAspectRatios([
                                         '92:16'
                                     ])->label(__('Avatar URL'))->required(),
@@ -88,7 +101,7 @@ class CompanySettings extends Page
                                     ->options(Helpers::getPluckCountries())
                                     ->searchable()
                                     ->required(),
-                                    TextInput::make('city')->label(__('city'))->required(),
+                                TextInput::make('city')->label(__('city'))->required(),
 
                             ]),
                         Tabs\Tab::make('Bank Information')
@@ -172,6 +185,27 @@ class CompanySettings extends Page
             ->statePath('invoiceSettings');
     }
 
+    protected function mailConfigrationsSettingsForm(Form $form): Form
+    {
+
+        return $form
+            ->schema([
+                TextInput::make('host')
+                    ->label(__('Host'))
+                    ->required(),
+                TextInput::make('port')
+                    ->label(__('Port'))
+                    ->required(),
+                TextInput::make('username')
+                    ->label(__('Username'))
+                    ->nullable(),
+                TextInput::make('password')
+                    ->label(__('Password'))
+                    ->nullable(),
+            ])
+            ->statePath('mailConfigrationsSettings');
+    }
+
 
     public function saveProfileSettingsForm(): void
     {
@@ -185,6 +219,15 @@ class CompanySettings extends Page
         $data = $this->toKeyValueArray($this->invoiceSettingsForm->getState());
         TenancyHelpers::getTenant()->settings()->update($data);
         Notification::make()->title(__('settings.invoice-settings.notification'))->success()->send();
+    }
+    public function saveMailConfigrationsSettingsForm(): void
+    {
+        $data = $this->mailConfigrationsSettingsForm->getState();
+        PanelConfig::set("mail.mailers.smtp.port", $data['port']);
+        PanelConfig::set("mail.mailers.smtp.host", $data['host']);
+        PanelConfig::set("mail.mailers.smtp.password", $data['password']);
+        PanelConfig::set("mail.mailers.smtp.username", $data['username']);
+        Notification::make()->title(__('settings.mail-configrations-settings.notification'))->success()->send();
     }
 
 

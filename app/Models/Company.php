@@ -108,6 +108,11 @@ class Company extends Model implements HasAvatar
     {
         return $this->morphMany(Contact::class, 'contactable');
     }
+    
+    public function configs()
+    {
+        return $this->morphMany(PanelConfig::class, 'configable');
+    }
 
     public function getCountryAttribute()
     {
