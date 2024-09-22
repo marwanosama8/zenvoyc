@@ -39,8 +39,6 @@ class SendReminderEmailJob implements ShouldQueue
     public function handle()
     {
         $smtpSettings = TenancyHelpers::getTenantModelOutSideFilament()->configs();
-        // dd(config('mail.mailers.smtp.username'));
-        // dd($smtpSettings->where('key', 'mail.mailers.smtp.username')?->first()?->value ?? '1025');
         Config::set('mail.mailers.smtp.host', $smtpSettings->where('key', 'mail.mailers.smtp.host')?->first()?->value);
         // Config::set('mail.mailers.smtp.port', $smtpSettings->where('key', 'mail.mailers.smtp.port')?->first()?->value);
         Config::set('mail.mailers.smtp.username', $smtpSettings->where('key', 'mail.mailers.smtp.username')?->first()?->value);

@@ -121,6 +121,23 @@ class TenantInvoice extends Model
 	{
 		return Carbon::parse($value)->format('d.m.Y');
 	}
+	public function getTotalAttribute($value)
+	{
+		return $this->invoice_item()->sum('price');
+	}
+
+	public function getCustomerNameAttribute($value)
+	{
+		return $this->customer->name;
+	}
+	public function getCustomerEmailAttribute($value)
+	{
+		return $this->customer->email;
+	}
+	public function getNumberAttribute($value)
+	{
+		return $this->rgnr;
+	}
 
 	public function getTotalNetto()
 	{
@@ -133,14 +150,6 @@ class TenantInvoice extends Model
 		return $this->Items()->where('created_at', '>=', $time->startOfQuarter())->sum('price');
 	}
 
-	public function getCustomerNameAttribute($value)
-	{
-		return $this->customer->name;
-	}
-	public function getNumberAttribute($value)
-	{
-		return $this->rgnr;
-	}
 	public function getCurrentVat()
 	{
 		return $this->invoiceable->settings->vat_percent;

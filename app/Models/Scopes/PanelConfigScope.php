@@ -15,7 +15,6 @@ class PanelConfigScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         $currentTenant = TenancyHelpers::getTenantModelOutSideFilament();
-     
         $builder->where('configable_type', get_class($currentTenant))->where('configable_id', $currentTenant->id);
     }
 }

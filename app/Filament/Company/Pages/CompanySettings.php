@@ -33,11 +33,12 @@ class CompanySettings extends Page
         $companyInvoiceSettingArray = TenancyHelpers::getTenant()->settings()->first()?->toArray();
         $configsData = TenancyHelpers::getTenant()->configs();
         $mailConfigrationsSettingArray = [
-            'host' => $configsData->where('key', 'mail.mailers.smtp.host')?->first(),
-            'port' => $configsData->where('key', 'mail.mailers.smtp.port')?->first(),
-            'password' => $configsData->where('key', 'mail.mailers.smtp.password')?->first(),
-            'username' => $configsData->where('key', 'mail.mailers.smtp.username')?->first(),
+            'host' => $configsData->where('key', 'mail.mailers.smtp.host')?->first()?->value,
+            'port' => $configsData->where('key', 'mail.mailers.smtp.port')?->first()?->value,
+            'password' => $configsData->where('key', 'mail.mailers.smtp.password')?->first()?->value,
+            'username' => $configsData->where('key', 'mail.mailers.smtp.username')?->first()?->value,
         ];
+        // dd($mailConfigrationsSettingArray);
         // The Forms
         $this->profileSettingsForm->fill($companyProfileArray);
         $this->invoiceSettingsForm->fill($companyInvoiceSettingArray);

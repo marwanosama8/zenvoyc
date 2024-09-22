@@ -17,28 +17,31 @@ class RememberTenantMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
+        try {
+            // Get the current tenant (could be User or Company)
+            $tenant = Filament::getTenant();
 
-        // Get the current tenant (could be User or Company)
-        $tenant = Filament::getTenant();
+            // If a tenant is found, store its class and ID in the session
+            if ($tenant) {
+                $tenantData = [
+                    'class' => get_class($tenant),
+                    'id'    => $tenant->getKey(),
+                ];
 
-        // If a tenant is found, store its class and ID in the session
-        if ($tenant) {
-            $tenantData = [
-                'class' => get_class($tenant),
-                'id'    => $tenant->getKey(),
-            ];
+                $request->session()->put('tenant_data', $tenantData);
+            } else {
+                $user = auth()->user();
+                $tenantData = [
+                    'class' => get_class($user),
+                    'id'    => $user->id,
+                ];
 
-            $request->session()->put('tenant_data', $tenantData);
-        } else {
-            $user = auth()->user();
-            $tenantData = [
-                'class' => get_class($user),
-                'id'    => $user->id,
-            ];
+                $request->session()->put('tenant_data', $tenantData);
+            }
 
-            $request->session()->put('tenant_data', $tenantData);
+            return $next($request);
+        } catch (\Exception $th) {
+            return $next($request);
         }
-
-        return $next($request);
     }
 }

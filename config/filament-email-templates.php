@@ -81,6 +81,16 @@ return [
             'user-login'=>'User Logged In',
     ],
 
+    'allowed_template_keys' => [
+        'number',
+        'date_origin',
+        'date_pay',
+        'date_start',
+        'date_end',
+        'total',
+        'customer.name',
+        'customer.contact_email',
+    ],
     //Default Logo
     'logo' => 'media/email-templates/logo.png',
 

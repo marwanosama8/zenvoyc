@@ -2,7 +2,9 @@
 
 namespace App\Helpers;
 
+use App\Constants\TenantConfigConstants;
 use App\Models\Company;
+use App\Models\PanelConfig;
 use App\Models\Project;
 use App\Models\Task;
 use Carbon\Carbon;
@@ -54,7 +56,7 @@ class TenancyHelpers
    }
    public static function getPluckCompanyEmployeeNames()
    {
-      return self::getTenant()->users()->get()->pluck('name','id')->toArray();
+      return self::getTenant()->users()->get()->pluck('name', 'id')->toArray();
    }
    public static function getPluckTasksByProjectKey()
    {
@@ -71,12 +73,12 @@ class TenancyHelpers
          }
       }
       // $query = auth()->user()->tasks();
-      
+
       foreach ($projects as $project) {
          $tasks = (clone $baseQuery)
-         ->where('project_id', $project->id)
-         ->pluck('title', 'id')
-         ->toArray();
+            ->where('project_id', $project->id)
+            ->pluck('title', 'id')
+            ->toArray();
          if (!empty($tasks)) {
             $groupedOptions[$project->name] = $tasks;
          }
@@ -111,7 +113,7 @@ class TenancyHelpers
    {
       return auth()->user()->hasRole('employee');
    }
-   
+
    public static function isCompanyOrUser()
    {
       return is_null(Filament::getTenant()) ? 'user' : 'company';
@@ -119,15 +121,28 @@ class TenancyHelpers
 
    public static function getTenantModelOutSideFilament()
    {
-       $tenantData = session('tenant_data');
-       if ($tenantData) {
-           $tenantClass = $tenantData['class'];
-           $tenantId = $tenantData['id'];
-   
-           $tenantInstance = $tenantClass::find($tenantId);
-   
-           return $tenantInstance;
-       }
-       return null;
+      $tenantData = session('tenant_data');
+      if ($tenantData) {
+         $tenantClass = $tenantData['class'];
+         $tenantId = $tenantData['id'];
+
+         $tenantInstance = $tenantClass::find($tenantId);
+
+         return $tenantInstance;
+      }
+      return null;
+   }
+
+   public static function isMailConfigrationsReady()
+   {
+      $configs = TenantConfigConstants::MAIL_CONFIGS;
+      $arr = [];
+      foreach ($configs as $config) {
+         if ($key = PanelConfig::where('key',$config)->first()) {
+            $arr[] = $key->value;
+         }
+      }
+      
+      return count($arr) == 4;
    }
 }

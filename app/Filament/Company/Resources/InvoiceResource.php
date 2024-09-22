@@ -321,8 +321,11 @@ class InvoiceResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('reminder_email')
                         ->label(__('invoice.action.reminder_email'))
-                        ->icon('heroicon-m-chat-bubble-bottom-center-text')
-                        ->url(fn(Invoice $record) => route('invoice.reminder', $record->rgnr)),
+                        ->action(function(Livewire $livewire, Invoice $record) {
+                            $livewire->sendReminderEmail($record);
+                        })
+                        ->icon('heroicon-m-chat-bubble-bottom-center-text'),
+                        // ->url(fn(Invoice $record) => route('invoice.reminder', $record->rgnr)),
                     Tables\Actions\Action::make('duplicate')
                         ->label(__('invoice.action.duplicate'))
                         ->icon('heroicon-m-document-duplicate')
