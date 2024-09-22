@@ -48,7 +48,8 @@
         "stripe/stripe-php": "^12.0",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0",
-        "symfony/postmark-mailer": "^7.0"
+        "symfony/postmark-mailer": "^7.0",
+        "visualbuilder/email-templates": "dev-modified"
     },
     "require-dev": {
         "deployer/deployer": "^7.3",
@@ -100,6 +101,12 @@
             ]
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/marwanosama8/email-templates.git"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
@@ -109,6 +116,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
