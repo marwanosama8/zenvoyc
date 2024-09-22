@@ -106,7 +106,7 @@ class CompanyPanelProvider extends PanelProvider
                         'personal_info' => MyProfilePersonalInfo::class,
                     ]),
                 FilamentProgressbarPlugin::make()->color($color),
-                EmailTemplatesPlugin::make(),
+                // EmailTemplatesPlugin::make(),
 
                 FilamentProgressbarPlugin::make()->color($color)
             ])
