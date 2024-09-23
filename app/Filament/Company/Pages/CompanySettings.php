@@ -31,14 +31,13 @@ class CompanySettings extends Page
     {
         $companyProfileArray = TenancyHelpers::getTenant()->toArray();
         $companyInvoiceSettingArray = TenancyHelpers::getTenant()->settings()->first()?->toArray();
-        $configsData = TenancyHelpers::getTenant()->configs();
+        $configsData = TenancyHelpers::getTenant()->configs;
         $mailConfigrationsSettingArray = [
-            'host' => $configsData->where('key', 'mail.mailers.smtp.host')?->first()?->value,
             'port' => $configsData->where('key', 'mail.mailers.smtp.port')?->first()?->value,
+            'host' => $configsData->where('key', 'mail.mailers.smtp.host')?->first()?->value,
             'password' => $configsData->where('key', 'mail.mailers.smtp.password')?->first()?->value,
             'username' => $configsData->where('key', 'mail.mailers.smtp.username')?->first()?->value,
         ];
-        // dd($mailConfigrationsSettingArray);
         // The Forms
         $this->profileSettingsForm->fill($companyProfileArray);
         $this->invoiceSettingsForm->fill($companyInvoiceSettingArray);
@@ -225,6 +224,7 @@ class CompanySettings extends Page
     {
         $data = $this->mailConfigrationsSettingsForm->getState();
         PanelConfig::set("mail.mailers.smtp.port", $data['port']);
+        
         PanelConfig::set("mail.mailers.smtp.host", $data['host']);
         PanelConfig::set("mail.mailers.smtp.password", $data['password']);
         PanelConfig::set("mail.mailers.smtp.username", $data['username']);

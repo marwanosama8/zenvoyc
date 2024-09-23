@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Services\MailConfigManeger;
 
 class SendReminderEmailJob implements ShouldQueue
 {
@@ -38,11 +39,8 @@ class SendReminderEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        $smtpSettings = TenancyHelpers::getTenantModelOutSideFilament()->configs();
-        Config::set('mail.mailers.smtp.host', $smtpSettings->where('key', 'mail.mailers.smtp.host')?->first()?->value);
-        // Config::set('mail.mailers.smtp.port', $smtpSettings->where('key', 'mail.mailers.smtp.port')?->first()?->value);
-        Config::set('mail.mailers.smtp.username', $smtpSettings->where('key', 'mail.mailers.smtp.username')?->first()?->value);
-        Config::set('mail.mailers.smtp.password', $smtpSettings->where('key', 'mail.mailers.smtp.password')?->first()?->value);
+        $smtpSettings = TenancyHelpers::getTenantModelOutSideFilament()->configs()->get(['key','value'])->toArray();
+        MailConfigManeger::setConfigrations($smtpSettings);
         Mail::to($this->invoice->customer->email)->send(new InvoiceReminderEmail($this->invoice,$this->data));
     }
 }
