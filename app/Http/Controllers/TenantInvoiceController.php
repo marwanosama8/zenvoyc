@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 // use Knp\Snappy\Pdf;
 use Spatie\Browsershot\Browsershot;
 use horstoeko\zugferd\ZugferdDocumentPdfMerger;
+use Illuminate\Support\Facades\Log;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 class TenantInvoiceController extends Controller
@@ -34,7 +35,7 @@ class TenantInvoiceController extends Controller
         try {
             $data = $this->pdfGenerator->getData($rgnr);
         } catch (\Exception $th) {
-            log($th->getMessage());
+            Log::error($th->getMessage());
             abort(401);
         }
 

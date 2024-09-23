@@ -31,7 +31,7 @@ class ListInvoices extends ListRecords
             try {
                 $pdfGenerator = new PdfGenerator(new InvoiceDataMapper());
                 $pdfGenerator->remind($invoice->rgnr);
-                Notification::make('mail_remind_send')->title(__('notfi.send.remind.error.title'))->body(__('remind_send_success_to') . " " . $invoice->customer->name)->success()->send();
+                Notification::make('mail_remind_send')->title(__('notfi.send.remind.success.title'))->body(__('remind_send_success_to') . " " . $invoice->customer->name)->success()->send();
             } catch (\Exception $e) {
                 Notification::make('mail_exception_catch')->title(__('notfi.send.remind.error.title'))->body(__('Error') . ": " . $e->getMessage())->danger()->send();
             }
