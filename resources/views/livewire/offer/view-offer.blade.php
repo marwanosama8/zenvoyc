@@ -17,12 +17,12 @@
     {{-- Date and Contract Information --}}
     <div class="flex justify-between mb-6 text-gray-700">
         <div>
-            <p>Date: {{ $offer->created_at->format('d.m.Y') }}</p>
+            <p>{{ __('Date', locale: $lang) . ' ' . $offer->created_at->format('d.m.Y') }}</p>
         </div>
         <div class="text-right">
-            <p>Contact: {{ $providerArray['contact_number'] }}</p>
-            <p>Email: <a href="mailto:{{ $providerArray['contact_email'] }}" class="text-blue-500">{{ $providerArray['contact_email'] }}</a></p>
-            <p>Website: <a href="{{ $providerArray['website_url'] }}" class="text-blue-500" target="_blank">{{ $providerArray['website_url'] }}</a></p>
+            <p>{{ __('Contact', locale: $lang) . ': ' . $providerArray['contact_number'] }}</p>
+            <p>{{ __('Email', locale: $lang)}}: <a href="mailto:{{ $providerArray['contact_email'] }}" class="text-blue-500">{{ $providerArray['contact_email'] }}</a></p>
+            <p>{{ __('Website', locale: $lang)}}: <a href="{{ $providerArray['website_url'] }}" class="text-blue-500" target="_blank">{{ $providerArray['website_url'] }}</a></p>
         </div>
     </div>
 
@@ -34,7 +34,7 @@
 
     {{-- Introduction --}}
     <div class="mt-8 text-gray-700">
-        <h3 class="mb-4 text-xl font-semibold">Dear {{ $offer->customer()->withoutGlobalScopes()->first()->name }},</h3>
+        <h3 class="mb-4 text-xl font-semibold">{{ __('Dear', locale: $lang) . ' ' . $offer->customer()->withoutGlobalScopes()->first()->name }},</h3>
         <p>{!! $offer->introtext !!}</p>
     </div>
 

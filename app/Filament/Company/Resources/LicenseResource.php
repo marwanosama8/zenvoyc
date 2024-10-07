@@ -18,7 +18,9 @@ class LicenseResource extends Resource
     protected static ?string $model = License::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
-  
+
+    protected static bool $isScopedToTenant = false;
+
     public static function getModelLabel(): string
     {
         return __('navigation.license');
@@ -38,24 +40,26 @@ class LicenseResource extends Resource
     {
         return __('navigation.project');
     }
-    protected static bool $isScopedToTenant = false;
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                ->label(__('license.field.name'))
                     ->required()
                     ->maxLength(200),
                 Forms\Components\TextInput::make('total_volume')
                     ->required()
+                    ->label(__('license.field.total_volume'))
                     ->numeric(),
                 Forms\Components\TextInput::make('remaining_volume')
                     ->required()
+                    ->label(__('license.field.remaining_volume'))
                     ->numeric(),
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->numeric()
+                    ->label(__('license.field.price'))
                     ->prefix('$'),
             ]);
     }
@@ -65,17 +69,26 @@ class LicenseResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                ->label(__('license.field.name'))
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_volume')
                     ->numeric()
+                    ->label(__('license.field.total_volume'))
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('remaining_volume')
                     ->numeric()
+                    ->label(__('license.field.remaining_volume'))
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->numeric()
+                    ->label(__('license.field.price'))
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

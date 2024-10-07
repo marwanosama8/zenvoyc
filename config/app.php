@@ -61,7 +61,7 @@ return [
 
     'asset_url' => env('ASSET_URL'),
     'avatar_asset_url' =>  'storage/logos/',
-    
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -179,6 +179,8 @@ return [
         'discord' => env('SOCIAL_DISCORD_URL'),
     ],
 
+    'supported_languages' => ['en', 'de'],
+    
     // this is the name of the logo file in the public directory
     'logo' => [
         'light' => 'images/logo-light.png',
@@ -221,6 +223,7 @@ return [
         App\Providers\Filament\DashboardPanelProvider::class,
         App\Providers\Filament\CompanyPanelProvider::class,
         App\Providers\Filament\EmployeePanelProvider::class,
+        App\Providers\Filament\UserPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 

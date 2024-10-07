@@ -50,7 +50,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
                     'is_admin' => false,
                 ];
 
-                $user = $userManager->createUser($data, 'super_company');
+                $user = $userManager->createUser($data, ['dashboard', 'super_company']);
             }
 
             // init the user's company
@@ -259,6 +259,6 @@ class SuperCompanyRoleDataSeeder extends Seeder
         $contents = file_get_contents($url);
         $name = 'user_setting_image_' . Str::random(10) . '.jpg';
         Storage::put('public/logos/' . $name, $contents);
-        return 'logos/'. $name;
+        return 'logos/' . $name;
     }
 }

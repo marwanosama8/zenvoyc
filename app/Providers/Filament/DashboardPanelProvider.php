@@ -2,9 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Dashboard\Pages\Dashboard;
-use App\Filament\Dashboard\Widgets\Dashboard\ExpenditureWidget;
-use App\Filament\Dashboard\Widgets\TimesheetTracker;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,29 +26,39 @@ class DashboardPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $myArr = explode(', ', Color::Teal[500]);
-        $hex = new Rgb(...$myArr);
-        $color = $hex->toHex()->__toString();
+
         return $panel
             ->id('dashboard')
             ->path('dashboard')
             ->colors([
-                'primary' => Color::Teal,
+                'primary' => Color::Red,
             ])
             ->userMenuItems([
                 MenuItem::make()
                     ->label(__('Admin Panel'))
                     ->visible(
-                        fn () => auth()->user()->isAdmin()
+                        fn() => auth()->user()->isAdmin()
                     )
-                    ->url(fn () => route('filament.admin.pages.dashboard'))
+                    ->url(fn() => route('filament.admin.pages.dashboard'))
+                    ->icon('heroicon-s-cog-8-tooth'),
+                    MenuItem::make()
+                    ->label(__('Company Panel'))
+                    ->visible(
+                        fn() => auth()->user()->hasRole(['company', 'super_company'])
+                    )
+                    ->url(fn() => route('filament.company.pages.dashboard'))
+                    ->icon('heroicon-s-cog-8-tooth'),
+                    MenuItem::make()
+                    ->label(__('User Panel'))
+                    ->visible(
+                        fn() => auth()->user()->hasRole('user')
+                    )
+                    ->url(fn() => route('filament.user.pages.dashboard'))
                     ->icon('heroicon-s-cog-8-tooth'),
             ])
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\\Filament\\Dashboard\\Resources')
-            ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\\Filament\\Dashboard\\Pages')
-            ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets/Dashboard'), for: 'App\\Filament\\Dashboard\\Widgets\\Dashboard')
             ->pages([
-                Dashboard::class,
+                Pages\Dashboard::class,
             ])
             ->navigationGroups([
                 'Finance',
@@ -70,17 +77,14 @@ class DashboardPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                \App\Http\Middleware\RememberTenantMiddleware::class,
-        ])
-            ->tenantMiddleware([
-                \App\Http\Middleware\RememberTenantMiddleware::class,
             ])
             ->renderHook('panels::head.start', function () {
                 return view('components.layouts.partials.analytics');
             })
             ->authMiddleware([
                 Authenticate::class,
-            ])->plugins([
+            ])
+            ->plugins([
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
@@ -88,7 +92,7 @@ class DashboardPanelProvider extends PanelProvider
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     ),
-                FilamentProgressbarPlugin::make()->color($color)
+                // FilamentProgressbarPlugin::make()->color($color)
             ]);
     }
 }

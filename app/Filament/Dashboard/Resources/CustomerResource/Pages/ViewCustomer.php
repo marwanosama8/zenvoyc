@@ -12,7 +12,7 @@ class ViewCustomer extends ViewRecord
     protected function getHeaderWidgets(): array
     {
         return [
-            CustomerResource\Widgets\CustomerOverview::class,
+            // CustomerResource\Widgets\CustomerOverview::class,
         ];
     }
     protected function getFooterWidgets(): array

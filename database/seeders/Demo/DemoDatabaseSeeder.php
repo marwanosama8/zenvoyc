@@ -19,6 +19,8 @@ use App\Services\MetricsManager;
 use Carbon\Carbon;
 use Database\Seeders\AdminRoleDataSeeder;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\EmailTemplateSeeder;
+use Database\Seeders\EmailTemplateThemeSeeder;
 use Database\Seeders\SuperCompanyRoleDataSeeder;
 use Database\Seeders\UserRoleDataSeeder;
 use Illuminate\Database\Seeder;
@@ -81,7 +83,9 @@ class DemoDatabaseSeeder extends Seeder
             // users data
             AdminRoleDataSeeder::class,
             UserRoleDataSeeder::class,
-            SuperCompanyRoleDataSeeder::class
+            SuperCompanyRoleDataSeeder::class,
+            EmailTemplateSeeder::class,
+            EmailTemplateThemeSeeder::class
         ]);
 
 

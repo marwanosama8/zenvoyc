@@ -100,7 +100,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
         if ($panel->getId() == 'admin' && !$this->is_admin) {
             return false;
         }
-        if ($panel->getId() == 'dashboard' && !$this->hasRole('user')) {
+        if ($panel->getId() == 'user' && !$this->hasRole('user')) {
+            return false;
+        }
+        if ($panel->getId() == 'dashboard' && !$this->hasRole('dashboard')) {
             return false;
         }
         if ($panel->getId() == 'company' && !$this->hasRole(['company', 'super_company'])) {
@@ -246,6 +249,13 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Has
     {
         return $this->belongsToMany(Task::class, 'employee_tasks', 'user_id', 'task_id');
     }
+
+    public function configs()
+    {
+        return $this->morphMany(PanelConfig::class, 'configable');
+    }
+
+    
     /**
      * The "booted" method of the model.
      */

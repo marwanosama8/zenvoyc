@@ -50,20 +50,20 @@ class ContactResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->label('contract.name')
+                    ->label(__('contract.name'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->label('contract.email')
+                    ->label(__('contract.email'))
 
                     ->suffixIcon('heroicon-m-at-symbol')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('function')
-                    ->label('contract.function')
+                    ->label(__('contract.function'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
-                    ->label('contract.phone')
+                    ->label(__('contract.phone'))
                     ->suffixIcon('heroicon-m-phone')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('company')
@@ -78,21 +78,21 @@ class ContactResource extends Resource
                 Split::make([
                     Stack::make([
                         Tables\Columns\TextColumn::make('name')
-                            ->label('contract.name')
+                            ->label(__('contract.name'))
                             ->weight(FontWeight::Bold)
                             ->searchable(),
                         Tables\Columns\TextColumn::make('function')
-                            ->label('contract.function')
+                            ->label(__('contract.function'))
                             ->searchable(),
                     ]),
                     Stack::make([
                         Tables\Columns\TextColumn::make('email')
                             ->icon('heroicon-m-envelope')
-                            ->label('contract.email')
+                            ->label(__('contract.email'))
                             ->searchable(),
                         Tables\Columns\TextColumn::make('phone')
                             ->icon('heroicon-m-phone')
-                            ->label('contract.phone')
+                            ->label(__('contract.phone'))
                             ->searchable(),
                     ]),
                 ])->from('md'),

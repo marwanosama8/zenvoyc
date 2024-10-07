@@ -29,6 +29,7 @@ return new class extends Migration
             $table->boolean('external_offer')->default(0);
             $table->string('external_offer_url')->nullable();
             $table->string('offer_value')->nullable();
+            $table->string('language')->nullable()->default('de');
 
             $table->timestamps();
             $table->softDeletes();

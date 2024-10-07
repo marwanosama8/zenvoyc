@@ -147,12 +147,12 @@ return [
     //Most built-in emails can be automatically sent with minimal setup,
     //except "request password reset" requires a function in the User's model.  See readme.md for details
     'send_emails' => [
-        'new_user_registered' => true,
-        'verification' => true,
-        'user_verified' => true,
-        'login' => true,
-        'password_reset_success' => true,
-        'locked_out' => true,
+        'new_user_registered' => false,
+        'verification' => false,
+        'user_verified' => false,
+        'login' => false,
+        'password_reset_success' => false,
+        'locked_out' => false,
     ],
 
 ];

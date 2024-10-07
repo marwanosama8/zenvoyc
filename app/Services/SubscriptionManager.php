@@ -17,6 +17,7 @@ use App\Services\PaymentProviders\PaymentProviderInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class SubscriptionManager
 {
@@ -24,7 +25,7 @@ class SubscriptionManager
         private CalculationManager $calculationManager,
         private PlanManager $planManager,
     ) {
-
+        
     }
 
     public function canCreateSubscription(int $userId): bool
@@ -45,7 +46,7 @@ class SubscriptionManager
         if (! $this->canCreateSubscription($userId)) {
             throw new SubscriptionCreationNotAllowedException(__('You already have subscription.'));
         }
-
+        $subscriptionRole = Role::findById($plan->product->role_id);
         $newSubscription = null;
         DB::transaction(function () use ($plan, $userId, &$newSubscription, $paymentProvider, $paymentProviderSubscriptionId) {
             $this->deleteAllNewSubscriptions($userId);

@@ -28,6 +28,7 @@ class Offer extends Model
         'external_offer_url',
         'external_offer',
         'accepted',
+        'language',
         'offer_value'
     ];
 

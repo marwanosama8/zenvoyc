@@ -75,6 +75,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $this->createAdminRole();
         $this->createSuperCompanyRole();
         $this->createCompanyRole();
+        $this->createDashboardRole();
         $this->createUserRole();
         $this->createEmployeeRole();
     }
@@ -159,6 +160,14 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $user = Role::findOrCreate('user');
         $user->syncPermissions($this->getPermissions($permissions));
+    }
+
+    /**
+     * Create dashboard role.
+     */
+    private function createDashboardRole(): void
+    {
+        $user = Role::findOrCreate('dashboard');
     }
 
     /**

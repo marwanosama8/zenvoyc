@@ -125,9 +125,9 @@ class TenancyHelpers
       if ($tenantData) {
          $tenantClass = $tenantData['class'];
          $tenantId = $tenantData['id'];
-
+         
          $tenantInstance = $tenantClass::find($tenantId);
-
+         
          return $tenantInstance;
       }
       return null;

@@ -38,7 +38,7 @@ class CompanyPanelProvider extends PanelProvider
         $myArr = explode(', ', Color::Orange[500]);
         $hex = new Rgb(...$myArr);
         $color = $hex->toHex()->__toString();
-        
+
         return $panel
             ->id('company')
             ->path('company')
@@ -47,19 +47,20 @@ class CompanyPanelProvider extends PanelProvider
             ])
             ->userMenuItems([
                 MenuItem::make()
-                    ->label(__('Admin Panel'))
+                    ->label(__('User Dashboard'))
                     ->visible(
-                        fn () => auth()->user()->isAdmin()
+                        fn() => true
                     )
-                    ->url(fn () => route('filament.admin.pages.dashboard'))
-                    ->icon('heroicon-s-cog-8-tooth'),
+                    ->url(fn() => route('filament.dashboard.pages.dashboard'))
+                    ->icon('heroicon-s-face-smile'),
+
             ])
             ->tenantMenuItems([
                 'profile' => MenuItem::make()->hidden(),
                 MenuItem::make()
-                ->label('Settings')
-                ->url(fn (): string => Filament::getUrl() .'/company-settings')
-                ->icon('heroicon-m-cog-8-tooth'),
+                    ->label('Settings')
+                    ->url(fn(): string => Filament::getUrl() . '/company-settings')
+                    ->icon('heroicon-m-cog-8-tooth'),
             ])
             ->discoverResources(in: app_path('Filament/Company/Resources'), for: 'App\\Filament\\Company\\Resources')
             ->discoverPages(in: app_path('Filament/Company/Pages'), for: 'App\\Filament\\Company\\Pages')
@@ -101,14 +102,9 @@ class CompanyPanelProvider extends PanelProvider
                         shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
-                    )
-                    ->myProfileComponents([
-                        'personal_info' => MyProfilePersonalInfo::class,
-                    ]),
-                FilamentProgressbarPlugin::make()->color($color),
+                    ),
+                // FilamentProgressbarPlugin::make()->color($color),
                 EmailTemplatesPlugin::make(),
-
-                FilamentProgressbarPlugin::make()->color($color)
             ])
             ->tenantMiddleware([
                 RememberTenantMiddleware::class,

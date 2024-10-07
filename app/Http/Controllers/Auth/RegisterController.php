@@ -62,7 +62,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return $this->userManager->createUser($data);
+        return $this->userManager->createUser($data, 'dashboard');
     }
 
     /**

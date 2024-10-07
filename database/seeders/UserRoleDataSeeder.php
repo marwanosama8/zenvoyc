@@ -49,7 +49,7 @@ class UserRoleDataSeeder extends Seeder
                     'is_admin' => false,
                 ];
 
-                $user = $userManager->createUser($data, 'user');
+                $user = $userManager->createUser($data, ['dashboard', 'user']);
             }
 
             $user->settings()->updateOrCreate([
@@ -222,6 +222,6 @@ class UserRoleDataSeeder extends Seeder
         $contents = file_get_contents($url);
         $name = 'user_setting_image_' . Str::random(10) . '.jpg';
         Storage::put('public/logos/' . $name, $contents);
-        return 'logos/'. $name;
+        return 'logos/' . $name;
     }
 }

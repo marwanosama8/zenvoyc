@@ -224,7 +224,7 @@ class CompanySettings extends Page
     {
         $data = $this->mailConfigrationsSettingsForm->getState();
         PanelConfig::set("mail.mailers.smtp.port", $data['port']);
-        
+
         PanelConfig::set("mail.mailers.smtp.host", $data['host']);
         PanelConfig::set("mail.mailers.smtp.password", $data['password']);
         PanelConfig::set("mail.mailers.smtp.username", $data['username']);
@@ -259,6 +259,7 @@ class CompanySettings extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole(['company', 'super_company']);
+        $user = auth()->user();
+        return $user ? $user->hasRole(['company', 'super_company']) : false;
     }
 }

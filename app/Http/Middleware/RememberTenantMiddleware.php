@@ -20,7 +20,6 @@ class RememberTenantMiddleware
         try {
             // Get the current tenant (could be User or Company)
             $tenant = Filament::getTenant();
-
             // If a tenant is found, store its class and ID in the session
             if ($tenant) {
                 $tenantData = [

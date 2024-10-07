@@ -3,6 +3,7 @@
 namespace App\Filament\Company\Resources\AutoInvoiceResource\Pages;
 
 use App\Filament\Company\Resources\AutoInvoiceResource;
+use App\Filament\Company\Widgets\Dashboard\IncomeAndExpendeturesChart;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,4 +17,12 @@ class ListAutoInvoices extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            IncomeAndExpendeturesChart::class,
+        ];
+    }
+
 }

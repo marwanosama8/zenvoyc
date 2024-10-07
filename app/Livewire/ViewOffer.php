@@ -36,6 +36,7 @@ class ViewOffer extends Component implements HasForms
         abort_if(!$this->offer, 404);
         $dataMapper = new OfferDataMapper();
         $this->providerArray = $dataMapper->getdata($this->offer);
+        $this->providerArray['invoice_language'] = $this->offer->language;
         $this->form->fill();
     }
 
@@ -52,7 +53,7 @@ class ViewOffer extends Component implements HasForms
                     Forms\Components\Section::make(__('offer.section.title.signature'))
                         ->schema([
                             SignaturePad::make('signature')
-                                ->label(__('offer.field.sign_here'))
+                                ->label(__('offer.field.sign_here', locale: $this->offer->language))
                                 ->disabled()
                                 ->default($this->offer->signature)
                                 ->dotSize(2.0)
@@ -72,11 +73,11 @@ class ViewOffer extends Component implements HasForms
                         ->columnSpan(1),
                     Forms\Components\Section::make(__('offer.section.title.details'))
                         ->schema([
-                            Forms\Components\Placeholder::make( 'signature_name')
-                                ->label('offer.signature_name')
+                            Forms\Components\Placeholder::make('signature_name')
+                                ->label(__('offer.signature_name', locale: $this->offer->language))
                                 ->content($this->offer->signature_name),
                             Forms\Components\Placeholder::make('signature_date')
-                                ->label('offer.signature_date')
+                                ->label(__('offer.signature_date', locale: $this->offer->language))
                                 ->content($this->offer->signature_date),
                         ])
                         ->columnSpan(1),
@@ -84,11 +85,11 @@ class ViewOffer extends Component implements HasForms
                 ->statePath('data'),
             0 => $form
                 ->schema([
-                    Forms\Components\Section::make(__('offer.section.title.signature'))
-                        ->description(__('offer.section.descr.signature'))
+                    Forms\Components\Section::make(__('offer.section.title.signature', locale: $this->offer->language))
+                        ->description(__('offer.section.descr.signature', locale: $this->offer->language))
                         ->schema([
                             SignaturePad::make('signature')
-                                ->label(__('offer.field.sign_here'))
+                                ->label(__('offer.field.sign_here', locale: $this->offer->language))
                                 // ->default($this->offer->signature)
                                 ->dotSize(2.0)
                                 ->lineMinWidth(0.5)
@@ -105,15 +106,15 @@ class ViewOffer extends Component implements HasForms
                                 ->exportPenColor('#0f0')
                         ])
                         ->columnSpan(1),
-                    Forms\Components\Section::make(__('offer.section.title.details'))
+                    Forms\Components\Section::make(__('offer.section.title.details', locale: $this->offer->language))
 
-                        ->description(__('offer.section.descr.details'))
+                        ->description(__('offer.section.descr.details', locale: $this->offer->language))
                         ->schema([
                             Forms\Components\TextInput::make('signature_name')
-                                ->label('offer.signature_name')
+                                ->label(__('offer.signature_name', locale: $this->offer->language))
                                 ->required(),
                             Forms\Components\DatePicker::make('signature_date')
-                                ->label('offer.signature_date')
+                                ->label(__('offer.signature_date', locale: $this->offer->language))
                                 ->default(Carbon::now()),
                         ])
                         ->columnSpan(1),

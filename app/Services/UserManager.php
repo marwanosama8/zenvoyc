@@ -10,32 +10,22 @@ use InvalidArgumentException;
 
 class UserManager
 {
-
     private $user;
 
-    public function createUser(array $data,$role)
+    public function createUser(array $data, $role)
     {
         try {
             $this->user = User::create($data);
 
-            switch ($role) {
-                case 'user':
-                    $this->userRoleCreation();
-                    break;
-                case 'company':
-                    $this->companyRoleCreation();
-                    break;
-                case 'super_company':
-                    $this->superCompanyRoleCreation();
-                    break;
-                case 'employee':
-                    $this->employeeRoleCreation();
-                    break;
-                case 'admin':
-                    $this->adminRoleCreation();
-                    break;
-                default:
-                    throw new InvalidArgumentException("error : $role");
+            
+            if (is_string($role)) {
+                $this->assignRole($role);
+            } elseif (is_array($role)) {
+                foreach ($role as $singleRole) {
+                    $this->assignRole($singleRole);
+                }
+            } else {
+                throw new InvalidArgumentException("Invalid role type");
             }
 
             return $this->user;
@@ -45,6 +35,31 @@ class UserManager
         }
     }
 
+    private function assignRole($role)
+    {
+        switch ($role) {
+            case 'user':
+                $this->userRoleCreation();
+                break;
+            case 'dashboard':
+                $this->dashboardRoleCreation();
+                break;
+            case 'company':
+                $this->companyRoleCreation();
+                break;
+            case 'super_company':
+                $this->superCompanyRoleCreation();
+                break;
+            case 'employee':
+                $this->employeeRoleCreation();
+                break;
+            case 'admin':
+                $this->adminRoleCreation();
+                break;
+            default:
+                throw new InvalidArgumentException("Error: Invalid role - $role");
+        }
+    }
 
     public function assignUserToCompany(User $user, $company_id)
     {
@@ -55,10 +70,12 @@ class UserManager
     {
         $this->user->assignRole('user');
     }
+
     private function companyRoleCreation()
     {
         $this->user->assignRole('company');
     }
+
     private function superCompanyRoleCreation()
     {
         $this->user->assignRole('super_company');
@@ -69,8 +86,14 @@ class UserManager
         $this->user->assignRole('admin');
     }
 
+    private function dashboardRoleCreation()
+    {
+        $this->user->assignRole('dashboard');
+    }
+
     private function employeeRoleCreation()
     {
         $this->user->assignRole('employee');
     }
 }
+

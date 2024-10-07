@@ -20,6 +20,9 @@ return new class extends Migration
             $table->json('features')->nullable();
             $table->boolean('is_popular')->default(false);
             $table->boolean('is_default')->default(false);
+            
+            // new
+            $table->unsignedBigInteger('role_id');
             $table->timestamps();
         });
     }

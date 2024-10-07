@@ -24,11 +24,12 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
 
+    protected static bool $isDiscovered = false;
+
     public static function getModelLabel(): string
     {
         return __('navigation.customer');
     }
-
 
     public static function getPluralModelLabel(): string
     {

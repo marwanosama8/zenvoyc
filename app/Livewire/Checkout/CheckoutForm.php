@@ -63,7 +63,6 @@ class CheckoutForm extends Component
                 'email' => __('Your account is blocked, please contact support.'),
             ]);
         }
-
     }
 
     protected function loginUser(LoginValidator $loginValidator)
@@ -120,7 +119,7 @@ class CheckoutForm extends Component
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
-        ]);
+        ], 'dashboard');
 
         auth()->login($user);
 

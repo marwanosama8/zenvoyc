@@ -21,6 +21,7 @@ use App\Models\Customer;
 use App\Tables\Columns\CopyUrl;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\ColumnGroup;
@@ -55,10 +56,11 @@ class OfferResource extends Resource
     {
         return __('navigation.project');
     }
-    protected static bool $isScopedToTenant = false;
 
     public static function form(Form $form): Form
     {
+        $languages = config('app.supported_languages');
+        $transformedArray = array_combine($languages, $languages );
         return $form
             ->schema([
                 Fieldset::make('info')
@@ -180,36 +182,42 @@ class OfferResource extends Resource
                     Toggle::make('general_access')
                         ->label(__('offer.general_access'))
                         ->live(),
+                    Select::make('language')
+                        ->label(__('offer.language'))
+                        ->options($transformedArray)
+                        ->inlineLabel()
                 ])
-                ->columns(2)
+                    ->columns(3)
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $languages = config('app.supported_languages');
+        $transformedArray = array_combine($languages, $languages);
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('customer.name')
-                    ->label('offer.field.customer')
+                    ->label(__('offer.field.customer'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('offer.field.title')
+                    ->label(__('offer.field.title'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('offer_value')
-                    ->label('offer.field.offer_value')
+                    ->label(__('offer.field.offer_value'))
                     ->state(function (Offer $record) {
                         return Number::forHumans($record->getOfferValue(), maxPrecision: 2, abbreviate: true);
                     })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('signature_date')
-                    ->label('offer.field.signature_date')
+                    ->label(__('offer.field.signature_date'))
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('accepted')
-                    ->label('offer.field.accepted')
+                    ->label(__('offer.field.accepted'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->label('offer.field.created_at')
+                    ->label(__('offer.field.created_at'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -232,10 +240,16 @@ class OfferResource extends Resource
                     })
                     ->label(__('offer.table.general_access')),
                 CopyUrl::make('external_offer_url')
-                ->label('offer.label.offer_url')
+                    ->label(__('offer.label.offer_url'))
                     ->customUrl(function (Offer $state): string {
                         return  $state->external_offer ?  $state->external_offer_url : url('sign-contract') . '/' . $state->token;
                     }),
+                Tables\Columns\SelectColumn::make('language')
+                    ->label(__('offer_language'))
+                    ->disabled(function(Offer $record) {
+                        return $record->external_offer;
+                    })
+                    ->options($transformedArray)
 
             ])
             ->filters([

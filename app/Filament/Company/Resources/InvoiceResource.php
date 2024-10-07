@@ -162,7 +162,8 @@ class InvoiceResource extends Resource
                                                 ->options([
                                                     '1' => __("invoice.select.type1"),
                                                     '2' => __("invoice.select.type2"),
-                                                ])
+                                                    '3' => __("invoice.select.type3"),
+                                                    ])
                                                 ->live()
                                                 ->afterStateUpdated(function (Set $set, Get $get, ?string $state, Livewire $livewire) {
                                                     switch ($state) {
@@ -185,6 +186,7 @@ class InvoiceResource extends Resource
                                                 ->label(__("invoice.field.amount"))
                                                 ->default(1)
                                                 ->minValue(1)
+                                                ->hidden(fn(Get $get): bool => $get('type') == '3')
                                                 ->disabled(fn(Get $get): bool => !filled($get('type')))
                                                 ->inputMode('decimal')
                                                 ->numeric()
@@ -209,7 +211,7 @@ class InvoiceResource extends Resource
                                             Forms\Components\TextInput::make('unit_price')
                                                 ->default(0)
                                                 ->numeric()
-                                                ->hidden(fn($operation): bool => $operation == 'edit')
+                                                ->hidden(fn($operation, Get $get): bool => $operation == 'edit' || $get('type') == '3')
                                                 ->label(fn(Get $get): string => $get('type') == 1 ? __("invoice.field.per_hour") : __("invoice.field.unit_price"))
                                                 ->minValue(1)
                                                 ->live()
@@ -237,6 +239,7 @@ class InvoiceResource extends Resource
                                                 ->numeric()
                                                 ->disabled(fn(Get $get): bool => !filled($get('type')))
                                                 ->minValue(1)
+                                                ->columnStart(4)
                                                 ->inputMode('decimal')
                                                 ->required(),
                                         ]),

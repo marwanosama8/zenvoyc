@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/css/filament/dashboard/theme.css',
                 'resources/css/filament/admin/theme.css',
                 'resources/css/filament/company/theme.css',
+                'resources/css/filament/user/theme.css',
                 ...globSync("resources/css/invoice/themes/*.css")
             ],
             refresh: true,
