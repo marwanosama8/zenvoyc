@@ -42,7 +42,6 @@ class InvoiceResource extends Resource
         return __('navigation.invoice');
     }
 
-
     public static function getPluralModelLabel(): string
     {
         return __('navigation.invoices');

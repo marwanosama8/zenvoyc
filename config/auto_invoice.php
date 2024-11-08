@@ -15,7 +15,7 @@ return [
     
     'custom_interval' => [
         1 => 'Monthly',
-        2 => 'Quarterly',
+        // 2 => 'Quarterly',
         3 => 'Yearly',
     ],
 

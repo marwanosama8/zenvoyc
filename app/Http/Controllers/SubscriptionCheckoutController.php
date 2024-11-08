@@ -6,9 +6,11 @@ use App\Exceptions\SubscriptionCreationNotAllowedException;
 use App\Models\Plan;
 use App\Services\CalculationManager;
 use App\Services\DiscountManager;
+use App\Services\NewSubscriperManager;
 use App\Services\PaymentProviders\PaymentManager;
 use App\Services\SessionManager;
 use App\Services\SubscriptionManager;
+use Exception;
 use Illuminate\Http\Request;
 
 class SubscriptionCheckoutController extends Controller
@@ -19,9 +21,7 @@ class SubscriptionCheckoutController extends Controller
         private CalculationManager $calculationManager,
         private SubscriptionManager $subscriptionManager,
         private SessionManager $sessionManager,
-    ) {
-
-    }
+    ) {}
 
     public function subscriptionCheckout(string $planSlug, Request $request)
     {
@@ -72,8 +72,21 @@ class SubscriptionCheckoutController extends Controller
             $this->discountManager->redeemCodeForSubscription($checkoutDto->discountCode, auth()->user(), $checkoutDto->subscriptionId);
         }
 
+        $this->assignRoleToUser($checkoutDto->planSlug);
+
         $this->sessionManager->resetSubscriptionCheckoutDto();
 
         return view('checkout.subscription-thank-you', []);
+    }
+
+
+    private function assignRoleToUser($planSlug)
+    {
+        try {
+            $newSubscriptionManager = new NewSubscriperManager();
+            $newSubscriptionManager->assignNewUserToRole($planSlug);
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 }

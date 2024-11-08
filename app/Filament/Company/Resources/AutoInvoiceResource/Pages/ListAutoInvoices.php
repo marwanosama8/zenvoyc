@@ -21,8 +21,7 @@ class ListAutoInvoices extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            IncomeAndExpendeturesChart::class,
+            //
         ];
     }
-
 }

@@ -23,6 +23,7 @@
 
 
 <!-- Scripts -->
+@vite(['resources/css/app.css'])
 @vite(['resources/sass/app.scss'])
 
 @stack('head')
