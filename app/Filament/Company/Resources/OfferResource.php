@@ -37,6 +37,8 @@ class OfferResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-plus';
 
+    protected static bool $isScopedToTenant = false;
+
     public static function getModelLabel(): string
     {
         return __('navigation.offer');

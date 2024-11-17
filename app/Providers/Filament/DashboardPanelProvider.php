@@ -26,7 +26,6 @@ class DashboardPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-
         return $panel
             ->id('dashboard')
             ->path('dashboard')
@@ -41,14 +40,22 @@ class DashboardPanelProvider extends PanelProvider
                     )
                     ->url(fn() => route('filament.admin.pages.dashboard'))
                     ->icon('heroicon-s-cog-8-tooth'),
-                    MenuItem::make()
+                MenuItem::make()
                     ->label(__('Company Panel'))
                     ->visible(
                         fn() => auth()->user()->hasRole(['company', 'super_company'])
                     )
-                    ->url(fn() => route('filament.company.pages.dashboard'))
+                    ->url(function () {
+                        $user = auth()->user();
+                        // dd($user->getDefaultTenant());
+                        if ($user->companies()->exists()) {
+                            return route('filament.company.pages.dashboard', ['tenant' => $user->companies()->first()->slug]);
+                        }
+
+                        return 'company/new';
+                    })
                     ->icon('heroicon-s-cog-8-tooth'),
-                    MenuItem::make()
+                MenuItem::make()
                     ->label(__('User Panel'))
                     ->visible(
                         fn() => auth()->user()->hasRole('user')
