@@ -95,7 +95,7 @@ class EmployeeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $tenancyUsersIds = TenancyHelpers::getTenant()->users->pluck('id');
+        $tenancyUsersIds = TenancyHelpers::getTenant()->users->pluck('id') ?? [];
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),

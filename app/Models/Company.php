@@ -62,10 +62,10 @@ class Company extends Model implements HasAvatar
         return $this->morphMany(Expenditure::class, 'expenditureable');
     }
 
-    public function invoices()
-    {
-        return $this->morphMany(TenantInvoice::class, 'invoiceable');
-    }
+    // public function invoices()
+    // {
+    //     return $this->morphMany(TenantInvoice::class, 'invoiceable');
+    // }
     public function autoInvoices()
     {
         return $this->morphMany(AutoInvoice::class, 'autoInvoiceable');
@@ -83,7 +83,7 @@ class Company extends Model implements HasAvatar
 
     public function customers()
     {
-        return $this->morphMany(Customer::class, 'customerable');
+        return $this->morphMany(Customer::class, 'customerable'); 
     }
     public function sales()
     {
@@ -118,5 +118,9 @@ class Company extends Model implements HasAvatar
     {
        return DB::table('countries')->where('id',$this->country_id)->first();
     }
-
+    
+    public function tenantInvoices()
+    {
+        return $this->morphMany(TenantInvoice::class, 'invoiceable');
+    }
 }

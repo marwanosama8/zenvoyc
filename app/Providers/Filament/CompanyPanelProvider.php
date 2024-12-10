@@ -28,6 +28,7 @@ use App\Livewire\Filament\MyProfilePersonalInfo;
 use App\Models\Company;
 use Filament\Facades\Filament;
 use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
+use Rupadana\ApiService\ApiServicePlugin;
 use Spatie\Color\Rgb;
 use Visualbuilder\EmailTemplates\EmailTemplatesPlugin;
 
@@ -96,6 +97,7 @@ class CompanyPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                ApiServicePlugin::make(),
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)

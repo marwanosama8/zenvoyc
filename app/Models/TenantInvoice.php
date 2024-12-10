@@ -10,10 +10,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Scopes\TenantInvoiceScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Rupadana\ApiService\Contracts\HasAllowedFilters;
+use Rupadana\ApiService\Contracts\HasAllowedSorts;
 use Str;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSorts;
 
 #[ScopedBy([TenantInvoiceScope::class])]
-class TenantInvoice extends Model
+class TenantInvoice extends Model implements HasAllowedFilters, HasAllowedSorts
 {
 	use HasFactory, SoftDeletes;
 
@@ -38,6 +42,11 @@ class TenantInvoice extends Model
 
 
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'invoiceable_id')
+            ->where('invoiceable_type', Company::class);
+    }
 
 	public function user()
 	{
@@ -221,4 +230,24 @@ class TenantInvoice extends Model
 			}
 		});
 	}
+
+	public static function getAllowedFields(): array
+    {
+        return ['id', 'amount', 'invoiceable_type', 'invoiceable_id', 'created_at'];
+    }
+
+    public static function getAllowedSorts(): array
+    {
+        return ['id', 'created_at', 'amount'];
+    }
+
+    public static function getAllowedFilters(): array
+    {
+        return [
+            AllowedFilter::exact('id'),
+            AllowedFilter::exact('invoiceable_id'),
+            AllowedFilter::exact('invoiceable_type'),
+            AllowedFilter::scope('amount_above'), // Example: Custom filter scope
+        ];
+    }
 }

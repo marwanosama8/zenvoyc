@@ -84,6 +84,7 @@ class UserManager
     private function adminRoleCreation()
     {
         $this->user->assignRole('admin');
+        $this->user->assignRole('super_admin');
     }
 
     private function dashboardRoleCreation()

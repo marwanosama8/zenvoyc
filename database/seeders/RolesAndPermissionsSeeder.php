@@ -85,8 +85,10 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     private function createAdminRole(): void
     {
-        $role = Role::findOrCreate('admin');
-        $role->givePermissionTo(Permission::all());
+        $role1 = Role::findOrCreate('admin');
+        $role2 = Role::findOrCreate('super_admin');
+        $role1->givePermissionTo(Permission::all());
+        $role2->givePermissionTo(Permission::all());
     }
 
     /**

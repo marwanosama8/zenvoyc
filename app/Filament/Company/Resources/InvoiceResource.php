@@ -2,6 +2,7 @@
 
 namespace App\Filament\Company\Resources;
 
+use App\Filament\Company\Resources\InvoiceResource\Api\Transformers\InvoiceTransformer;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
@@ -57,7 +58,8 @@ class InvoiceResource extends Resource
     {
         return __('navigation.finance');
     }
-    protected static bool $isScopedToTenant = false;
+    protected static bool $isScopedToTenant = true;
+    protected static ?string $tenantOwnershipRelationshipName = 'company';
 
     public static function form(Form $form): Form
     {
@@ -388,5 +390,11 @@ class InvoiceResource extends Resource
             'create' => Pages\CreateInvoice::route('/create'),
             'edit' => Pages\EditInvoice::route('/{record}/edit'),
         ];
+    }
+
+
+    public static function getApiTransformer()
+    {
+        return InvoiceTransformer::class;
     }
 }

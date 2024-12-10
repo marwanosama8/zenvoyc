@@ -244,7 +244,7 @@ class OfferResource extends Resource
                 CopyUrl::make('external_offer_url')
                     ->label(__('offer.label.offer_url'))
                     ->customUrl(function (Offer $state): string {
-                        return  $state->external_offer ?  $state->external_offer_url : url('sign-contract') . '/' . $state->token;
+                          return  $state->external_offer ?  $state->external_offer_url : url('sign-contract') . '/' . $state->token;
                     }),
                 Tables\Columns\SelectColumn::make('language')
                     ->label(__('offer_language'))
