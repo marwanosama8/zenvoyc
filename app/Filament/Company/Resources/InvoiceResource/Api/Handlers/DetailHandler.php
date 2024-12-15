@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class DetailHandler extends Handlers
 {
-    public static string | null $uri = '/{id}';
+    public static string | null $uri = '/{company}';
     public static string | null $resource = InvoiceResource::class;
 
 

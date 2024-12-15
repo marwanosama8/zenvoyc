@@ -13,7 +13,8 @@ class CompanyPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view multi company');
+        return true;
+        // return $user->hasPermissionTo('view multi company');
     }
 
     /**
@@ -21,7 +22,8 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company): bool
     {
-        return $user->hasPermissionTo('view company');
+        // return $user->hasPermissionTo('view company');
+        return true;
     }
 
     /**

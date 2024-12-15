@@ -60,6 +60,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'create contacts', 'update contacts', 'delete contacts', 'view contacts',
             'create timesheets', 'update timesheets', 'delete timesheets', 'view timesheets',
             'create task comments', 'update task comments', 'delete task comments', 'view task comments',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
         ];
 
         foreach ($permissions as $permission) {
@@ -112,6 +114,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'create projects', 'update projects', 'delete projects', 'view projects',
             'create tasks', 'update tasks', 'delete tasks', 'view tasks',
             'create task comments', 'update task comments', 'delete task comments', 'view task comments',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
         ];
 
         $superCompany = Role::findOrCreate('super_company');
@@ -137,6 +141,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'create tasks', 'update tasks', 'delete tasks', 'view tasks',
             'create contacts', 'update contacts', 'delete contacts', 'view contacts',
             'create task comments', 'update task comments', 'delete task comments', 'view task comments',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
         ];
 
         $company = Role::findOrCreate('company');
@@ -158,6 +164,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'create licences', 'update licences', 'delete licences', 'view licences',
             'create contacts', 'update contacts', 'delete contacts', 'view contacts',
             'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
         ];
 
         $user = Role::findOrCreate('user');

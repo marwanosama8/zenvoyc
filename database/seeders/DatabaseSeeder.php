@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
         // $admin = User::find(1)->update([
         //     'password' => bcrypt('admin'),
         // ]);
