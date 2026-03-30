@@ -4,7 +4,9 @@ namespace App\Livewire\Filament;
 
 use App\Models\Currency;
 use App\Models\EmailProvider;
+use App\Models\Product;
 use App\Services\ConfigManager;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
@@ -129,7 +131,7 @@ class GeneralSettings extends Component implements HasForms
                                 ->options(function () {
                                     $currencies = [];
                                     foreach (Currency::all() as $currency) {
-                                        $currencies[$currency->code] = $currency->name.' ('.$currency->code.')';
+                                        $currencies[$currency->code] = $currency->name . ' (' . $currency->code . ')';
                                     }
 
                                     return $currencies;

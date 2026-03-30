@@ -5,18 +5,18 @@
 
     <x-section.hero class="w-full mb-8 md:mb-72">
 
-        <div class="mx-auto text-center h-160 md:h-180 px-4">
+        <div class="px-4 mx-auto text-center h-160 md:h-180">
             <x-pill class="text-primary-500 bg-primary-50">{{ __('Launch your Business') }}</x-pill>
-            <x-heading.h1 class="mt-4 text-primary-50 font-bold">
+            <x-heading.h1 class="mt-4 font-bold text-primary-50">
                 {{ __('Build your SaaS') }}
                 <br class="hidden sm:block">
                 {{ __('with SaaSykit') }}
 
             </x-heading.h1>
 
-            <p class="text-primary-50 m-3">{{ __('A Laravel-based boilerplate with everything you need to build an awesome SaaS.') }}</p>
+            <p class="m-3 text-primary-50">{{ __('A Laravel-based boilerplate with everything you need to build an awesome SaaS.') }}</p>
 
-            <div class="flex flex-wrap gap-4 justify-center flex-col md:flex-row mt-6">
+            <div class="flex flex-col flex-wrap justify-center gap-4 mt-6 md:flex-row">
                 <x-effect.glow></x-effect.glow>
 
                 <x-button-link.secondary href="#pricing" class="self-center !py-3" elementType="a">
@@ -28,7 +28,7 @@
 
             </div>
 
-            <x-user-ratings link="#testimonials" class="items-center justify-center mt-6 relative z-40">
+            <x-user-ratings link="#testimonials" class="relative z-40 items-center justify-center mt-6">
                 <x-slot name="avatars">
                     <x-user-ratings.avatar src="https://unsplash.com/photos/rDEOVtE7vOs/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fHx8MTcxMzY4NDI1MHww&force=true&w=640" alt="testimonial 1"/>
                     <x-user-ratings.avatar src="https://unsplash.com/photos/c_GmwfHBDzk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8cGVyc29ufGVufDB8fHx8MTcxMzY4NDI1MHww&force=true&w=640" alt="testimonial 2"/>
@@ -41,7 +41,7 @@
             </x-user-ratings>
 
             <div class="mx-auto md:max-w-3xl lg:max-w-5xl">
-                <img class="drop-shadow-2xl mt-8 transition hover:scale-101 rounded-2xl" src="{{URL::asset('/images/features/hero-image.png')}}" />
+                <img class="mt-8 transition drop-shadow-2xl hover:scale-101 rounded-2xl" src="{{URL::asset('/images/features/hero-image.png')}}" />
             </div>
 
         </div>
@@ -69,10 +69,10 @@
             </p>
             <div class="flex gap-3 pt-1">
                 <a href="https://stripe.com/" target="_blank">
-                    <img src="{{URL::asset('/images/payment-providers/stripe.png')}}" class="h-12 py-2 px-2 border border-primary-50 rounded-lg" />
+                    <img src="{{URL::asset('/images/payment-providers/stripe.png')}}" class="h-12 px-2 py-2 border rounded-lg border-primary-50" />
                 </a>
                 <a href="https://www.paddle.com/" target="_blank">
-                    <img src="{{URL::asset('/images/payment-providers/paddle.png')}}" class="h-12 py-2 px-2 border border-primary-50 rounded-lg" />
+                    <img src="{{URL::asset('/images/payment-providers/paddle.png')}}" class="h-12 px-2 py-2 border rounded-lg border-primary-50" />
                 </a>
             </div>
         </x-section.column>
@@ -83,7 +83,7 @@
 
     </x-section.columns>
 
-    <x-section.columns class="max-w-none md:max-w-6xl  flex-wrap-reverse">
+    <x-section.columns class="flex-wrap-reverse max-w-none md:max-w-6xl">
         <x-section.column >
             <img src="{{URL::asset('/images/features/colors.png')}}" />
         </x-section.column>
@@ -109,11 +109,12 @@
 
     </x-section.columns>
 
-    <x-section.columns class="max-w-none md:max-w-6xl mt-6" >
+    <x-section.columns class="mt-6 max-w-none md:max-w-6xl" >
         <x-section.column>
             <div x-intersect="$el.classList.add('slide-in-top')">
                 <x-heading.h6 class="text-primary-500">
                     {{ __('At your fingertips') }}
+
                 </x-heading.h6>
                 <x-heading.h2 class="text-primary-900">
                     {{ __('Products, Plans & Pricing.') }}
@@ -135,7 +136,7 @@
 
     </x-section.columns>
 
-    <x-section.columns class="max-w-none md:max-w-6xl mt-6 flex-wrap-reverse">
+    <x-section.columns class="flex-wrap-reverse mt-6 max-w-none md:max-w-6xl">
         <x-section.column >
             <img src="{{URL::asset('/images/features/checkout.png')}}" class="rounded-2xl" />
         </x-section.column>
@@ -157,7 +158,7 @@
 
     </x-section.columns>
 
-    <div class="text-center mt-16 mx-4" id="tech-stack">
+    <div class="mx-4 mt-16 text-center" id="tech-stack">
         <x-heading.h6 class="text-primary-500">
             {{ __('The best of the best') }}
         </x-heading.h6>
@@ -167,15 +168,15 @@
     </div>
 
 
-    <div class="text-center p-4 mx-auto">
+    <div class="p-4 mx-auto text-center">
         <p >{{ __('Laravel, TailwindCSS, Livewire, AlpineJS & FilamentPhp') }}</p>
 
         <div class="flex flex-wrap items-center justify-center gap-12 mt-8">
-            <img src="{{URL::asset('/images/tech-stack/laravel.svg')}}" class="h-10 hover:cursor-pointer hover:scale-103 hover:opacity-100 transition grayscale hover:grayscale-0 opacity-50" />
-            <img src="{{URL::asset('/images/tech-stack/filament.avif')}}" class="h-10 hover:cursor-pointer hover:scale-103 hover:opacity-100 transition grayscale hover:grayscale-0 opacity-50" />
-            <img src="{{URL::asset('/images/tech-stack/tailwindcss.svg')}}" class="h-12 hover:cursor-pointer hover:scale-103 hover:opacity-100 transition grayscale hover:grayscale-0 opacity-50" />
-            <img src="{{URL::asset('/images/tech-stack/livewire.png')}}" class="h-20 hover:cursor-pointer hover:scale-103 hover:opacity-100 transition grayscale hover:grayscale-0 opacity-50" />
-            <img src="{{URL::asset('/images/tech-stack/alpinejs.svg')}}" class="h-16 hover:cursor-pointer hover:scale-103 hover:opacity-100 transition grayscale hover:grayscale-0 opacity-50" />
+            <img src="{{URL::asset('/images/tech-stack/laravel.svg')}}" class="h-10 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
+            <img src="{{URL::asset('/images/tech-stack/filament.avif')}}" class="h-10 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
+            <img src="{{URL::asset('/images/tech-stack/tailwindcss.svg')}}" class="h-12 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
+            <img src="{{URL::asset('/images/tech-stack/livewire.png')}}" class="h-20 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
+            <img src="{{URL::asset('/images/tech-stack/alpinejs.svg')}}" class="h-16 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
         </div>
 
     </div>
@@ -184,7 +185,7 @@
     {{--    Slider      --}}
     {{--    ////////////--}}
 
-    <div class="text-center mt-16 p-4">
+    <div class="p-4 mt-16 text-center">
         <x-heading.h6 class="text-primary-500">
             {{ __('All Inclusive') }}
         </x-heading.h6>
@@ -193,9 +194,8 @@
         </x-heading.h2>
     </div>
 
-
     <div class="mx-4">
-        <x-tab-slider class="mt-6 md:max-w-6xl border-2 border-neutral-100 py-8 rounded-2xl">
+        <x-tab-slider class="py-8 mt-6 border-2 md:max-w-6xl border-neutral-100 rounded-2xl">
             <x-slot name="tabNames">
                 <x-tab-slider.tab-name controls="tab-1" active="true">{{ __('Testimonials') }}</x-tab-slider.tab-name>
                 <x-tab-slider.tab-name controls="tab-2">{{ __('Plans & Pricing') }}</x-tab-slider.tab-name>
@@ -207,114 +207,114 @@
             </x-slot>
 
             <x-tab-slider.tab-content id="tab-1">
-                <div class="text-center mt-8">
+                <div class="mt-8 text-center">
                     <x-heading.h4 class="text-primary-900 !font-semibold">
                         {{ __('Testimonials') }}
                     </x-heading.h4>
 
-                    <div class="mx-auto max-w-2xl">
+                    <div class="max-w-2xl mx-auto">
                         <p class="mt-4">
                             {{ __('Display testimonials from your customers on your website and build trust with your potential customers.') }}
                         </p>
                     </div>
                 </div>
 
-                <div class="m-10 mx-auto max-w-4xl mt-12">
+                <div class="max-w-4xl m-10 mx-auto mt-12">
                     <img src="{{URL::asset('/images/features/testimonials.png')}}" class="drop-shadow-xl rounded-2xl" />
                 </div>
 
             </x-tab-slider.tab-content>
 
             <x-tab-slider.tab-content id="tab-2">
-                <div class="text-center mt-8">
+                <div class="mt-8 text-center">
                     <x-heading.h4 class="text-primary-900 !font-semibold">
                         {{ __('Plans & Pricing Component') }}
                     </x-heading.h4>
 
-                    <div class="mx-auto max-w-2xl">
+                    <div class="max-w-2xl mx-auto">
                         <p class="mt-4">
                             {{ __('This component is magical in that it will read the plans you defined in your admin panel, group them, calculate potential discount amount if user chooses a longer plan, and display all that in a beautiful way for your users. ') }}
                         </p>
                     </div>
                 </div>
 
-                <div class="m-10 mx-auto max-w-4xl mt-12">
+                <div class="max-w-4xl m-10 mx-auto mt-12">
                     <img src="{{URL::asset('/images/features/plans-component.png')}}" class="drop-shadow-xl rounded-2xl" />
                 </div>
 
             </x-tab-slider.tab-content>
 
             <x-tab-slider.tab-content id="tab-3">
-                <div class="text-center mt-8">
+                <div class="mt-8 text-center">
                     <x-heading.h4 class="text-primary-900 !font-semibold">
                         {{ __('Hero section Component') }}
                     </x-heading.h4>
 
-                    <div class="mx-auto max-w-2xl">
+                    <div class="max-w-2xl mx-auto">
                         <p class="mt-4">
                             {{ __('A ready-to-use hero section component to display your hero image, title, and call to action button.') }}
                         </p>
                     </div>
                 </div>
 
-                <div class="m-10 mx-auto max-w-4xl mt-12">
+                <div class="max-w-4xl m-10 mx-auto mt-12">
                     <img src="{{URL::asset('/images/features/hero-component.png')}}" class="drop-shadow-xl rounded-2xl" />
                 </div>
 
             </x-tab-slider.tab-content>
 
             <x-tab-slider.tab-content id="tab-4">
-                <div class="text-center mt-8">
+                <div class="mt-8 text-center">
                     <x-heading.h4 class="text-primary-900 !font-semibold">
                         {{ __('FAQ Component') }}
                     </x-heading.h4>
 
-                    <div class="mx-auto max-w-2xl">
+                    <div class="max-w-2xl mx-auto">
                         <p class="mt-4">
                             {{ __('An accordion component that you can use to display your FAQ in an intuitive way.') }}
                         </p>
                     </div>
                 </div>
 
-                <div class="m-10 mx-auto max-w-4xl mt-12">
+                <div class="max-w-4xl m-10 mx-auto mt-12">
                     <img src="{{URL::asset('/images/features/faqs-component.png')}}" class="drop-shadow-xl rounded-2xl" />
                 </div>
 
             </x-tab-slider.tab-content>
 
             <x-tab-slider.tab-content id="tab-5">
-                <div class="text-center mt-8">
+                <div class="mt-8 text-center">
                     <x-heading.h4 class="text-primary-900 !font-semibold">
                         {{ __('Call to action component') }}
                     </x-heading.h4>
 
-                    <div class="mx-auto max-w-2xl">
+                    <div class="max-w-2xl mx-auto">
                         <p class="mt-4">
                             {{ __('A focused component the brings attention to your call to action.') }}
                         </p>
                     </div>
                 </div>
 
-                <div class="m-10 mx-auto max-w-4xl mt-12">
+                <div class="max-w-4xl m-10 mx-auto mt-12">
                     <img src="{{URL::asset('/images/features/call-to-action-component.png')}}" class="drop-shadow-xl rounded-2xl">
                 </div>
 
             </x-tab-slider.tab-content>
 
             <x-tab-slider.tab-content id="tab-6">
-                <div class="text-center mt-8">
+                <div class="mt-8 text-center">
                     <x-heading.h4 class="text-primary-900 !font-semibold">
                         {{ __('Tab Slider Component') }}
                     </x-heading.h4>
 
-                    <div class="mx-auto max-w-2xl">
+                    <div class="max-w-2xl mx-auto">
                         <p class="mt-4">
                             {{ __('Tab slider component displays your content in a beautiful and organized way into separate tabs.') }}
                         </p>
                     </div>
                 </div>
 
-                <div class="m-10 mx-auto max-w-4xl mt-12">
+                <div class="max-w-4xl m-10 mx-auto mt-12">
                     <img src="{{URL::asset('/images/features/tab-slider-component.png')}}" class="drop-shadow-xl rounded-2xl">
                 </div>
 
@@ -322,11 +322,11 @@
 
             <x-tab-slider.tab-content id="tab-7">
 
-                <div class="m-10 mx-auto max-w-4xl mt-6">
-                    <x-section.columns class="max-w-none md:max-w-6xl mt-6">
+                <div class="max-w-4xl m-10 mx-auto mt-6">
+                    <x-section.columns class="mt-6 max-w-none md:max-w-6xl">
                         <x-section.column class="flex flex-col items-center justify-center text-center">
                             <x-icon.fancy name="nav" class="w-2/5 mx-auto" type="secondary" />
-                            <x-heading.h3 class="mx-auto pt-2">
+                            <x-heading.h3 class="pt-2 mx-auto">
                                 {{ __('Header & Footer') }}
                             </x-heading.h3>
                             <p class="mt-2">{{ __('Easily customize your header and footer.') }}</p>
@@ -334,7 +334,7 @@
 
                         <x-section.column class="flex flex-col items-center justify-center text-center">
                             <x-icon.fancy name="button-ok" class="w-2/5 mx-auto" type="secondary" />
-                            <x-heading.h3 class="mx-auto pt-2">
+                            <x-heading.h3 class="pt-2 mx-auto">
                                 {{ __('Buttons') }}
                             </x-heading.h3>
                             <p class="mt-2">{{ __('Beautiful buttons to use in your application.') }}</p>
@@ -342,7 +342,7 @@
 
                         <x-section.column class="flex flex-col items-center justify-center text-center">
                             <x-icon.fancy name="pill" class="w-2/5 mx-auto" type="secondary" />
-                            <x-heading.h3 class="mx-auto pt-2">
+                            <x-heading.h3 class="pt-2 mx-auto">
                                 {{ __('Pill') }}
                             </x-heading.h3>
                             <p class="mt-2">{{ __('Pills to highlight your content where you need to.') }}</p>
@@ -350,7 +350,7 @@
 
                     </x-section.columns>
 
-                    <p class="text-center mt-4">
+                    <p class="mt-4 text-center">
                         {{ __('and much more...') }}
                     </p>
                 </div>
@@ -364,7 +364,7 @@
 
 
 
-    <x-section.columns class="max-w-none md:max-w-6xl mt-12" >
+    <x-section.columns class="mt-12 max-w-none md:max-w-6xl" >
         <x-section.column>
             <div x-intersect="$el.classList.add('slide-in-top')">
                 <x-heading.h6 class="text-primary-500">
@@ -386,7 +386,7 @@
 
     </x-section.columns>
 
-    <x-section.columns class="max-w-none md:max-w-6xl mt-16 flex-wrap-reverse">
+    <x-section.columns class="flex-wrap-reverse mt-16 max-w-none md:max-w-6xl">
         <x-section.column >
             <img src="{{URL::asset('/images/features/email.png')}}"  />
         </x-section.column>
@@ -453,7 +453,7 @@
 
     </x-section.columns>
 
-    <x-section.columns class="max-w-none md:max-w-6xl mt-16 flex-wrap-reverse">
+    <x-section.columns class="flex-wrap-reverse mt-16 max-w-none md:max-w-6xl">
         <x-section.column >
             <img src="{{URL::asset('/images/features/login.png')}}" />
         </x-section.column>
@@ -475,7 +475,7 @@
             <p class="pt-4">
                 {{ __('Supported login providers:') }}
             </p>
-            <div class="flex gap-3 pt-1 flex-wrap">
+            <div class="flex flex-wrap gap-3 pt-1">
                 @svg('colored/google', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
                 @svg('colored/facebook', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
                 @svg('colored/twitter-oauth-2', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
@@ -489,7 +489,7 @@
     </x-section.columns>
 
 
-    <div class="text-center mt-16" x-intersect="$el.classList.add('slide-in-top')">
+    <div class="mt-16 text-center" x-intersect="$el.classList.add('slide-in-top')">
         <x-heading.h6 class="text-primary-500">
             {{ __('Can\'t get more beautiful') }}
         </x-heading.h6>
@@ -498,14 +498,14 @@
         </x-heading.h2>
     </div>
 
-    <p class="text-center py-4">{{ __('Manage your SaaS application from a beautiful admin panel powered by Filament') }}</p>
+    <p class="py-4 text-center">{{ __('Manage your SaaS application from a beautiful admin panel powered by Filament') }}</p>
 
-    <div class="text-center pt-6 mx-auto max-w-5xl ">
+    <div class="max-w-5xl pt-6 mx-auto text-center ">
         <img src="{{URL::asset('/images/features/admin-panel.png')}}" >
     </div>
 
 
-    <div class="text-center mt-16" x-intersect="$el.classList.add('slide-in-top')">
+    <div class="mt-16 text-center" x-intersect="$el.classList.add('slide-in-top')">
         <x-heading.h6 class="text-primary-500">
             {{ __('Oh, we\'re not done yet') }}
         </x-heading.h6>
@@ -514,10 +514,10 @@
         </x-heading.h2>
     </div>
 
-    <x-section.columns class="max-w-none md:max-w-6xl mt-6">
+    <x-section.columns class="mt-6 max-w-none md:max-w-6xl">
         <x-section.column class="flex flex-col items-center justify-center text-center">
             <x-icon.fancy name="users" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="mx-auto pt-2">
+            <x-heading.h3 class="pt-2 mx-auto">
                 {{ __('Users & Roles') }}
             </x-heading.h3>
             <p class="mt-2">{{ __('Manage your users, create roles and assign permissions to your users.') }}</p>
@@ -525,7 +525,7 @@
 
         <x-section.column class="flex flex-col items-center justify-center text-center">
             <x-icon.fancy name="translatable" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="mx-auto pt-2">
+            <x-heading.h3 class="pt-2 mx-auto">
                 {{ __('Fully translatable') }}
             </x-heading.h3>
             <p class="mt-2">{{ __('Translate your application to any language you want.') }}</p>
@@ -533,7 +533,7 @@
 
         <x-section.column class="flex flex-col items-center justify-center text-center">
             <x-icon.fancy name="seo" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="mx-auto pt-2">
+            <x-heading.h3 class="pt-2 mx-auto">
                 {{ __('Sitemap & SEO') }}
             </x-heading.h3>
             <p class="mt-2">{{ __('Auto-generated sitemap and SEO optimization out of the box.') }}</p>
@@ -541,10 +541,10 @@
 
     </x-section.columns>
 
-    <x-section.columns class="max-w-none md:max-w-6xl mt-6">
+    <x-section.columns class="mt-6 max-w-none md:max-w-6xl">
         <x-section.column class="flex flex-col items-center justify-center text-center">
             <x-icon.fancy name="user-dashboard" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="mx-auto pt-2">
+            <x-heading.h3 class="pt-2 mx-auto">
                 {{ __('User Dashboard') }}
             </x-heading.h3>
             <p class="mt-2">{{ __('Users can manage their subscriptions, change payment method, upgrade plan, cancel subscription alone.') }}</p>
@@ -552,7 +552,7 @@
 
         <x-section.column class="flex flex-col items-center justify-center text-center">
             <x-icon.fancy name="tool" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="mx-auto pt-2">
+            <x-heading.h3 class="pt-2 mx-auto">
                 {{ __('Highly customizable') }}
             </x-heading.h3>
             <p class="mt-2">{{ __('Manage your SaaS settings from within the admin panel. No need to redeploy app for simple changes anymore.') }}</p>
@@ -560,7 +560,7 @@
 
         <x-section.column class="flex flex-col items-center justify-center text-center">
             <x-icon.fancy name="development" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="mx-auto pt-2">
+            <x-heading.h3 class="pt-2 mx-auto">
                 {{ __('Developer-friendly') }}
             </x-heading.h3>
             <p class="mt-2">{{ __('Built with developers in mind, uses best coding practices. Offers handlers & events and automated tests covering critical components of the application.') }}</p>
@@ -568,7 +568,7 @@
 
     </x-section.columns>
 
-    <div class="text-center mt-24 mx-4">
+    <div class="mx-4 mt-24 text-center">
         <x-heading.h6 class="text-primary-500">
             {{ __('Start to end') }}
         </x-heading.h6>
@@ -577,17 +577,17 @@
         </x-heading.h2>
     </div>
 
-    <p class="text-center p-4">{{ __('Deploy your SaaS application to your server with a single command, powered by') }} <a href="https://deployer.org/" target="_blank" class="text-primary-500 hover:underline">{{ __('PHP Deployer') }}</a>. </p>
+    <p class="p-4 text-center">{{ __('Deploy your SaaS application to your server with a single command, powered by') }} <a href="https://deployer.org/" target="_blank" class="text-primary-500 hover:underline">{{ __('PHP Deployer') }}</a>. </p>
 
-    <div class="max-w-fit mx-auto mt-6">
-        <span class="border border-neutral-300 bg-neutral-100 p-6 rounded-2xl mt-4">
+    <div class="mx-auto mt-6 max-w-fit">
+        <span class="p-6 mt-4 border border-neutral-300 bg-neutral-100 rounded-2xl">
             $ ./vendor/bin/dep deploy
         </span>
-        <span class="text-4xl ms-3 -mt-2"> 🚀</span>
+        <span class="-mt-2 text-4xl ms-3"> 🚀</span>
     </div>
 
 
-    <div class="text-center mt-24" x-intersect="$el.classList.add('slide-in-top')">
+    <div class="mt-24 text-center" x-intersect="$el.classList.add('slide-in-top')">
         <x-heading.h6 class="text-primary-500">
             {{ __('Extensive Documentation') }}
         </x-heading.h6>
@@ -596,18 +596,18 @@
         </x-heading.h2>
     </div>
 
-    <div class="mx-4">
-        <div class="max-w-none md:max-w-6xl mx-auto text-center">
+    <div class="mx-4 obaaa">
+        <div class="mx-auto text-center max-w-none md:max-w-6xl">
             <p class="mt-4">
                 {{ __('SaaSykit\'s documentation is extensive and covers everything you need to know to get started with building your SaaS.') }}
             </p>
-            <x-button-link.primary href="https://saasykit.com/docs" class=" mt-8">
+            <x-button-link.primary href="https://saasykit.com/docs" class="mt-8 ">
                 {{ __('Check Documentation') }}
             </x-button-link.primary>
         </div>
     </div>
 
-    <div class="text-center mt-24 mx-4" id="faq">
+    <div class="mx-4 mt-24 text-center" id="faq">
         <x-heading.h6 class="text-primary-500">
             {{ __('FAQ') }}
         </x-heading.h6>
@@ -617,8 +617,8 @@
         <p>{{ __('Here are the most common questions to help you with your decision.') }}</p>
     </div>
 
-    <div class="max-w-none md:max-w-6xl mx-auto">
-        <x-accordion class="mt-4 p-8">
+    <div class="mx-auto max-w-none md:max-w-6xl">
+        <x-accordion class="p-8 mt-4">
             <x-accordion.item active="true" name="faqs">
                 <x-slot name="title">{{ __('What is SaaSykit?') }}</x-slot>
 
@@ -751,6 +751,4 @@
             </x-accordion.item>
         </x-accordion>
     </div>
-
-
 </x-layouts.app>

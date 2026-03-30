@@ -9,14 +9,19 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "andreia/filament-nord-theme": "1.0",
         "aws/aws-sdk-php": "^3.293",
+        "bezhansalleh/filament-language-switch": "^3.1",
         "biscolab/laravel-recaptcha": "^6.1",
         "blade-ui-kit/blade-icons": "^1.5",
         "cknow/laravel-money": "^8.0",
         "codeisawesomehq/filament-tinyeditor": "^1.4",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
+        "flowframe/laravel-trend": "^0.2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "horstoeko/zugferd": "^1",
+        "horstoeko/zugferd-laravel": "^1.0",
         "intervention/image": "^3.4",
         "jeffgreco13/filament-breezy": "v2.4",
         "laravel/framework": "^11.0",
@@ -28,18 +33,26 @@
         "livewire/livewire": "^3.2",
         "mews/purifier": "^3.4",
         "mpociot/versionable": "^4.4",
+        "njxqlus/filament-progressbar": "^1.0",
+        "parallax/filament-comments": "^1.3",
         "resend/resend-php": "^0.12.0",
+        "rupadana/filament-api-service": "^3.3",
+        "saade/filament-autograph": "^3.1",
         "saasykit/filament-country-field": "^1.0",
         "saasykit/laravel-invoices": "^1.0",
         "saasykit/laravel-open-graphy": "^1.2",
         "spatie/laravel-flash": "^1.9",
         "spatie/laravel-permission": "^6.0",
+        "spatie/laravel-query-builder": "^6.2",
         "spatie/laravel-sitemap": "^7.0",
+        "spatie/temporary-directory": "^2.2",
+        "spatie/valuestore": "^1.3",
         "stechstudio/filament-impersonate": "^3.8",
         "stripe/stripe-php": "^12.0",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0",
-        "symfony/postmark-mailer": "^7.0"
+        "symfony/postmark-mailer": "^7.0",
+        "visualbuilder/email-templates": "dev-modified"
     },
     "require-dev": {
         "deployer/deployer": "^7.3",
@@ -58,7 +71,9 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "App\\Helpers\\TenancyHelpers\\": "app/Helpers/TenancyHelpers/",
+            "App\\Helpers\\Helpers\\": "app/Helpers/Helpers/"
         }
     },
     "autoload-dev": {
@@ -89,6 +104,12 @@
             ]
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/marwanosama8/email-templates.git"
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
@@ -98,6 +119,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

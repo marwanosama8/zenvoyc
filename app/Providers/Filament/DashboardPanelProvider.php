@@ -19,6 +19,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
+use Spatie\Color\Rgb;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -28,27 +30,50 @@ class DashboardPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->colors([
-                'primary' => Color::Teal,
+                'primary' => Color::Red,
             ])
             ->userMenuItems([
                 MenuItem::make()
                     ->label(__('Admin Panel'))
                     ->visible(
-                        fn () => auth()->user()->isAdmin()
+                        fn() => auth()->user()->isAdmin()
                     )
-                    ->url(fn () => route('filament.admin.pages.dashboard'))
+                    ->url(fn() => route('filament.admin.pages.dashboard'))
+                    ->icon('heroicon-s-cog-8-tooth'),
+                MenuItem::make()
+                    ->label(__('Company Panel'))
+                    ->visible(
+                        fn() => auth()->user()->hasRole(['company', 'super_company'])
+                    )
+                    ->url(function () {
+                        $user = auth()->user();
+                        // dd($user->getDefaultTenant());
+                        if ($user->companies()->exists()) {
+                            return route('filament.company.pages.dashboard', ['tenant' => $user->companies()->first()->slug]);
+                        }
+
+                        return 'company/new';
+                    })
+                    ->icon('heroicon-s-cog-8-tooth'),
+                MenuItem::make()
+                    ->label(__('User Panel'))
+                    ->visible(
+                        fn() => auth()->user()->hasRole('user')
+                    )
+                    ->url(fn() => route('filament.user.pages.dashboard'))
                     ->icon('heroicon-s-cog-8-tooth'),
             ])
             ->discoverResources(in: app_path('Filament/Dashboard/Resources'), for: 'App\\Filament\\Dashboard\\Resources')
-            ->discoverPages(in: app_path('Filament/Dashboard/Pages'), for: 'App\\Filament\\Dashboard\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->viteTheme('resources/css/filament/dashboard/theme.css')
-            ->discoverWidgets(in: app_path('Filament/Dashboard/Widgets'), for: 'App\\Filament\\Dashboard\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
+            ->navigationGroups([
+                'Finance',
+                'Project',
+                'Mangment',
+                'Subscription',
             ])
+            ->viteTheme('resources/css/filament/dashboard/theme.css')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -65,17 +90,16 @@ class DashboardPanelProvider extends PanelProvider
             })
             ->authMiddleware([
                 Authenticate::class,
-            ])->plugins([
+            ])
+            ->plugins([
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
                         shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
                         hasAvatars: false, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
-                    )
-                ->myProfileComponents([
-                    \App\Livewire\AddressForm::class,
-                ])
+                    ),
+                // FilamentProgressbarPlugin::make()->color($color)
             ]);
     }
 }

@@ -13,71 +13,199 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Reset cached roles and permissions
+        $this->resetCachedPermissions();
+        $this->createPermissions();
+        $this->createRoles();
+    }
+
+    /**
+     * Reset cached roles and permissions.
+     */
+    private function resetCachedPermissions(): void
+    {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+    }
 
-        // create permissions
-        Permission::findOrCreate('create users');
-        Permission::findOrCreate('update users');
-        Permission::findOrCreate('delete users');
-        Permission::findOrCreate('view users');
+    /**
+     * Create permissions.
+     */
+    private function createPermissions(): void
+    {
+        $permissions = [
+            'create users', 'update users', 'delete users', 'view users',
+            'create roles', 'update roles', 'delete roles', 'view roles',
+            'create products', 'update products', 'delete products', 'view products',
+            'create plans', 'update plans', 'delete plans', 'view plans',
+            'create subscriptions', 'update subscriptions', 'delete subscriptions', 'view subscriptions',
+            'create one time products', 'update one time products', 'delete one time products', 'view one time products',
+            'create discounts', 'update discounts', 'delete discounts', 'view discounts',
+            'create blog posts', 'update blog posts', 'delete blog posts', 'view blog posts',
+            'create blog post categories', 'update blog post categories', 'delete blog post categories', 'view blog post categories',
+            'create roadmap items', 'update roadmap items', 'delete roadmap items', 'view roadmap items',
+            'view transactions',
+            'update settings',
+            'impersonate users',
+            'view stats',
+            // new permissions
+            'create invoice', 'update invoice', 'delete invoice', 'view invoice',
+            'create auto invoice', 'update auto invoice', 'delete auto invoice', 'view auto invoice',
+            'create offers', 'update offers', 'delete offers', 'view offers',
+            'create licences', 'update licences', 'delete licences', 'view licences',
+            'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
+            'create company', 'update company', 'delete company', 'view company',
+            'create multi companies',
+            'create employees', 'update employees', 'delete employees', 'view employees',
+            'create tasks', 'update tasks', 'delete tasks', 'view tasks',
+            'create projects', 'update projects', 'delete projects', 'view projects',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
+            'create timesheets', 'update timesheets', 'delete timesheets', 'view timesheets',
+            'create task comments', 'update task comments', 'delete task comments', 'view task comments',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
+        ];
 
-        Permission::findOrCreate('impersonate users');
+        foreach ($permissions as $permission) {
+            Permission::findOrCreate($permission);
+        }
+    }
 
-        Permission::findOrCreate('create roles');
-        Permission::findOrCreate('update roles');
-        Permission::findOrCreate('delete roles');
-        Permission::findOrCreate('view roles');
+    /**
+     * Create roles.
+     */
+    private function createRoles(): void
+    {
+        $this->createAdminRole();
+        $this->createSuperCompanyRole();
+        $this->createCompanyRole();
+        $this->createDashboardRole();
+        $this->createUserRole();
+        $this->createEmployeeRole();
+    }
 
-        Permission::findOrCreate('create products');
-        Permission::findOrCreate('update products');
-        Permission::findOrCreate('delete products');
-        Permission::findOrCreate('view products');
+    /**
+     * Create admin role and assign all permissions.
+     */
+    private function createAdminRole(): void
+    {
+        $role1 = Role::findOrCreate('admin');
+        $role2 = Role::findOrCreate('super_admin');
+        $role1->givePermissionTo(Permission::all());
+        $role2->givePermissionTo(Permission::all());
+    }
 
-        Permission::findOrCreate('create plans');
-        Permission::findOrCreate('update plans');
-        Permission::findOrCreate('delete plans');
-        Permission::findOrCreate('view plans');
+    /**
+     * Create super company role and assign appropriate permissions.
+     */
+    private function createSuperCompanyRole(): void
+    {
+        $permissions = [
+            'create invoice', 'update invoice', 'delete invoice', 'view invoice',
+            'create auto invoice', 'update auto invoice', 'delete auto invoice', 'view auto invoice',
+            'create offers', 'update offers', 'delete offers', 'view offers',
+            'create licences', 'update licences', 'delete licences', 'view licences',
+            'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
+            'create company', 'update company', 'delete company', 'view company',
+            'create multi companies',
+            'impersonate users',
+            'create employees', 'update employees', 'delete employees', 'view employees',
+            'create tasks', 'update tasks', 'delete tasks', 'view tasks',
+            'update timesheets', 'delete timesheets', 'view timesheets',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
+            'create projects', 'update projects', 'delete projects', 'view projects',
+            'create tasks', 'update tasks', 'delete tasks', 'view tasks',
+            'create task comments', 'update task comments', 'delete task comments', 'view task comments',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
+        ];
 
-        Permission::findOrCreate('create subscriptions');
-        Permission::findOrCreate('update subscriptions');
-        Permission::findOrCreate('delete subscriptions');
-        Permission::findOrCreate('view subscriptions');
+        $superCompany = Role::findOrCreate('super_company');
+        $superCompany->syncPermissions($this->getPermissions($permissions));
+    }
 
-        Permission::findOrCreate('create one time products');
-        Permission::findOrCreate('update one time products');
-        Permission::findOrCreate('delete one time products');
-        Permission::findOrCreate('view one time products');
+    /**
+     * Create company role.
+     */
+    private function createCompanyRole(): void
+    {
+        $permissions = [
+            'create invoice', 'update invoice', 'delete invoice', 'view invoice',
+            'create auto invoice', 'update auto invoice', 'delete auto invoice', 'view auto invoice',
+            'create offers', 'update offers', 'delete offers', 'view offers',
+            'create licences', 'update licences', 'delete licences', 'view licences',
+            'create company', 'update company', 'delete company', 'view company',
+            'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
+            'impersonate users',
+            'create employees', 'update employees', 'delete employees', 'view employees',
+            'create timesheets', 'update timesheets', 'delete timesheets', 'view timesheets',
+            'create projects', 'update projects', 'delete projects', 'view projects',
+            'create tasks', 'update tasks', 'delete tasks', 'view tasks',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
+            'create task comments', 'update task comments', 'delete task comments', 'view task comments',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
+        ];
 
-        Permission::findOrCreate('create discounts');
-        Permission::findOrCreate('update discounts');
-        Permission::findOrCreate('delete discounts');
-        Permission::findOrCreate('view discounts');
+        $company = Role::findOrCreate('company');
+        $company->syncPermissions($this->getPermissions($permissions));
+    }
 
-        Permission::findOrCreate('create blog posts');
-        Permission::findOrCreate('update blog posts');
-        Permission::findOrCreate('delete blog posts');
-        Permission::findOrCreate('view blog posts');
+    /**
+     * Create user role.
+     */
+    private function createUserRole(): void
+    {
+        $permissions = [
+            'create invoice', 'update invoice', 'delete invoice', 'view invoice',
+            'create auto invoice', 'update auto invoice', 'delete auto invoice', 'view auto invoice',
+            'create offers', 'update offers', 'delete offers', 'view offers',
+            'create timesheets', 'update timesheets', 'delete timesheets', 'view timesheets',
+            'create projects', 'update projects', 'delete projects', 'view projects',
+            'create tasks', 'update tasks', 'delete tasks', 'view tasks',
+            'create licences', 'update licences', 'delete licences', 'view licences',
+            'create contacts', 'update contacts', 'delete contacts', 'view contacts',
+            'create expenditures', 'update expenditures', 'delete expenditures', 'view expenditures',
+            'view_any_token','view_token', 'create_token','update_token','delete_token','delete_any_token',
+            'force_delete_token','force_delete_any_token','restore_token','restore_any_token', 'replicate_token'
+        ];
 
-        Permission::findOrCreate('create blog post categories');
-        Permission::findOrCreate('update blog post categories');
-        Permission::findOrCreate('delete blog post categories');
-        Permission::findOrCreate('view blog post categories');
+        $user = Role::findOrCreate('user');
+        $user->syncPermissions($this->getPermissions($permissions));
+    }
 
-        Permission::findOrCreate('create roadmap items');
-        Permission::findOrCreate('update roadmap items');
-        Permission::findOrCreate('delete roadmap items');
-        Permission::findOrCreate('view roadmap items');
+    /**
+     * Create dashboard role.
+     */
+    private function createDashboardRole(): void
+    {
+        $user = Role::findOrCreate('dashboard');
+    }
 
-        Permission::findOrCreate('view transactions');
+    /**
+     * Create employee role.
+     */
+    private function createEmployeeRole(): void
+    {
+        $permissions = [
+            'update tasks', 'view tasks',
+            'create task comments', 'view task comments',
+            'create timesheets', 'update timesheets', 'view timesheets',
+            'view projects',
+        ];
 
-        Permission::findOrCreate('update settings');
+        $employee = Role::findOrCreate('employee');
+        $employee->syncPermissions($this->getPermissions($permissions));
+    }
 
-        Permission::findOrCreate('view stats');
-
-        // this can be done as separate statements
-        $role = Role::findOrCreate('admin');
-        $role->givePermissionTo(Permission::all());
-
+    /**
+     * Get permission instances by names.
+     *
+     * @param array $permissions
+     * @return array
+     */
+    private function getPermissions(array $permissions): array
+    {
+        return array_map(function ($permission) {
+            return Permission::findOrCreate($permission);
+        }, $permissions);
     }
 }

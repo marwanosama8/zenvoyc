@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,13 +14,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // $admin = User::find(1)->update([
+        //     'password' => bcrypt('admin'),
+        // ]);
+
         $this->callOnce([
             IntervalsSeeder::class,
             CurrenciesSeeder::class,
             OAuthLoginProviderSeeder::class,
             PaymentProvidersSeeder::class,
             RolesAndPermissionsSeeder::class,
-            EmailProviderSeeder::class,
+            InvoiceThemeSeeder::class,
+            InvoiceThemeSeeder::class,
+            CountrySeeder::class
+            // EmailProviderSeeder::class,
         ]);
     }
 }

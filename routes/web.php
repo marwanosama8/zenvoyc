@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\OAuthController;
+use App\Http\Controllers\OfferController;
+use App\Http\Controllers\TenantInvoiceController;
 use App\Http\Controllers\PaymentProviders\PaddleController as PaddleController;
+use App\Livewire\CustomerInvoices;
+use App\Livewire\ViewOffer;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -157,8 +161,35 @@ Route::get('/roadmap/i/{itemSlug}', [
     'viewItem',
 ])->name('roadmap.viewItem');
 
-// Invoice
 
+// new routes 
+
+
+// Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+// Route::get('/invoice/data',[TenantInvoiceController::class, 'getData'])->name('invoice.data');
+// Route::get('/invoice/create',[TenantInvoiceController::class, 'create'])->name('invoice.create');
+// Route::post('/invoice/store',[TenantInvoiceController::class, 'store'] )->name('invoice.store');
+// Route::post('/invoice/{invoice}/update',[TenantInvoiceController::class, 'update'] )->name('invoice.update');
+// Route::get('/invoice/{invoice}/payed', [TenantInvoiceController::class, 'payed'])->name('invoice.payed');
+// Route::get('/invoice/{invoice}/edit', [TenantInvoiceController::class, 'edit'])->name('invoice.edit'); /// Delete
+// Route::post('/invoice/{invoice}/sendreminder',[TenantInvoiceController::class, 'sendReminder'])->name('invoice.sendreminder');
+// Route::get('/invoice/{invoice}/resend',[TenantInvoiceController::class, 'resend'])->name('invoice.resend');
+// Route::get('/invoice/month2month',[TenantInvoiceController::class, 'month2month'])->name('invoice.month2month');
+// Route::get('/invoice/pdf/{invoice}',[TenantInvoiceController::class, 'pdf'])->name('invoice.pdf');
+
+// with us
+Route::get('/invoice/{rgnr}/send', [TenantInvoiceController::class, 'send'])->name('invoice.send');
+Route::get('/invoice/{rgnr}/duplicate', [TenantInvoiceController::class, 'duplicate'])->name('invoice.duplicate');
+Route::get('/invoice/{rgnr}/stream', [TenantInvoiceController::class, 'streamPdfInvoice'])->name('invoice.stream');
+Route::get('/invoice/{rgnr}/view', [TenantInvoiceController::class, 'view'])->name('invoice.view');
+Route::get('/invoice/{rgnr}/merge/{profile}', [TenantInvoiceController::class, 'mergeWithPdf'])->name('invoice.merge');
+Route::get('/xml/{rgnr}/download/{profile}', [TenantInvoiceController::class, 'xmlDownload'])->name('invoice.ddxml');
+Route::get('/invoice/{rgnr}/reminder', [TenantInvoiceController::class, 'reminder'])->name('invoice.reminder');
+Route::get('/sign-contract/{token}', [OfferController::class, 'view'])->name('sign.contract');
+Route::get('/list-invoices/{token}', [TenantInvoiceController::class, 'customerInvoices'])->name('list.invoices');
+Route::get('/fakepdf/{type}', [TenantInvoiceController::class, 'createFakeInvoice'])->name('fake.pdf');
+
+// Invoice
 Route::get('/invoice/generate/{transactionUuid}', [
     App\Http\Controllers\InvoiceController::class,
     'generate',

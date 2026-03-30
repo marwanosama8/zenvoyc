@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Helpers\TenancyHelpers;
+use App\Mail\User\VerifyEmail;
 use App\Notifications\Auth\QueuedVerifyEmail;
 use App\Services\OrderManager;
 use App\Services\SubscriptionManager;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasDefaultTenant;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,8 +17,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\HasTenants;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail, HasTenants, HasDefaultTenant
 {
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
@@ -88,9 +94,19 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasMany(Transaction::class);
     }
 
+
     public function canAccessPanel(Panel $panel): bool
     {
-        if ($panel->getId() == 'admin' && ! $this->is_admin) {
+        if ($panel->getId() == 'admin' && !$this->is_admin) {
+            return false;
+        }
+        if ($panel->getId() == 'user' && !$this->hasRole('user')) {
+            return false;
+        }
+        if ($panel->getId() == 'dashboard' && !$this->hasRole('dashboard')) {
+            return false;
+        }
+        if ($panel->getId() == 'company' && !$this->hasRole(['company', 'super_company'])) {
             return false;
         }
 
@@ -114,7 +130,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function canImpersonate()
     {
-        return $this->hasPermissionTo('impersonate users') && $this->isAdmin();
+        return $this->hasPermissionTo('impersonate users') || $this->isAdmin();
     }
 
     public function isSubscribed(?string $productSlug = null): bool
@@ -147,7 +163,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         $subscriptionManager = app(SubscriptionManager::class);
 
         return $subscriptionManager->getUserSubscriptionProductMetadata($this);
-
     }
 
     public function sendEmailVerificationNotification()
@@ -155,6 +170,105 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         $this->notify(new QueuedVerifyEmail());
     }
 
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'users_companies', 'user_id', 'company_id');
+    }
+
+    public function getTenants(Panel $panel): Collection
+    {
+        return $this->companies;
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->companies()->whereKey($tenant)->exists();
+    }
+
+    public function customers()
+    {
+        return $this->morphMany(Customer::class, 'customerable');
+    }
+
+    public function projects()
+    {
+        return $this->morphMany(Project::class, 'projectable');
+    }
+
+    public function timesheets()
+    {
+        return $this->morphMany(Timesheet::class, 'timesheetable');
+    }
+
+    public function tasks()
+    {
+        return $this->morphMany(Task::class, 'taskable');
+    }
+
+    public function sales()
+    {
+        return $this->morphMany(Sales::class, 'salesable');
+    }
+
+    public function contacts()
+    {
+        return $this->morphMany(Contact::class, 'contactable');
+    }
+
+    public function getDefaultTenant(Panel $panel): ?Model
+    {
+        return $this->companies()->first();
+    }
+
+    /**
+     * Get the setting associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function settings()
+    {
+        return $this->hasOne(UserSetting::class);
+    }
+
+    /**
+     * Get the setting associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function employeeSetting()
+    {
+        return $this->hasOne(EmployeeSetting::class);
+    }
+
+    /**
+     * The employee_tasks that belong to the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function employee_tasks()
+    {
+        return $this->belongsToMany(Task::class, 'employee_tasks', 'user_id', 'task_id');
+    }
+
+    public function configs()
+    {
+        return $this->morphMany(PanelConfig::class, 'configable');
+    }
+
+    
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        // static::created(function (User $model) {
+        //     if (!is_null(auth()->user()) && !is_null(TenancyHelpers::getTenant()) && auth()->user()->hasRole(['company', 'super_company'])) {
+        //         TenancyHelpers::getTenant()->users()->attach($model->id);
+        //     } else {
+        //         $model->setting()->create();
+        //     }
+        // });
+    }
     public function address()
     {
         return $this->hasOne(Address::class);

@@ -13,6 +13,8 @@ return Illuminate\Foundation\Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->appendToGroup('web', [
             \App\Http\Middleware\BlockedUser::class,
+                            // \App\Http\Middleware\RememberTenantMiddleware::class,
+// 
         ]);
 
         $middleware->alias([

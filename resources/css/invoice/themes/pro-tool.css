@@ -1,0 +1,192 @@
+h4 {
+    margin: 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.w-half {
+    width: 50%;
+}
+
+.margin-top {
+    margin-top: 1.25rem;
+}
+
+.footer {
+    font-size: 0.875rem;
+    padding: 1rem;
+    background-color: rgb(241 245 249);
+}
+
+table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+table.products {
+    font-size: 0.875rem;
+}
+
+table.products tr {
+    background-color: rgb(30, 64, 175);
+}
+
+table.products th {
+    color: #ffffff;
+    padding: 0.5rem;
+}
+
+table tr.items {
+    background-color: rgb(241 245 249);
+}
+
+table tr.items td {
+    padding: 0.5rem;
+}
+
+.total {
+    text-align: right;
+    margin-top: 1.2rem;
+    font-size: 0.875rem;
+}
+
+.total-overall-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.total-overall-table td {
+    vertical-align: top;
+    padding: 0;
+}
+.total-overall-table .left, .total-overall-table .right {
+    width: 50%;
+}
+.total-overall-table h3 {
+    margin: 0;
+}
+.total-separator {
+    border-top: 1px solid #000;
+    margin: 1rem 0;
+}
+
+.separator {
+    height: 0.5rem;
+    margin: 1rem 0;
+    background-color: rgb(241 245 249);
+}
+
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.one-sixth {
+    width: 16.66%;
+}
+
+.two-thirds {
+    width: 66.66%;
+}
+
+.half {
+    width: 48%;
+}
+
+.padded {
+    padding: 1rem;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+table.products {
+    width: 100%;
+    border-spacing: 0;
+    font-size: 0.875rem;
+}
+
+table.products th,
+table.products td {
+    padding: 0.5rem;
+    text-align: left;
+}
+
+table.products th {
+    background-color: rgb(30, 64, 175);
+    color: #ffffff;
+}
+
+table.products tr.items {
+    background-color: rgb(241, 245, 249);
+}
+
+table.products tr.items td {
+    padding: 0.5rem;
+}
+
+table.products tr th.price {
+    width: 20%;
+    text-align: right;
+}
+
+table.products tr th.units {
+    width: 15%;
+    text-align: center;
+}
+
+table.products td.number {
+    width: 5%;
+    text-align: center;
+}
+
+table.products td.description {
+    width: 60%;
+}
+
+table.products td.units {
+    width: 15%;
+    text-align: center;
+}
+
+table.products td.price {
+    width: 20%;
+    text-align: right;
+}
+
+
+.invoice-actions {
+    display: inline-block;
+}
+
+.invoice-link {
+    display: inline-block;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.text-blue {
+    color: #1d4ed8;
+}
+
+.text-red {
+    color: #dc2626;
+}
+
+.text-green {
+    color: #064e3b;
+}
+
+.invoice-link:hover {
+    opacity: 0.8;
+}

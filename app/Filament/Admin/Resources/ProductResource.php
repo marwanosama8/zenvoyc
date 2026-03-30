@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
+use Spatie\Permission\Models\Role;
 
 class ProductResource extends Resource
 {
@@ -68,6 +69,10 @@ class ProductResource extends Resource
                         ->schema([
                             Forms\Components\TextInput::make('feature')->required(),
                         ]),
+                    Forms\Components\Select::make('role_id')
+                    ->label(__('Role'))
+                    ->required()
+                    ->options(Role::all()->pluck('name','id'))
                 ]),
             ]);
     }

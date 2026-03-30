@@ -1,4 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+import preset from './vendor/filament/support/tailwind.config.preset'
+
 import common from './tailwind.common.js'
 
 export default {
@@ -6,10 +8,12 @@ export default {
     daisyui: {
         themes: ["light"],
     },
+    presets: [preset],
     content: [
         "./resources/**/*.blade.php",
         './app/Filament/**/*.php',
         './resources/views/filament/**/*.blade.php',
+        './resources/views/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
         "./resources/**/*.js",
         "./resources/**/*.vue",
