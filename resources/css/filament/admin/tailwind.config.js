@@ -1,7 +1,7 @@
-import basePreset from '../../../../tailwind.config.filament.js'
+const preset = require('../../../../tailwind.config.js')
 
 export default {
-    presets: [basePreset],
+    presets: [preset],
     content: [
         './app/Filament/Admin/**/*.php',
         './resources/views/filament/admin/**/*.blade.php',

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Demo;
+namespace Database\Seeders;
 
 use App\Constants\RoadmapItemStatus;
 use App\Constants\RoadmapItemType;
@@ -9,7 +9,6 @@ use App\Models\BlogPost;
 use App\Models\Currency;
 use App\Models\Discount;
 use App\Models\Interval;
-use App\Models\OauthLoginProvider;
 use App\Models\OneTimeProduct;
 use App\Models\PaymentProvider;
 use App\Models\Plan;
@@ -17,12 +16,6 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\MetricsManager;
 use Carbon\Carbon;
-use Database\Seeders\AdminRoleDataSeeder;
-use Database\Seeders\DatabaseSeeder;
-use Database\Seeders\EmailTemplateSeeder;
-use Database\Seeders\EmailTemplateThemeSeeder;
-use Database\Seeders\SuperCompanyRoleDataSeeder;
-use Database\Seeders\UserRoleDataSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 

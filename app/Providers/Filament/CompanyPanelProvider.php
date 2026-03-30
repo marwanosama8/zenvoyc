@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Andreia\FilamentNordTheme\FilamentNordThemePlugin;
 use App\Filament\Company\Dashboard;
 use App\Filament\Company\Pages\Tenancy\RegisterCompany;
 use App\Filament\Company\Pages\Tenancy\EditCompanyProfile;
@@ -56,7 +57,10 @@ class CompanyPanelProvider extends PanelProvider
                     ->icon('heroicon-s-face-smile'),
 
             ])
-            ->tenantMenuItems([
+            ->sidebarFullyCollapsibleOnDesktop()
+            ->topNavigation()
+            ->brandLogo(asset('images/logo2.png'))
+        ->tenantMenuItems([
                 'profile' => MenuItem::make()->hidden(),
                 MenuItem::make()
                     ->label('Settings')
@@ -107,6 +111,7 @@ class CompanyPanelProvider extends PanelProvider
                     ),
                 // FilamentProgressbarPlugin::make()->color($color),
                 EmailTemplatesPlugin::make(),
+                FilamentNordThemePlugin::make(),
             ])
             ->tenantMiddleware([
                 RememberTenantMiddleware::class,

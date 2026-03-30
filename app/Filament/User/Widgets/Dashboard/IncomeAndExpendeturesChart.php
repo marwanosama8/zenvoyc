@@ -72,7 +72,7 @@ class IncomeAndExpendeturesChart extends ChartWidget
     }
     protected function getType(): string
     {
-        return 'bar';
+        return 'circle';
     }
     public function getHeading(): string|Htmlable|null
     {

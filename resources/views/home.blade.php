@@ -3,8 +3,6 @@
         {{ __('SaaSykit - Laravel SaaS Starter Kit') }}
     </x-slot>
 
-    <x-plans.all calculate-saving-rates="true" preselected-interval="month"></x-plans.all>
-
     <x-section.hero class="w-full mb-8 md:mb-72">
 
         <div class="px-4 mx-auto text-center h-160 md:h-180">

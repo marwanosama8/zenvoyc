@@ -11,15 +11,14 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class IncomeAndExpendeturesChart extends ChartWidget
 {
-    protected static ?int $sort = 3;
 
 
     protected function getData(): array
     {
         $exp = Trend::model(Expenditure::class)
             ->between(
-                start: now()->startOfYear(),
-                end: now()->endOfYear(),
+                start: now()->year(2025)->startOfYear(),
+                end: now(),
             )
             ->perMonth()
             ->count();
@@ -29,8 +28,8 @@ class IncomeAndExpendeturesChart extends ChartWidget
         )
             ->dateColumn('date_origin')
             ->between(
-                start: now()->startOfYear(),
-                end: now()->endOfYear(),
+                start: now()->year(2025)->startOfYear(),
+                end: now(),
             )
             ->perMonth()
             ->count();
@@ -40,8 +39,8 @@ class IncomeAndExpendeturesChart extends ChartWidget
         )
             ->dateColumn('date_origin')
             ->between(
-                start: now()->startOfYear(),
-                end: now()->endOfYear(),
+                start: now()->year(2025)->startOfYear(),
+                end: now(),
             )
             ->perMonth()
             ->count();
@@ -56,14 +55,14 @@ class IncomeAndExpendeturesChart extends ChartWidget
                 ],
                 [
                     'label' => __('widgets.payey_invocices'),
-                    'backgroundColor' => 'rgba(0, 241, 4, 1)',
-                    'borderColor' => 'rgba(0, 241, 4, 1)',
+                    'backgroundColor' => 'blue',
+                    'borderColor' => 'blue',
                     'data' => $invoicePayed->map(fn(TrendValue $value) => $value->aggregate),
                 ],
                 [
                     'label' => __('widgets.unpayey_invocices'),
-                    'backgroundColor' => 'yellow',
-                    'borderColor' => 'yellow',
+                    'backgroundColor' => 'green',
+                    'borderColor' => 'green',
                     'data' => $invoiceUnpayed->map(fn(TrendValue $value) => $value->aggregate),
                 ]
             ],

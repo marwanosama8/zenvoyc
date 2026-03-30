@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/css/filament/admin/theme.css',
                 'resources/css/filament/company/theme.css',
                 'resources/css/filament/user/theme.css',
+                'vendor/andreia/filament-nord-theme/resources/css/theme.css',
                 ...globSync("resources/css/invoice/themes/*.css")
             ],
             refresh: true,

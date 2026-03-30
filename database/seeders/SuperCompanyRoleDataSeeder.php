@@ -58,7 +58,8 @@ class SuperCompanyRoleDataSeeder extends Seeder
                 'name' => fake('de_DE')->name(),
                 'managing_director' => fake('de_DE')->name(),
                 'legal_name' => fake('de_DE')->company(),
-                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: fake('de_DE')->company(), width: 620, height: 320)),
+//                'avatar_url' => $this->saveFakeImage(fake('de_DE')->imageUrl(category: fake('de_DE')->company(), width: 620, height: 320)),
+                'avatar_url' => 'asdasd',
                 'website_url' => fake('de_DE')->url(),
                 'place_of_jurisdiction' => fake('de_DE')->city(),
                 'slug' => Str::slug(fake('de_DE')->name()),
@@ -88,7 +89,7 @@ class SuperCompanyRoleDataSeeder extends Seeder
 
             // start seeding data
 
-            // employees 
+            // employees
             $employeesIds = collect();
             for ($i = 1; $i <= 5; $i++) {
                 $employee = User::where('email', 'employeedemo' . $i . '@test.com')->first();

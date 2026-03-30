@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "andreia/filament-nord-theme": "1.0",
         "aws/aws-sdk-php": "^3.293",
         "bezhansalleh/filament-language-switch": "^3.1",
         "biscolab/laravel-recaptcha": "^6.1",
