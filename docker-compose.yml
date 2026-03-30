@@ -58,22 +58,6 @@ services:
         networks:
             - sail
 
-    caddy:
-        image: caddy:2
-        container_name: zenvoyc_caddy
-        restart: unless-stopped
-        ports:
-            - "80:80"
-            - "443:443"
-        volumes:
-            - ./Caddyfile:/etc/caddy/Caddyfile
-            - caddy_data:/data
-            - caddy_config:/config
-        networks:
-            - sail
-        depends_on:
-            - laravel.test
-
 networks:
     sail:
         driver: bridge
@@ -83,5 +67,3 @@ volumes:
         driver: local
     sail-redis:
         driver: local
-    caddy_data:
-    caddy_config:
