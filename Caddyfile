@@ -1,3 +1,0 @@
-marwanusama.com {
-    reverse_proxy laravel.test:80
-}
