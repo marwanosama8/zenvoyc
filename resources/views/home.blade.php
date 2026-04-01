@@ -47,7 +47,7 @@
             <div class="mx-auto md:max-w-3xl lg:max-w-5xl">
                 {{-- صورة تعبيرية للوحة التحكم (Dashboard) --}}
                 <img class="mt-8 transition drop-shadow-2xl hover:scale-101 rounded-2xl  "
-                     src="{{URL::asset('images/features/admin-panel.png')}}" alt="Zenvoyc Dashboard"/>
+                     src="{{URL::asset('images/features/admin-panel.png')}}?{{ time() }}" alt="Zenvoyc Dashboard"/>
             </div>
         </div>
     </x-section.hero>
@@ -100,7 +100,7 @@
                      class="h-8 grayscale hover:grayscale-0 transition opacity-70 hover:opacity-100"/>
                 <div class="h-6 w-[1px] bg-gray-200 mx-2"></div>
                 <span
-                    class="text-[10px] font-bold text-gray-400 border border-gray-200 px-2 py-1 rounded">PEPPOL READY</span>
+                    class="text-[10px] font-bold text-gray-400 border border-gray-200 px-2 py-1 rounded text-center">PEPPOL READY</span>
                 <span
                     class="text-[10px] font-bold text-gray-400 border border-gray-200 px-2 py-1 rounded">ZUGFeRD</span>
             </div>
