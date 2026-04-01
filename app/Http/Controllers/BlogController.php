@@ -10,7 +10,7 @@ class BlogController extends Controller
     public function __construct(
         private BlogManager $blogManager
     ) {
-
+        \abort(404);
     }
 
     public function view(string $slug)

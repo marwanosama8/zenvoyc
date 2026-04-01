@@ -3,13 +3,11 @@
         <div class="md:flex md:justify-between">
             <div class="mb-6 md:mb-0">
                 <a href="/" class="flex items-center">
-                    <img src="{{asset(config('app.logo.light') )}}" class="h-6 me-3" alt="Logo" />
+                    <img src="{{asset(config('app.logo.light') )}}" class="h-8 me-3" alt="Logo" />
                 </a>
             </div>
             <ul class="flex flex-wrap gap-6 mt-2 text-sm text-primary-100 dark:text-gray-400">
-                <li class="mb-4">
-                    <a href="{{route('blog')}}" class="text-primary-100 hover:text-primary-50">{{ __('Blog') }}</a>
-                </li>
+
                 <li class="mb-4">
                     <a href="{{route('privacy-policy')}}" class="text-primary-100 hover:text-primary-50">{{ __('Privacy Policy') }}</a>
                 </li>
