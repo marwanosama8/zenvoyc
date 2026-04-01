@@ -35,6 +35,10 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
+
+        //        stop controller from receiving requests
+        \abort(404);
+
         $this->middleware('auth');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');

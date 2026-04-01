@@ -5,7 +5,7 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <p class="text-xs mt-2 text-end">{{__('No account?')}} <a class="text-primary-500 font-bold" href="{{ route('register') }}">{{__('Register')}}</a></p>
+{{--                    <p class="text-xs mt-2 text-end">{{__('No account?')}} <a class="text-primary-500 font-bold" href="{{ route('register') }}">{{__('Register')}}</a></p>--}}
 
                     <x-input.field label="{{ __('Email Address') }}" type="email" name="email"
                                    value="{{ old('email') }}" required autofocus="true" class="my-2"
@@ -50,13 +50,13 @@
                                 {{ __('Remember Me') }}
                             </label>
                         </div>
-                        <div>
-                            @if (Route::has('password.request'))
-                                <a class="text-primary-500 text-xs" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
-                            @endif
-                        </div>
+{{--                        <div>--}}
+{{--                            @if (Route::has('password.request'))--}}
+{{--                                <a class="text-primary-500 text-xs" href="{{ route('password.request') }}">--}}
+{{--                                    {{ __('Forgot Your Password?') }}--}}
+{{--                                </a>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
                     </div>
 
                     <x-button-link.primary class="inline-block !w-full my-2" elementType="button" type="submit">

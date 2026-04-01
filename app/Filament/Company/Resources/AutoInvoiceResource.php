@@ -24,6 +24,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Component as Livewire;
+use function Aws\map;
 
 
 class AutoInvoiceResource extends Resource
@@ -258,6 +259,11 @@ class AutoInvoiceResource extends Resource
                     ->label(__("invoice.field.custom_interval"))
                     ->getStateUsing(fn ($record) => config('auto_invoice.custom_interval')[$record->custom_interval])
                     ->badge(),
+                Tables\Columns\TextColumn::make('price')
+                    ->alignCenter()
+                    ->label(__("invoice.field.price"))
+                    ->getStateUsing(fn ($record) => '$'.collect($record->items)->sum('price'))
+                    ,
                 Tables\Columns\TextColumn::make('next_generate_date')
 
                     ->label(__("invoice.field.next_generate_date"))->date('d.m.Y'),

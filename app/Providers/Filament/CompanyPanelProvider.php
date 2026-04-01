@@ -32,6 +32,7 @@ use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
 use Rupadana\ApiService\ApiServicePlugin;
 use Spatie\Color\Rgb;
 use Visualbuilder\EmailTemplates\EmailTemplatesPlugin;
+use Filament\Enums\ThemeMode;
 
 class CompanyPanelProvider extends PanelProvider
 {
@@ -57,10 +58,24 @@ class CompanyPanelProvider extends PanelProvider
                     ->icon('heroicon-s-face-smile'),
 
             ])
+            ->colors([
+                'primary' => Color::Violet,    // اللون الأساسي يعطي إيحاء بالفخامة والذكاء
+                'danger' => Color::Rose,      // للتحذيرات
+                'gray' => Color::Slate,       // تدرجات الرمادي المائل للأزرق مريحة للعين
+                'info' => Color::Cyan,        // للمعلومات
+                'success' => Color::Emerald,   // للعمليات الناجحة
+                'warning' => Color::Amber,     // للتنبيهات
+            ])
+            ->font('Lexend')
+            ->brandName('Zenvoyc')
+            ->brandLogoHeight('2.5rem')
+            ->favicon(asset('images/favicon.png'))
+            ->defaultThemeMode(ThemeMode::System)
             ->sidebarFullyCollapsibleOnDesktop()
             ->topNavigation()
-            ->brandLogo(asset('images/logo2.png'))
-        ->tenantMenuItems([
+            ->brandLogo(asset('images/logo-dash-light.png'))
+            ->darkModeBrandLogo(asset('images/logo-dash-dark.png'))
+            ->tenantMenuItems([
                 'profile' => MenuItem::make()->hidden(),
                 MenuItem::make()
                     ->label('Settings')
@@ -111,7 +126,7 @@ class CompanyPanelProvider extends PanelProvider
                     ),
                 // FilamentProgressbarPlugin::make()->color($color),
                 EmailTemplatesPlugin::make(),
-                FilamentNordThemePlugin::make(),
+//                FilamentNordThemePlugin::make(),
             ])
             ->tenantMiddleware([
                 RememberTenantMiddleware::class,

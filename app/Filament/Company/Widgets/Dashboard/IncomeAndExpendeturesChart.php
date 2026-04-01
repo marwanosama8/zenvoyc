@@ -11,6 +11,7 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class IncomeAndExpendeturesChart extends ChartWidget
 {
+    protected static ?int $sort = 2;
 
 
     protected function getData(): array

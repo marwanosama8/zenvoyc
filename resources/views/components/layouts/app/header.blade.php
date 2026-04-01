@@ -10,7 +10,7 @@
                 </ul>
             </div>
             <a href="/" class="flex items-center justify-center">
-                <img src="{{asset(config('app.logo.light') )}}" class="h-6" alt="Logo" />
+                <img src="{{asset(config('app.logo.light') )}}" class="h-10" alt="Logo" />
             </a>
         </div>
         <div class="hidden navbar-center lg:flex">

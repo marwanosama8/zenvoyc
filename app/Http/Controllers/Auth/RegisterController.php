@@ -37,7 +37,9 @@ class RegisterController extends Controller
         private RegisterValidator $registerValidator,
         private UserManager $userManager,
     ) {
-        $this->middleware('guest');
+//        stop controller from receiving requests
+        \abort(404);
+//        $this->middleware('auth');
     }
 
     public function redirectPath()

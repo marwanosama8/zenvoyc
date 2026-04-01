@@ -1,754 +1,312 @@
 <x-layouts.app>
     <x-slot name="title">
-        {{ __('SaaSykit - Laravel SaaS Starter Kit') }}
+        {{ __('Zenvoyc - Professional Invoicing & Accounting for Modern Businesses') }}
     </x-slot>
 
+    {{-- Hero Section --}}
     <x-section.hero class="w-full mb-8 md:mb-72">
-
         <div class="px-4 mx-auto text-center h-160 md:h-180">
-            <x-pill class="text-primary-500 bg-primary-50">{{ __('Launch your Business') }}</x-pill>
+            <x-pill class="text-primary-500 bg-primary-50">{{ __('Streamline Your Finances') }}</x-pill>
             <x-heading.h1 class="mt-4 font-bold text-primary-50">
-                {{ __('Build your SaaS') }}
+                {{ __('Smart Invoicing for') }}
                 <br class="hidden sm:block">
-                {{ __('with SaaSykit') }}
-
+                {{ __('Smarter Businesses') }}
             </x-heading.h1>
 
-            <p class="m-3 text-primary-50">{{ __('A Laravel-based boilerplate with everything you need to build an awesome SaaS.') }}</p>
+            <p class="m-3 text-primary-50 text-lg">
+                {{ __('Take full control of your business finances with Zenvoyc. Create professional invoices, track expenses, and get paid faster—all in one place.') }}
+            </p>
 
             <div class="flex flex-col flex-wrap justify-center gap-4 mt-6 md:flex-row">
                 <x-effect.glow></x-effect.glow>
-
-                <x-button-link.secondary href="#pricing" class="self-center !py-3" elementType="a">
-                    {{ __('Get SaaSykit') }}
+                <x-button-link.secondary href="#pricing" class="self-center !py-3 px-8" elementType="a">
+                    {{ __('Start Your Free Trial') }}
                 </x-button-link.secondary>
-                <x-button-link.primary-outline href="//demo.saasykit.com" class=" bg-transparent self-center !py-3 text-white border-white" rel=”nofollow” >
-                    {{ __('Check The Demo') }}
+                <x-button-link.primary-outline href="#features"
+                                               class="bg-transparent self-center !py-3 text-white border-white">
+                    {{ __('Explore Features') }}
                 </x-button-link.primary-outline>
-
             </div>
 
             <x-user-ratings link="#testimonials" class="relative z-40 items-center justify-center mt-6">
                 <x-slot name="avatars">
-                    <x-user-ratings.avatar src="https://unsplash.com/photos/rDEOVtE7vOs/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fHx8MTcxMzY4NDI1MHww&force=true&w=640" alt="testimonial 1"/>
-                    <x-user-ratings.avatar src="https://unsplash.com/photos/c_GmwfHBDzk/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8cGVyc29ufGVufDB8fHx8MTcxMzY4NDI1MHww&force=true&w=640" alt="testimonial 2"/>
-                    <x-user-ratings.avatar src="https://unsplash.com/photos/QXevDflbl8A/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8cGVyc29ufGVufDB8fHx8MTcxMzY4NDI1MHww&force=true&w=640" alt="testimonial 3"/>
-                    <x-user-ratings.avatar src="https://unsplash.com/photos/mjRwhvqEC0U/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8cGVyc29ufGVufDB8fHx8MTcxMzY4NDI1MHww&force=true&w=640" alt="testimonial 4"/>
-                    <x-user-ratings.avatar src="https://unsplash.com/photos/C8Ta0gwPbQg/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTl8fHBlcnNvbnxlbnwwfHx8fDE3MTM2ODQyNTB8MA&force=true&w=640" alt="testimonial 5"/>
+                    {{-- يمكنك الإبقاء على الصور الحالية أو استبدالها بصور عملاء حقيقيين لاحقاً --}}
+                    <x-user-ratings.avatar
+                        src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=64&q=80"
+                        alt="Business Owner 1"/>
+                    <x-user-ratings.avatar
+                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=64&q=80"
+                        alt="Freelancer 1"/>
+                    <x-user-ratings.avatar
+                        src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=64&q=80"
+                        alt="CEO 1"/>
                 </x-slot>
-
-                {{ __('Join the best SaaS developers who are using SaaSykit to build their SaaS.') }}
+                {{ __('Trusted by 500+ business owners managing their growth with Zenvoyc.') }}
             </x-user-ratings>
 
             <div class="mx-auto md:max-w-3xl lg:max-w-5xl">
-                <img class="mt-8 transition drop-shadow-2xl hover:scale-101 rounded-2xl" src="{{URL::asset('/images/features/hero-image.png')}}" />
+                {{-- صورة تعبيرية للوحة التحكم (Dashboard) --}}
+                <img class="mt-8 transition drop-shadow-2xl hover:scale-101 rounded-2xl  "
+                     src="{{URL::asset('images/features/admin-panel.png')}}" alt="Zenvoyc Dashboard"/>
             </div>
-
         </div>
     </x-section.hero>
 
+    {{-- Feature 1: Invoicing & Global Compliance --}}
     <x-section.columns class="max-w-none md:max-w-6xl" id="features">
         <x-section.column>
             <div x-intersect="$el.classList.add('slide-in-top')">
-                <x-heading.h6 class="text-primary-500">
-                    {{ __('a solid SaaS') }}
+                <x-heading.h6 class="text-primary-500 uppercase tracking-widest">
+                    {{ __('Automation & Compliance') }}
                 </x-heading.h6>
                 <x-heading.h2 class="text-primary-900">
-                    {{ __('Subscriptions & One-time purchases.') }}
+                    {{ __('Smart Invoices that speak the language of global trade.') }}
                 </x-heading.h2>
             </div>
 
-            <p class="mt-4">
-                {{ __('Easily offer your customers subscription-based & one-time purchase products with SaaSykit. All the webhook handling, subscription management, and billing are already set up for you in a beautiful and easy-to-use admin panel.') }}
+            <p class="mt-4 text-gray-600 leading-relaxed">
+                {{ __('Zenvoyc automates your entire billing workflow. From professional creation to automated follow-ups, we ensure your business remains compliant with international standards without any manual effort.') }}
             </p>
-            <p class="mt-4">
-                {{ __('Collect payments with Stripe and Paddle, and manage your customers with ease.') }}
-            </p>
-            <p class="pt-4">
-                {{ __('Powered by:') }}
-            </p>
-            <div class="flex gap-3 pt-1">
-                <a href="https://stripe.com/" target="_blank">
-                    <img src="{{URL::asset('/images/payment-providers/stripe.png')}}" class="h-12 px-2 py-2 border rounded-lg border-primary-50" />
-                </a>
-                <a href="https://www.paddle.com/" target="_blank">
-                    <img src="{{URL::asset('/images/payment-providers/paddle.png')}}" class="h-12 px-2 py-2 border rounded-lg border-primary-50" />
-                </a>
+
+            {{-- القائمة المحدثة بالمميزات التقنية --}}
+            <div class="mt-8 space-y-5">
+                {{-- الميزة الجديدة: التحويل البروتوكولي الذكي --}}
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
+                        <x-icon.fancy name="development" class="w-6 h-6" type="primary"/>
+                    </div>
+                    <div>
+                        <span class="font-bold text-primary-900 block">{{ __('Cross-Border Protocol Bridge') }}</span>
+                        <p class="text-sm text-gray-500">{{ __('Seamlessly transform Factur-X/ZUGFeRD (CII) to PEPPOL (UBL) for EU-wide digital invoicing compliance.') }}</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
+                        <x-icon.fancy name="translatable" class="w-6 h-6" type="primary"/>
+                    </div>
+                    <div>
+                        <span class="font-bold text-primary-900 block">{{ __('Multi-Currency & Global Taxes') }}</span>
+                        <p class="text-sm text-gray-500">{{ __('Bill in any currency with automatic tax calculations based on local and international regulations.') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="pt-8 font-semibold text-sm text-gray-400 uppercase tracking-wider">{{ __('Seamlessly Integrated with:') }}</p>
+            <div class="flex items-center gap-4 pt-3">
+                <img src="{{URL::asset('/images/payment-providers/stripe.png')}}" title="Stripe"
+                     class="h-8 grayscale hover:grayscale-0 transition opacity-70 hover:opacity-100"/>
+                <img src="{{URL::asset('/images/payment-providers/lemon-squeezy.png')}}" title="PayPal"
+                     class="h-8 grayscale hover:grayscale-0 transition opacity-70 hover:opacity-100"/>
+                <div class="h-6 w-[1px] bg-gray-200 mx-2"></div>
+                <span
+                    class="text-[10px] font-bold text-gray-400 border border-gray-200 px-2 py-1 rounded">PEPPOL READY</span>
+                <span
+                    class="text-[10px] font-bold text-gray-400 border border-gray-200 px-2 py-1 rounded">ZUGFeRD</span>
             </div>
         </x-section.column>
 
-        <x-section.column>
-            <img src="{{URL::asset('/images/features/payments.png')}}" dir="right" ></img>
+        <x-section.column class="relative">
+            {{-- صورة الفاتورة مع تأثير "الدرع" أو "التحقق" لزيادة الثقة --}}
+            <div class="relative">
+                <img src="{{URL::asset('/images/features/invoice-mockup.jpg')}}" alt="Zenvoyc Invoicing"
+                     class="rounded-2xl shadow-2xl border border-gray-100">
+                {{-- عنصر عائم يوضح عملية الـ Conversion برمجياً --}}
+            </div>
         </x-section.column>
-
     </x-section.columns>
 
+    {{-- Feature 2: Expense Tracking --}}
     <x-section.columns class="flex-wrap-reverse max-w-none md:max-w-6xl">
-        <x-section.column >
-            <img src="{{URL::asset('/images/features/colors.png')}}" />
+        <x-section.column>
+            <img src="{{URL::asset('/images/features/expenidtures.png')}}" alt="Expense Tracking"
+                 class="rounded-xl shadow-lg"/>
         </x-section.column>
 
         <x-section.column>
             <div x-intersect="$el.classList.add('slide-in-top')">
                 <x-heading.h6 class="text-primary-500">
-                    {{ __('Your Brand, Your Colors') }}
+                    {{ __('Financial Clarity') }}
                 </x-heading.h6>
                 <x-heading.h2 class="text-primary-900">
-                    {{ __('Customize Everything.') }}
+                    {{ __('Track every penny effortlessly.') }}
                 </x-heading.h2>
             </div>
 
-            <p class="mt-4">
-                {{ __('Customize the primary & secondary colors of your website, error pages, email templates, fonts, social sharing cards, favicons, and more.') }}
+            <p class="mt-4 text-gray-600 leading-relaxed">
+                {{ __('Categorize your expenses, upload receipts via your phone, and monitor your cash flow in real-time. Knowing where your money goes is the first step to scaling your business.') }}
             </p>
 
-            <p class="mt-4">
-                {{ __('Based on the popular TailwindCSS, you can easily customize the look and feel of your SaaS application.') }}
-            </p>
+            <x-button-link.primary href="/register" class="mt-6">
+                {{ __('Start Tracking for Free') }}
+            </x-button-link.primary>
         </x-section.column>
-
     </x-section.columns>
 
-    <x-section.columns class="mt-6 max-w-none md:max-w-6xl" >
-        <x-section.column>
-            <div x-intersect="$el.classList.add('slide-in-top')">
-                <x-heading.h6 class="text-primary-500">
-                    {{ __('At your fingertips') }}
-
-                </x-heading.h6>
-                <x-heading.h2 class="text-primary-900">
-                    {{ __('Products, Plans & Pricing.') }}
-                </x-heading.h2>
-            </div>
-
-            <p class="mt-4">
-                {{ __('Create and manage your products, plans, and pricing, set features for each plan, mark a plan as featured, and more.') }}
-            </p>
-
-            <p class="mt-4">
-                {{ __('Rewards your customers with discounts and manage all that from a beautiful admin panel.') }}
-            </p>
-        </x-section.column>
-
-        <x-section.column>
-            <img src="{{URL::asset('/images/features/plans.png')}}" class="rounded-2xl"/>
-        </x-section.column>
-
-    </x-section.columns>
-
-    <x-section.columns class="flex-wrap-reverse mt-6 max-w-none md:max-w-6xl">
-        <x-section.column >
-            <img src="{{URL::asset('/images/features/checkout.png')}}" class="rounded-2xl" />
-        </x-section.column>
-
-        <x-section.column>
-            <div x-intersect="$el.classList.add('slide-in-top')">
-                <x-heading.h6 class="text-primary-500">
-                    {{ __('Buttery smooth') }}
-                </x-heading.h6>
-                <x-heading.h2 class="text-primary-900">
-                    {{ __('Beautiful checkout process.') }}
-                </x-heading.h2>
-            </div>
-
-            <p class="mt-4">
-                {{ __('In a few clicks, your customers can subscribe to your service using a beautiful checkout page that shows all the details of the plan they are subscribing to, allowing them to add a coupon code if they have one, and choose their payment method.') }}
-            </p>
-        </x-section.column>
-
-    </x-section.columns>
-
-    <div class="mx-4 mt-16 text-center" id="tech-stack">
-        <x-heading.h6 class="text-primary-500">
-            {{ __('The best of the best') }}
+    {{-- Tech Stack Section --}}
+    <div class="mx-4 mt-24 text-center" id="tech-stack">
+        <x-heading.h6 class="text-primary-500 uppercase tracking-widest">
+            {{ __('Enterprise Grade') }}
         </x-heading.h6>
         <x-heading.h2 class="text-primary-900">
-            {{ __('A solid tech stack') }}
+            {{ __('Secure, Fast, and Reliable') }}
         </x-heading.h2>
     </div>
 
+    <div class="p-4 mx-auto text-center max-w-4xl">
+        <p class="text-gray-500">{{ __('Zenvoyc is built on the same technology used by the world\'s most secure financial platforms, ensuring your data remains private and your experience remains snappy.') }}</p>
 
-    <div class="p-4 mx-auto text-center">
-        <p >{{ __('Laravel, TailwindCSS, Livewire, AlpineJS & FilamentPhp') }}</p>
-
-        <div class="flex flex-wrap items-center justify-center gap-12 mt-8">
-            <img src="{{URL::asset('/images/tech-stack/laravel.svg')}}" class="h-10 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
-            <img src="{{URL::asset('/images/tech-stack/filament.avif')}}" class="h-10 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
-            <img src="{{URL::asset('/images/tech-stack/tailwindcss.svg')}}" class="h-12 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
-            <img src="{{URL::asset('/images/tech-stack/livewire.png')}}" class="h-20 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
-            <img src="{{URL::asset('/images/tech-stack/alpinejs.svg')}}" class="h-16 transition opacity-50 hover:cursor-pointer hover:scale-103 hover:opacity-100 grayscale hover:grayscale-0" />
+        <div class="flex flex-wrap items-center justify-center gap-12 mt-10">
+            <img src="{{URL::asset('/images/tech-stack/aws-svgrepo-com.svg')}}" title="Aws"
+                 class="h-12 opacity-40 hover:opacity-100 transition"/>
+            <img src="{{URL::asset('/images/tech-stack/cropped-logo.png')}}" title="Fnfe-MPE"
+                 class="h-12 opacity-40 hover:opacity-100 transition"/>
+            <img src="{{URL::asset('/images/tech-stack/ZUGFeRD_logo.svg')}}" title="ZUGFeRD"
+                 class="h-12 opacity-40 hover:opacity-100 transition"/>
         </div>
-
     </div>
 
-    {{--    ////////////--}}
-    {{--    Slider      --}}
-    {{--    ////////////--}}
-
-    <div class="p-4 mt-16 text-center">
-        <x-heading.h6 class="text-primary-500">
-            {{ __('All Inclusive') }}
-        </x-heading.h6>
-        <x-heading.h2 class="text-primary-900">
-            {{ __('Huge list of ready-to-use components.') }}
-        </x-heading.h2>
+    {{-- Tab Slider: Specific Features --}}
+    <div class="p-4 mt-24 text-center">
+        <x-heading.h6 class="text-primary-500">{{ __('Comprehensive Tools') }}</x-heading.h6>
+        <x-heading.h2 class="text-primary-900">{{ __('Everything your accountant would love.') }}</x-heading.h2>
     </div>
 
     <div class="mx-4">
         <x-tab-slider class="py-8 mt-6 border-2 md:max-w-6xl border-neutral-100 rounded-2xl">
             <x-slot name="tabNames">
-                <x-tab-slider.tab-name controls="tab-1" active="true">{{ __('Testimonials') }}</x-tab-slider.tab-name>
-                <x-tab-slider.tab-name controls="tab-2">{{ __('Plans & Pricing') }}</x-tab-slider.tab-name>
-                <x-tab-slider.tab-name controls="tab-3">{{ __('Hero section') }}</x-tab-slider.tab-name>
-                <x-tab-slider.tab-name controls="tab-4">{{ __('FAQ') }}</x-tab-slider.tab-name>
-                <x-tab-slider.tab-name controls="tab-5">{{ __('Call to action') }}</x-tab-slider.tab-name>
-                <x-tab-slider.tab-name controls="tab-6">{{ __('Tab slider') }}</x-tab-slider.tab-name>
-                <x-tab-slider.tab-name controls="tab-7">{{ __('and more') }}</x-tab-slider.tab-name>
+                <x-tab-slider.tab-name controls="tab-1" active="true">{{ __('Auto-Generated') }}</x-tab-slider.tab-name>
+                <x-tab-slider.tab-name controls="tab-2">{{ __('Email Theme Editor') }}</x-tab-slider.tab-name>
+                <x-tab-slider.tab-name
+                    controls="tab-3">{{ __('Multiple Businesses in One Place') }}</x-tab-slider.tab-name>
             </x-slot>
 
             <x-tab-slider.tab-content id="tab-1">
-                <div class="mt-8 text-center">
+                <div class="mt-8 text-center px-6">
                     <x-heading.h4 class="text-primary-900 !font-semibold">
-                        {{ __('Testimonials') }}
+                        {{ __('Automated Billing & Client Portal') }}
                     </x-heading.h4>
 
-                    <div class="max-w-2xl mx-auto">
-                        <p class="mt-4">
-                            {{ __('Display testimonials from your customers on your website and build trust with your potential customers.') }}
+                    <div class="max-w-3xl mx-auto mt-4 space-y-4">
+                        <p class="text-gray-600 leading-relaxed">
+                            {{ __('Put your revenue on autopilot. Zenvoyc allows you to schedule professional invoices to be generated and sent automatically at custom intervals—weekly, monthly, or annually.') }}
                         </p>
+
                     </div>
+                    <img src="{{URL::asset('/images/features/invoices.png')}}"
+                         class="w-full max-w-4xl mx-auto mt-12 drop-shadow-xl rounded-2xl h-auto object-cover"/>
                 </div>
-
-                <div class="max-w-4xl m-10 mx-auto mt-12">
-                    <img src="{{URL::asset('/images/features/testimonials.png')}}" class="drop-shadow-xl rounded-2xl" />
-                </div>
-
             </x-tab-slider.tab-content>
-
             <x-tab-slider.tab-content id="tab-2">
-                <div class="mt-8 text-center">
-                    <x-heading.h4 class="text-primary-900 !font-semibold">
-                        {{ __('Plans & Pricing Component') }}
-                    </x-heading.h4>
-
-                    <div class="max-w-2xl mx-auto">
-                        <p class="mt-4">
-                            {{ __('This component is magical in that it will read the plans you defined in your admin panel, group them, calculate potential discount amount if user chooses a longer plan, and display all that in a beautiful way for your users. ') }}
-                        </p>
-                    </div>
+                <div class="mt-8 text-center px-6">
+                    <x-heading.h4
+                        class="text-primary-900 !font-semibold">{{ __('Fully Branded Email Experience') }}</x-heading.h4>
+                    <p class="max-w-2xl mx-auto mt-4 text-gray-600">
+                        {{ __('Your invoices, your style. Zenvoyc gives you complete control over how your invoice emails look. Choose from multiple professional layouts and customize colors, logos, and messaging to match your brand identity perfectly.') }}                    </p>
+                    <img src="{{URL::asset('/images/features/email-editor.png')}}"
+                         class="w-full max-w-4xl mx-auto mt-12 drop-shadow-xl rounded-2xl h-auto object-cover"
+                         alt="Zenvoyc Email Editor"/>
                 </div>
-
-                <div class="max-w-4xl m-10 mx-auto mt-12">
-                    <img src="{{URL::asset('/images/features/plans-component.png')}}" class="drop-shadow-xl rounded-2xl" />
-                </div>
-
             </x-tab-slider.tab-content>
-
             <x-tab-slider.tab-content id="tab-3">
-                <div class="mt-8 text-center">
-                    <x-heading.h4 class="text-primary-900 !font-semibold">
-                        {{ __('Hero section Component') }}
-                    </x-heading.h4>
-
-                    <div class="max-w-2xl mx-auto">
-                        <p class="mt-4">
-                            {{ __('A ready-to-use hero section component to display your hero image, title, and call to action button.') }}
-                        </p>
-                    </div>
+                <div class="mt-8 text-center px-6">
+                    <x-heading.h4
+                        class="text-primary-900 !font-semibold">{{ __('Manage Multiple Businesses in One Place') }}</x-heading.h4>
+                    <p class="max-w-2xl mx-auto mt-4 text-gray-600">
+                        {{ __('Why limit yourself to one? Zenvoyc lets you create and manage multiple companies under a single account. Switch between different business profiles instantly, with separate branding, tax settings, and invoice numbering for each.') }}       </p>
+                    <img src="{{URL::asset('/images/features/comapny-settings.png')}}"
+                         class="w-full max-w-4xl mx-auto mt-12 drop-shadow-xl rounded-2xl h-auto object-cover"/>
                 </div>
-
-                <div class="max-w-4xl m-10 mx-auto mt-12">
-                    <img src="{{URL::asset('/images/features/hero-component.png')}}" class="drop-shadow-xl rounded-2xl" />
-                </div>
-
             </x-tab-slider.tab-content>
-
-            <x-tab-slider.tab-content id="tab-4">
-                <div class="mt-8 text-center">
-                    <x-heading.h4 class="text-primary-900 !font-semibold">
-                        {{ __('FAQ Component') }}
-                    </x-heading.h4>
-
-                    <div class="max-w-2xl mx-auto">
-                        <p class="mt-4">
-                            {{ __('An accordion component that you can use to display your FAQ in an intuitive way.') }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="max-w-4xl m-10 mx-auto mt-12">
-                    <img src="{{URL::asset('/images/features/faqs-component.png')}}" class="drop-shadow-xl rounded-2xl" />
-                </div>
-
-            </x-tab-slider.tab-content>
-
-            <x-tab-slider.tab-content id="tab-5">
-                <div class="mt-8 text-center">
-                    <x-heading.h4 class="text-primary-900 !font-semibold">
-                        {{ __('Call to action component') }}
-                    </x-heading.h4>
-
-                    <div class="max-w-2xl mx-auto">
-                        <p class="mt-4">
-                            {{ __('A focused component the brings attention to your call to action.') }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="max-w-4xl m-10 mx-auto mt-12">
-                    <img src="{{URL::asset('/images/features/call-to-action-component.png')}}" class="drop-shadow-xl rounded-2xl">
-                </div>
-
-            </x-tab-slider.tab-content>
-
-            <x-tab-slider.tab-content id="tab-6">
-                <div class="mt-8 text-center">
-                    <x-heading.h4 class="text-primary-900 !font-semibold">
-                        {{ __('Tab Slider Component') }}
-                    </x-heading.h4>
-
-                    <div class="max-w-2xl mx-auto">
-                        <p class="mt-4">
-                            {{ __('Tab slider component displays your content in a beautiful and organized way into separate tabs.') }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="max-w-4xl m-10 mx-auto mt-12">
-                    <img src="{{URL::asset('/images/features/tab-slider-component.png')}}" class="drop-shadow-xl rounded-2xl">
-                </div>
-
-            </x-tab-slider.tab-content>
-
-            <x-tab-slider.tab-content id="tab-7">
-
-                <div class="max-w-4xl m-10 mx-auto mt-6">
-                    <x-section.columns class="mt-6 max-w-none md:max-w-6xl">
-                        <x-section.column class="flex flex-col items-center justify-center text-center">
-                            <x-icon.fancy name="nav" class="w-2/5 mx-auto" type="secondary" />
-                            <x-heading.h3 class="pt-2 mx-auto">
-                                {{ __('Header & Footer') }}
-                            </x-heading.h3>
-                            <p class="mt-2">{{ __('Easily customize your header and footer.') }}</p>
-                        </x-section.column>
-
-                        <x-section.column class="flex flex-col items-center justify-center text-center">
-                            <x-icon.fancy name="button-ok" class="w-2/5 mx-auto" type="secondary" />
-                            <x-heading.h3 class="pt-2 mx-auto">
-                                {{ __('Buttons') }}
-                            </x-heading.h3>
-                            <p class="mt-2">{{ __('Beautiful buttons to use in your application.') }}</p>
-                        </x-section.column>
-
-                        <x-section.column class="flex flex-col items-center justify-center text-center">
-                            <x-icon.fancy name="pill" class="w-2/5 mx-auto" type="secondary" />
-                            <x-heading.h3 class="pt-2 mx-auto">
-                                {{ __('Pill') }}
-                            </x-heading.h3>
-                            <p class="mt-2">{{ __('Pills to highlight your content where you need to.') }}</p>
-                        </x-section.column>
-
-                    </x-section.columns>
-
-                    <p class="mt-4 text-center">
-                        {{ __('and much more...') }}
-                    </p>
-                </div>
-
-            </x-tab-slider.tab-content>
-
-
-
+            {{-- ... يمكنك إضافة محتوى بقية التابات هنا بنفس النمط ... --}}
         </x-tab-slider>
     </div>
 
+    {{-- Final CTA --}}
+    <div class="bg-primary-900 my-24 py-16 px-4 rounded-3xl mx-4 md:mx-auto max-w-6xl text-center">
+        <x-heading.h2 class="text-white">{{ __('Ready to transform your business accounting?') }}</x-heading.h2>
+        <p class="text-primary-100 mt-4 max-w-2xl mx-auto">
+            {{ __('Join hundreds of freelancers and agency owners who trust Zenvoyc to power their financial growth.') }}
+        </p>
 
+    </div>
 
-    <x-section.columns class="mt-12 max-w-none md:max-w-6xl" >
-        <x-section.column>
+    {{-- FAQ Section --}}
+    {{-- Contact/Lead Generation Section --}}
+    <section class="py-24 mt-4 bg-white" id="contact">
+        <div class="max-w-4xl mx-auto px-6 text-center">
             <div x-intersect="$el.classList.add('slide-in-top')">
-                <x-heading.h6 class="text-primary-500">
-                    {{ __('Know your numbers') }}
-                </x-heading.h6>
-                <x-heading.h2 class="text-primary-900">
-                    {{ __('SaaS Stats.') }}
+                <x-pill
+                    class="text-primary-500 bg-primary-50 border border-primary-100 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                    {{ __('Direct Support') }}
+                </x-pill>
+                <x-heading.h2 class="mt-6 text-primary-900 font-bold">
+                    {{ __('Ready to scale your financial workflow?') }}
                 </x-heading.h2>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+                    {{ __('Leave your details below, and our team will get back to you with a personalized Zenvoyc walkthrough.') }}
+                </p>
             </div>
 
-            <p class="mt-4">
-                {{ __('View your MRR (monthly recurring revenue), Churn rates, ARPU (average revenue per user), and other SaaS metrics right inside your admin panel.') }}
-            </p>
-        </x-section.column>
+            {{-- الفورم بتصميم يتماشى مع Tab Slider --}}
+            <div x-data="{ submitted: false }"
+                 class="mt-12 max-w-lg mx-auto p-1 md:p-8 bg-white rounded-3xl border-2 border-neutral-100 shadow-xl relative overflow-hidden">
 
-        <x-section.column>
-            <img src="{{URL::asset('/images/features/stats.png')}}" >
-        </x-section.column>
+                {{-- حالة النجاح --}}
+                <div x-show="submitted" x-transition.duration.500ms class="py-12 px-6">
+                    <div
+                        class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-100">
+                        <x-icon.fancy name="heroicon-o-check-circle" class="w-10 h-10"/>
+                    </div>
+                    <h3 class="text-primary-900 font-bold text-2xl">{{ __('We\'ve received your request!') }}</h3>
+                    <p class="text-gray-500 mt-3 leading-relaxed">{{ __('One of our experts will reach out to your work email within 24 hours.') }}</p>
+                    <button @click="submitted = false"
+                            class="mt-8 text-primary-500 font-bold hover:underline transition">
+                        {{ __('Back to form') }}
+                    </button>
+                </div>
 
-    </x-section.columns>
+                {{-- نموذج الإدخال --}}
+                <form x-show="!submitted" @submit.prevent="submitted = true" class="space-y-6 text-left p-6 md:p-0">
+                    <div>
+                        <label class="block text-sm font-semibold text-primary-900 mb-2">{{ __('Full Name') }}</label>
+                        <input type="text" required placeholder="Your Name"
+                               class="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3.5 text-primary-900 placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 transition-all">
+                    </div>
 
-    <x-section.columns class="flex-wrap-reverse mt-16 max-w-none md:max-w-6xl">
-        <x-section.column >
-            <img src="{{URL::asset('/images/features/email.png')}}"  />
-        </x-section.column>
+                    <div>
+                        <label class="block text-sm font-semibold text-primary-900 mb-2">{{ __('Work Email') }}</label>
+                        <input type="email" required placeholder="youremail@email.com"
+                               class="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3.5 text-primary-900 placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 transition-all">
+                    </div>
 
-        <x-section.column>
-            <div x-intersect="$el.classList.add('slide-in-top')">
-                <x-heading.h6 class="text-primary-500">
-                    {{ __('Connect with customers') }}
-                </x-heading.h6>
-                <x-heading.h2 class="text-primary-900">
-                    {{ __('Send & Customize Emails.') }}
-                </x-heading.h2>
+                    <div>
+                        <label
+                            class="block text-sm font-semibold text-primary-900 mb-2">{{ __('Business Type') }}</label>
+                        <div class="relative">
+                            <select
+                                class="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3.5 text-primary-900 focus:outline-none focus:border-primary-500 transition-all appearance-none cursor-pointer">
+                                <option>{{ __('Freelancer / Agency') }}</option>
+                                <option>{{ __('SaaS / Tech Company') }}</option>
+                                <option>{{ __('E-commerce Business') }}</option>
+                                <option>{{ __('Other') }}</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit"
+                                class="w-full py-4 bg-primary-900 hover:bg-primary-800 text-primary font-bold rounded-xl shadow-lg hover:shadow-primary-900/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                            <span>{{ __('Get Expert Consultation') }}</span>
+                        </button>
+                    </div>
+
+                    <p class="text-[11px] text-gray-400 text-center leading-tight">
+                        {{ __('By requesting a walkthrough, you agree to our terms of service and professional privacy standards.') }}
+                    </p>
+                </form>
             </div>
-
-            <p class="mt-4">
-                {{ __('Choose your preferred email service from options like Mailgun, Postmark, and Amazon SES to communicate with your customers.') }}
-            </p>
-            <p class="mt-4">
-                {{ __('SaaSykit comes with a beautiful email template out of the box that takes your brand colors into consideration, along with the typical emails for customer registration, verification, resetting password, etc set up for you.') }}
-            </p>
-
-            <p class="pt-4">
-                {{ __('Supported email providers:') }}
-            </p>
-            <div class="flex gap-3 pt-1">
-                <a href="https://postmarkapp.com/" target="_blank">
-                    @svg('colored/postmark', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                </a>
-
-                <a href="https://www.mailgun.com/" target="_blank">
-                    @svg('colored/mailgun', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                </a>
-
-                <a href="https://aws.amazon.com/ses/" target="_blank">
-                    @svg('colored/ses', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                </a>
-            </div>
-        </x-section.column>
-
-    </x-section.columns>
-
-    <x-section.columns class="max-w-none md:max-w-6xl" >
-        <x-section.column>
-            <div x-intersect="$el.classList.add('slide-in-top')">
-                <x-heading.h6 class="text-primary-500">
-                    {{ __('Content is king') }}
-                </x-heading.h6>
-                <x-heading.h2 class="text-primary-900">
-                    {{ __('A ready Blog.') }}
-                </x-heading.h2>
-            </div>
-
-            <p class="mt-4">
-                {{ __('When it comes to reaching customer, nothing beats SEO.') }}
-            </p>
-            <p class="mt-4">
-                {{ __('SaaSykit comes with a ready blog system that you can use to publish articles and tutorials for your customers about your SaaS, which will help you with your SEO.') }}
-            </p>
-        </x-section.column>
-
-        <x-section.column>
-            <img src="{{URL::asset('/images/features/blog.png')}}" />
-        </x-section.column>
-
-    </x-section.columns>
-
-    <x-section.columns class="flex-wrap-reverse mt-16 max-w-none md:max-w-6xl">
-        <x-section.column >
-            <img src="{{URL::asset('/images/features/login.png')}}" />
-        </x-section.column>
-
-        <x-section.column>
-            <div x-intersect="$el.classList.add('slide-in-top')">
-                <x-heading.h6 class="text-primary-500">
-                    {{ __('Modern Authentication') }}
-                </x-heading.h6>
-                <x-heading.h2 class="text-primary-900">
-                    {{ __('Login, Registration & Social login.') }}
-                </x-heading.h2>
-            </div>
-
-            <p class="mt-4">
-                {{ __('SaaSykit includes built-in user authentication, supporting both traditional email/password authentication and social login options such as Google, Facebook, Twitter, Github, LinkedIn, and more.') }}
-            </p>
-
-            <p class="pt-4">
-                {{ __('Supported login providers:') }}
-            </p>
-            <div class="flex flex-wrap gap-3 pt-1">
-                @svg('colored/google', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                @svg('colored/facebook', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                @svg('colored/twitter-oauth-2', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                @svg('colored/linkedin', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                @svg('colored/github', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                @svg('colored/gitlab', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-                @svg('colored/bitbucket', 'h-12 w-12 py-2 px-2 border border-primary-50 rounded-lg')
-            </div>
-        </x-section.column>
-
-    </x-section.columns>
-
-
-    <div class="mt-16 text-center" x-intersect="$el.classList.add('slide-in-top')">
-        <x-heading.h6 class="text-primary-500">
-            {{ __('Can\'t get more beautiful') }}
-        </x-heading.h6>
-        <x-heading.h2 class="text-primary-900">
-            {{ __('A stunning Admin Panel.') }}
-        </x-heading.h2>
-    </div>
-
-    <p class="py-4 text-center">{{ __('Manage your SaaS application from a beautiful admin panel powered by Filament') }}</p>
-
-    <div class="max-w-5xl pt-6 mx-auto text-center ">
-        <img src="{{URL::asset('/images/features/admin-panel.png')}}" >
-    </div>
-
-
-    <div class="mt-16 text-center" x-intersect="$el.classList.add('slide-in-top')">
-        <x-heading.h6 class="text-primary-500">
-            {{ __('Oh, we\'re not done yet') }}
-        </x-heading.h6>
-        <x-heading.h2 class="text-primary-900">
-            {{ __('And a whole lot more') }}
-        </x-heading.h2>
-    </div>
-
-    <x-section.columns class="mt-6 max-w-none md:max-w-6xl">
-        <x-section.column class="flex flex-col items-center justify-center text-center">
-            <x-icon.fancy name="users" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="pt-2 mx-auto">
-                {{ __('Users & Roles') }}
-            </x-heading.h3>
-            <p class="mt-2">{{ __('Manage your users, create roles and assign permissions to your users.') }}</p>
-        </x-section.column>
-
-        <x-section.column class="flex flex-col items-center justify-center text-center">
-            <x-icon.fancy name="translatable" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="pt-2 mx-auto">
-                {{ __('Fully translatable') }}
-            </x-heading.h3>
-            <p class="mt-2">{{ __('Translate your application to any language you want.') }}</p>
-        </x-section.column>
-
-        <x-section.column class="flex flex-col items-center justify-center text-center">
-            <x-icon.fancy name="seo" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="pt-2 mx-auto">
-                {{ __('Sitemap & SEO') }}
-            </x-heading.h3>
-            <p class="mt-2">{{ __('Auto-generated sitemap and SEO optimization out of the box.') }}</p>
-        </x-section.column>
-
-    </x-section.columns>
-
-    <x-section.columns class="mt-6 max-w-none md:max-w-6xl">
-        <x-section.column class="flex flex-col items-center justify-center text-center">
-            <x-icon.fancy name="user-dashboard" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="pt-2 mx-auto">
-                {{ __('User Dashboard') }}
-            </x-heading.h3>
-            <p class="mt-2">{{ __('Users can manage their subscriptions, change payment method, upgrade plan, cancel subscription alone.') }}</p>
-        </x-section.column>
-
-        <x-section.column class="flex flex-col items-center justify-center text-center">
-            <x-icon.fancy name="tool" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="pt-2 mx-auto">
-                {{ __('Highly customizable') }}
-            </x-heading.h3>
-            <p class="mt-2">{{ __('Manage your SaaS settings from within the admin panel. No need to redeploy app for simple changes anymore.') }}</p>
-        </x-section.column>
-
-        <x-section.column class="flex flex-col items-center justify-center text-center">
-            <x-icon.fancy name="development" class="w-2/5 mx-auto" />
-            <x-heading.h3 class="pt-2 mx-auto">
-                {{ __('Developer-friendly') }}
-            </x-heading.h3>
-            <p class="mt-2">{{ __('Built with developers in mind, uses best coding practices. Offers handlers & events and automated tests covering critical components of the application.') }}</p>
-        </x-section.column>
-
-    </x-section.columns>
-
-    <div class="mx-4 mt-24 text-center">
-        <x-heading.h6 class="text-primary-500">
-            {{ __('Start to end') }}
-        </x-heading.h6>
-        <x-heading.h2 class="text-primary-900">
-            {{ __('1-command deployment & Server provisioning') }}
-        </x-heading.h2>
-    </div>
-
-    <p class="p-4 text-center">{{ __('Deploy your SaaS application to your server with a single command, powered by') }} <a href="https://deployer.org/" target="_blank" class="text-primary-500 hover:underline">{{ __('PHP Deployer') }}</a>. </p>
-
-    <div class="mx-auto mt-6 max-w-fit">
-        <span class="p-6 mt-4 border border-neutral-300 bg-neutral-100 rounded-2xl">
-            $ ./vendor/bin/dep deploy
-        </span>
-        <span class="-mt-2 text-4xl ms-3"> 🚀</span>
-    </div>
-
-
-    <div class="mt-24 text-center" x-intersect="$el.classList.add('slide-in-top')">
-        <x-heading.h6 class="text-primary-500">
-            {{ __('Extensive Documentation') }}
-        </x-heading.h6>
-        <x-heading.h2 class="text-primary-900">
-            {{ __('Everything you need to know to get started.') }}
-        </x-heading.h2>
-    </div>
-
-    <div class="mx-4 obaaa">
-        <div class="mx-auto text-center max-w-none md:max-w-6xl">
-            <p class="mt-4">
-                {{ __('SaaSykit\'s documentation is extensive and covers everything you need to know to get started with building your SaaS.') }}
-            </p>
-            <x-button-link.primary href="https://saasykit.com/docs" class="mt-8 ">
-                {{ __('Check Documentation') }}
-            </x-button-link.primary>
         </div>
-    </div>
-
-    <div class="mx-4 mt-24 text-center" id="faq">
-        <x-heading.h6 class="text-primary-500">
-            {{ __('FAQ') }}
-        </x-heading.h6>
-        <x-heading.h2 class="text-primary-900">
-            {{ __('Got a Question?') }}
-        </x-heading.h2>
-        <p>{{ __('Here are the most common questions to help you with your decision.') }}</p>
-    </div>
-
-    <div class="mx-auto max-w-none md:max-w-6xl">
-        <x-accordion class="p-8 mt-4">
-            <x-accordion.item active="true" name="faqs">
-                <x-slot name="title">{{ __('What is SaaSykit?') }}</x-slot>
-
-                <p>
-                    {{ __('SaaSykit is a complete SaaS starter kit that includes everything you need to start your SaaS business. It comes ready with a huge list of reusable components, a complete admin panel, user dashboard, user authentication, user & role management, plans & pricing, subscriptions, payments, emails, and more.') }}
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{ __('What features does SaaSykit offer?') }}</x-slot>
-
-                <p class="mt-4">
-                    {{ __('Here are some of the features included in SaaSykit in a nutshell:') }}
-                </p>
-
-                <ul class="mt-4 list-disc ms-4 ps-4">
-                    <li>{{ __('Customize Styles: Customize the styles &amp; colors, error page of your application to fit your brand.') }}</li>
-                    <li>{{ __('Product, Plans &amp; Pricing: Create and manage your products, plans, and pricing from a beautiful and easy-to-use admin panel.') }}</li>
-                    <li>{{ __('Beautiful checkout process: Your customers can subscribe to your plans from a beautiful checkout process.') }}</li>
-                    <li>{{ __('Huge list of ready-to-use components: Plans &amp; Pricing, hero section, features section, testimonials, FAQ, Call to action, tab slider, and much more.') }}</li>
-                    <li>{{ __('User authentication: Comes with user authentication out of the box, whether classic email/password or social login (Google, Facebook, Twitter, Github, LinkedIn, and more).') }}</li>
-                    <li>{{ __('Discounts: Create and manage your discounts and reward your customers.') }}</li>
-                    <li>{{ __('SaaS metric stats: View your MRR, Churn rates, ARPU, and other SaaS metrics.') }}</li>
-                    <li>{{ __('Multiple payment providers: Stripe, Paddle, and more coming soon.') }}</li>
-                    <li>{{ __('Multiple email providers: Mailgun, Postmark, Amazon SES, and more coming soon.') }}</li>
-                    <li>{{ __('Blog: Create and manage your blog posts.') }}</li>
-                    <li>{{ __('User &amp; Role Management: Create and manage your users and roles, and assign permissions to your users.') }}</li>
-                    <li>{{ __('Fully translatable: Translate your application to any language you want.') }}</li>
-                    <li>{{ __('Sitemap &amp; SEO: Sitemap and SEO optimization out of the box.') }}</li>
-                    <li>{{ __('Admin Panel: Manage your SaaS application from a beautiful admin panel powered by ') }} <a href="https://filamentphp.com/" target="_blank" rel="noopener noreferrer">Filament</a>.</li>
-                    <li>{{ __('User Dashboard: Your customers can manage their subscriptions, change payment method, upgrade plan, cancel subscription, and more from a beautiful user dashboard powered by') }} <a href="https://filamentphp.com/" target="_blank" rel="noopener noreferrer">Filament</a>.</li>
-                    <li>{{ __('Automated Tests: Comes with automated tests for critical components of the application.') }}</li>
-                    <li>{{ __('One-line deployment: Provision your server and deploy your application easily with integrated') }} <a href="https://deployer.org/" target="_blank" rel="noopener noreferrer">Deployer</a> {{ __('  support.') }}</li>
-                    <li>{{ __('Developer-friendly: Built with developers in mind, uses best coding practices.') }}</li>
-                    <li>{{ __('And much more...') }}</li>
-                </ul>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{ __('Which payment providers are supported?') }}</x-slot>
-
-                <p>
-                    {{ __('SaaSykit supports Stripe and Paddle out of the box. You can easily add more payment providers by extending the code. More payment method will be added in the future as well (e.g. Lemon Squeezy)') }}
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{ __('Do you offer support?') }}</x-slot>
-
-                <p>
-                    {{ __('Of course! we offer email and discord support to help you with any issues you might face or questions you have. Write us an email at') }} <a href="mailto:{{config('app.support_email')}}" class="text-primary-500 hover:underline">{{config('app.support_email')}}</a> {{ __('or join our') }} <a href="{{config('app.social_links.discord')}}">{{ __('discord server')}}</a> {{ __('to get help.')}}
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{'What Tech stack is used?'}}</x-slot>
-
-                <p>
-                    {{ __('SaaSykit is built on top of') }} <a href="https://laravel.com" target="_blank">Laravel</a> {{ __('Laravel, the most popular PHP framework, and') }} <a target="_blank" href="https://filamentphp.com/">Filament</a> {{ __(', a beautiful and powerful admin panel for Laravel. It also uses TailwindCSS, AlpineJS, and Livewire.')}}
-                </p>
-                <p class="mt-4">
-                    {{ __('You can use your favourite database (MySQL, PostgreSQL, SQLite) and your favourite queue driver (Redis, Amazon SQS, etc).')}}
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{'How often is SaaSykit updated?'}}</x-slot>
-
-                <p>
-                    {{ __('SaaSykit is updated regularly to keep up with the latest Laravel and Filament versions, and to add new features and improvements.')}}
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{'Do you offer refunds?'}}</x-slot>
-
-                <p>
-                    {{ __('Yes, we offer a 14-day money-back guarantee. If you are not satisfied with SaaSykit, you can request a refund within 14 days of your purchase. Please write us an email at') }} <a href="mailto:{{config('app.support_email')}}" class="text-primary-500 hover:underline">{{config('app.support_email')}}</a> {{ __('to request a refund.')}}
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{'Where can I host my SaaS application?'}}</x-slot>
-
-                <p>
-                    {{ __('You can host your SaaS application on any server that supports PHP, such as DigitalOcean, AWS, Hetzner, Linode, and more. You can also use a platform like Laravel Forge to manage your server and deploy your application.')}}
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{'Is there a demo available?'}}</x-slot>
-
-                <p>
-                    {{ __('Yes, a demo is available to help you get a feel of SaaSykit. You can find the demo') }} <a href="https://saasykit.com/demo" target="_blank" rel=”nofollow” >here</a>.
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{'Is there documentation available?'}}</x-slot>
-
-                <p>
-                    {{ __('Yes, an extensive documentation is available to help you get started with SaaSykit. You can find the documentation ')}} <a href="https://saasykit.com/docs" target="_blank">here</a>.
-                </p>
-
-            </x-accordion.item>
-
-            <x-accordion.item active="false" name="faqs">
-                <x-slot name="title">{{'How is SaaSykit different from just using Laravel directly?'}}</x-slot>
-
-                <p>
-                    {{__('SaaSykit is built on top of Laravel with the intention to save you time and effort by not having to build everything needed for a modern SaaS from scratch, like payment provider integration, subscription management, user authentication, user & role management, having a beautiful admin panel, a user dashboard to manage their subscriptions/payments, and more.')}}
-                </p>
-                <p class="mt-4">
-                    {{__('You can choose to base your SaaS on vanilla Laravel and build everything from scratch if you prefer and that is totally fine, but you will need a few months to build what SaaSykit offers out of the box, then on top of that, you will need to start to build your actual SaaS application.')}}
-                </p>
-
-                <p class="mt-4">
-                    {{__('SaaSykit is a great starting point for your SaaS application, it is built with best coding practices, and it is developer-friendly. It is also built with the intention to be easily customizable and extendable. Any developer who is familiar with Laravel will feel right at home.')}}
-                </p>
-
-            </x-accordion.item>
-        </x-accordion>
-    </div>
+    </section>
 </x-layouts.app>

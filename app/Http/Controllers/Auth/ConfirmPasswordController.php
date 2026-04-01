@@ -35,6 +35,9 @@ class ConfirmPasswordController extends Controller
      */
     public function __construct()
     {
+        //        stop controller from receiving requests
+        \abort(404);
+
         $this->middleware('auth');
     }
 }

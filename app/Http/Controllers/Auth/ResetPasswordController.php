@@ -21,6 +21,10 @@ class ResetPasswordController extends Controller
 
     use ResetsPasswords;
 
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Where to redirect users after resetting their password.
      *
