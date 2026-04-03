@@ -137,12 +137,114 @@
                 {{ __('Categorize your expenses, upload receipts via your phone, and monitor your cash flow in real-time. Knowing where your money goes is the first step to scaling your business.') }}
             </p>
 
-            <x-button-link.primary href="/register" class="mt-6">
-                {{ __('Start Tracking for Free') }}
+            <x-button-link.primary href="#contact" class="mt-6">
+                {{ __('Start Tracking Now') }}
             </x-button-link.primary>
         </x-section.column>
     </x-section.columns>
+    {{-- Pricing & Plans Section --}}
+    <section class="py-24 my-8 bg-white" id="pricing">
+        <div class="max-w-6xl mx-auto px-6">
+            {{-- Header --}}
+            <div class="text-center mb-16" x-intersect="$el.classList.add('slide-in-top')">
+                <x-pill class="text-primary-500 bg-primary-50 border border-primary-100 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                    {{ __('Transparent Pricing') }}
+                </x-pill>
+                <x-heading.h2 class="my-6 text-primary-900 font-bold">
+                    {{ __('Simple plans for every stage of growth') }}
+                </x-heading.h2>
+            </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+
+                {{-- Plan 1: Starter (Monthly Access) --}}
+                <div class="flex flex-col p-8 bg-white border-2 border-neutral-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold text-primary-900">{{ __('Essential') }}</h3>
+                        <p class="text-gray-500 text-sm mt-2">{{ __('Perfect for freelancers and solo-entrepreneurs.') }}</p>
+                    </div>
+                    <div class="mb-8 font-extrabold text-primary-900 text-4xl">
+                        $24<span class="text-sm font-normal text-gray-400">/mo</span>
+                    </div>
+
+                    <div class="space-y-4 mb-10 flex-1 border-t border-neutral-50 pt-6">
+                        <div class="flex items-center gap-3 text-sm text-gray-600 font-medium">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            {{ __('Up to 20 Invoices / month') }}
+                        </div>
+                        <div class="flex items-center gap-3 text-sm text-gray-600 font-medium">
+                            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            {{ __('Expense Tracking') }}
+                        </div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <x-button-link.primary-outline href="#contact" class="w-full justify-center !py-4 rounded-xl border-neutral-200 text-primary-900 hover:border-primary-500">
+                            {{ __('Choose Essential') }}
+                        </x-button-link.primary-outline>
+                    </div>
+                </div>
+
+                {{-- Plan 2: Growth (Advanced Monthly Access) --}}
+                <div class="flex flex-col p-8 bg-primary-900 border-2 border-primary-800 rounded-3xl shadow-2xl transform scale-105 z-10 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-primary-500 text-white text-[10px] font-bold px-4 py-1 rounded-bl-xl uppercase tracking-widest">
+                        {{ __('Most Popular') }}
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-white">{{ __('Professional') }}</h3>
+                        <p class="text-primary-200 text-sm mt-2">{{ __('Advanced tools for growing agencies.') }}</p>
+                    </div>
+                    <div class="mb-8">
+                        <span class="text-4xl font-extrabold text-white">$79</span>
+                        <span class="text-primary-300">/{{ __('month') }}</span>
+                    </div>
+                    <ul class="space-y-4 mb-10 flex-1 text-primary-50">
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            {{ __('Unlimited Invoices') }}
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            {{ __('Multi-Company Support (Up to 5)') }}
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            {{ __('Automated Tax Compliance') }}
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            {{ __('Advanced Email Editor') }}
+                        </li>
+                    </ul>
+                    <x-button-link.secondary href="#contact" class="w-full justify-center !py-4 shadow-xl">
+                        {{ __('Go Pro Now') }}
+                    </x-button-link.secondary>
+                </div>
+                {{-- Plan 3: Custom (Enterprise) --}}
+                <div class="flex flex-col p-8 bg-neutral-50 border-2 border-neutral-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold text-primary-900">{{ __('Enterprise') }}</h3>
+                        <p class="text-gray-500 text-sm mt-2">{{ __('Tailored workflows for your unique business needs.') }}</p>
+                    </div>
+                    <div class="mb-8 font-bold text-primary-900 text-2xl h-[40px] flex items-center">
+                        {{ __('Customized') }}
+                    </div>
+
+                    <div class="space-y-4 mb-10 flex-1 border-t border-neutral-200 pt-6 text-gray-500 text-sm italic">
+                        <p>{{ __('Need custom API integrations, specific compliance bridges, or multi-user roles for a large organization?') }}</p>
+                        <p>{{ __('We build exactly what your business requires.') }}</p>
+                    </div>
+
+                    <div class="mt-auto">
+                        <x-button-link.primary href="#contact" class="w-full justify-center !py-4 rounded-xl">
+                            {{ __('Talk to an Expert') }}
+                        </x-button-link.primary>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
     {{-- Tech Stack Section --}}
     <div class="mx-4 mt-24 text-center" id="tech-stack">
         <x-heading.h6 class="text-primary-500 uppercase tracking-widest">
@@ -223,7 +325,7 @@
     </div>
 
     {{-- Final CTA --}}
-    <div class="bg-primary-900 my-24 py-16 px-4 rounded-3xl mx-4 md:mx-auto max-w-6xl text-center">
+    <div class="bg-primary-900 my-12 py-16 px-4 rounded-3xl mx-4 md:mx-auto max-w-6xl text-center">
         <x-heading.h2 class="text-white">{{ __('Ready to transform your business accounting?') }}</x-heading.h2>
         <p class="text-primary-100 mt-4 max-w-2xl mx-auto">
             {{ __('Join hundreds of freelancers and agency owners who trust Zenvoyc to power their financial growth.') }}
@@ -233,7 +335,7 @@
 
     {{-- FAQ Section --}}
     {{-- Contact/Lead Generation Section --}}
-    <section class="py-24 mt-4 bg-white" id="contact">
+    <section class="py-12 bg-white" id="contact">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <div x-intersect="$el.classList.add('slide-in-top')">
                 <x-pill
@@ -297,7 +399,7 @@
 
                     <div class="pt-4">
                         <button type="submit"
-                                class="w-full py-4 bg-primary-900 hover:bg-primary-800 text-primary font-bold rounded-xl shadow-lg hover:shadow-primary-900/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                                class="w-full py-4 bg-primary-900 hover:bg-primary-800 text-white font-bold rounded-xl shadow-lg hover:shadow-primary-900/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
                             <span>{{ __('Get Expert Consultation') }}</span>
                         </button>
                     </div>

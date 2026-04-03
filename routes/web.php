@@ -22,12 +22,13 @@ use Illuminate\Support\Facades\Route;
 | If you want the URL to be added to the sitemap, add a "sitemapped" middleware to the route (it has to GET route)
 |
 */
-
-Route::get('/', function () {
-    return view('home');
-})->name('home')->middleware('sitemapped');
-
+Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
+    Route::get('/', function () {
+        return view('home');
+    })->name('home')->middleware('sitemapped');
 Auth::routes();
+});
+
 
 Route::get('/email/verify', function () {
     return view('auth.verify');
@@ -162,7 +163,7 @@ Route::get('/roadmap/i/{itemSlug}', [
 ])->name('roadmap.viewItem');
 
 
-// new routes 
+// new routes
 
 
 // Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
